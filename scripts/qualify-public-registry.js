@@ -5,11 +5,11 @@
 // fetches and an exact installed-integrity check; no sole-next/latest policy.
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {mkdirSync, writeFileSync} from 'node:fs';
+import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {parseArgs} from 'node:util';
-import {assertPublicRegistryFacts, assertPublicRegistryMetadata, readCandidate, registry, sha256Buffer, verifyIntegrity} from './release-artifacts.js';
+import {assertPublicRegistryFacts, assertPublicRegistryMetadata, readCandidate, registry, sha256Buffer, verifyExpectedProvenance, verifyIntegrity} from './release-artifacts.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npmCli = process.env['npm_execpath'];
@@ -30,7 +30,9 @@ async function request(url) {
   return response;
 }
 
+/** @type {unknown} */
 const metadata = await (await request(`${registry}${name}/${encodeURIComponent(version)}`)).json();
+/** @type {unknown} */
 const distTags = await (await request(`${registry}-/package/${name}/dist-tags`)).json();
 // Validate the destination and metadata before requesting any archive URL.
 const distribution = assertPublicRegistryMetadata({expectedName: name, expectedVersion: version, tag: values.tag, metadata, distTags});
@@ -44,7 +46,9 @@ const result = spawnSync(process.execPath, [npmCli, 'run', 'test:package', '--',
   '--integrity', facts.integrity, '--output', output, '--audit'], {cwd: root, encoding: 'utf8', windowsHide: true, maxBuffer: 32 * 1024 * 1024});
 assert.equal(result.status, 0, result.error?.message ?? result.stdout + result.stderr);
 console.log(result.stdout);
+// Only consume bundles returned after native npm/pacote signature verification.
+await verifyExpectedProvenance(candidate, JSON.parse(readFileSync(join(output, 'signature-audit.json'), 'utf8')));
 const report = {result: 'PASS', verifiedAt: new Date().toISOString(), registry, ...facts,
-  installedConsumer: 'PASS', signatureAudit: 'PASS'};
+  installedConsumer: 'PASS', signatureAudit: 'PASS', expectedProvenance: 'PASS'};
 writeFileSync(join(output, 'registry-verification.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

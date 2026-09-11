@@ -15,6 +15,10 @@ on:
         type: string
         default: next
         required: true
+      version:
+        description: Exact package version approved for this candidate
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -24,15 +28,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  qualification:
+    uses: ./.github/workflows/steam-community-bbcode.yml
+  controls:
+    uses: ./.github/workflows/sdlc-control-tests.yml
+  security:
+    permissions:
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/codeql.yml
   candidate:
     name: Qualify the release archive
+    needs: [qualification, controls, security]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
       artifact_id: ${{ steps.archive.outputs.artifact-id }}
+      candidate_sha256: ${{ steps.identity.outputs.sha256 }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -42,39 +58,44 @@ jobs:
         run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
       - name: Install the locked package and isolated tooling
         run: |
-          npm --prefix tools/steam-community-bbcode ci --ignore-scripts --no-audit --no-fund
-          npm --prefix tools/steam-community-bbcode/tooling/type-coverage ci --ignore-scripts --no-audit --no-fund
-          npm --prefix tools/steam-community-bbcode/tooling/api-docs ci --ignore-scripts --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm --prefix tooling/type-coverage ci --ignore-scripts --no-audit --no-fund
+          npm --prefix tooling/api-docs ci --ignore-scripts --no-audit --no-fund
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version-file: .python-version
       - name: Install the locked native prose formatter
         run: |
           python -m venv .venv
-          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r tools/steam-community-bbcode/tooling/prose/requirements.txt
+          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r tooling/prose/requirements.txt
       - name: Run the existing converter qualification
-        run: npm run check:converter
+        run: npm run check
       - name: Build and exercise the retained archive
-        working-directory: tools/steam-community-bbcode
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          QUALIFICATION_RESULT: ${{ needs.qualification.result }}
+          CONTROL_RESULT: ${{ needs.controls.result }}
+          SECURITY_RESULT: ${{ needs.security.result }}
         run: npm run release:pack -- --output artifacts/release-candidate
-      - name: Check publication eligibility
-        if: inputs.publish
-        working-directory: tools/steam-community-bbcode/artifacts/release-candidate
+      - name: Bind the candidate metadata to this job
+        id: identity
+        working-directory: artifacts/release-candidate
         run: |
-          jq -e '.package.private == false and .source.dirty == false' candidate.json > /dev/null
+          echo "sha256=$(sha256sum candidate.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
       - name: Retain the candidate from this run
         id: archive
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: steam-community-bbcode-candidate
-          path: tools/steam-community-bbcode/artifacts/release-candidate/
+          path: artifacts/release-candidate/
           if-no-files-found: error
           retention-days: 30
 
   publish:
     name: Publish the qualified archive
     needs: candidate
-    if: inputs.publish
+    if: inputs.publish && github.repository == 'MaksymShostak/steam-community-bbcode' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
     environment: npm-release
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -95,6 +116,35 @@ jobs:
           path: candidate
           merge-multiple: true
           digest-mismatch: error
+      - name: Check publication eligibility
+        working-directory: candidate
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          CANDIDATE_SHA256: ${{ needs.candidate.outputs.candidate_sha256 }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = MaksymShostak/steam-community-bbcode
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_WORKFLOW_REF" = "$GITHUB_REPOSITORY/.github/workflows/steam-community-bbcode-release.yml@$GITHUB_REF"
+          test "$GITHUB_WORKFLOW_SHA" = "$GITHUB_SHA"
+          [[ "$CANDIDATE_ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]]
+          printf '%s  candidate.json\n' "$CANDIDATE_SHA256" | sha256sum --check --strict
+          jq -e --arg sha "$GITHUB_SHA" --arg repo "$GITHUB_REPOSITORY" --arg repoId "$GITHUB_REPOSITORY_ID" \
+            --arg ref "$GITHUB_REF" --arg workflow "$GITHUB_WORKFLOW_REF" --arg run "$GITHUB_RUN_ID" \
+            --arg attempt "$GITHUB_RUN_ATTEMPT" --arg version "$RELEASE_VERSION" --arg tag "$RELEASE_TAG" '
+            .schemaVersion == 2 and .package.name == "steam-community-bbcode" and
+            .package.license == "AGPL-3.0-only" and .package.private == false and .package.version == $version and
+            .source.dirty == false and .source.commit == $sha and
+            .checks.installedConsumers == "PASS" and .checks.productionAudit == "PASS" and
+            .release.repository == $repo and .release.repositoryId == $repoId and .release.ref == $ref and
+            .release.workflowRef == $workflow and .release.workflowSha == $sha and
+            .release.runId == $run and .release.runAttempt == $attempt and .release.tag == $tag and
+            .release.qualification == {"runtimeAndMutation":"success","controls":"success","security":"success"}
+          ' candidate.json > /dev/null
       - name: Verify and publish the retained bytes through npm OIDC
         working-directory: candidate
         env:
@@ -103,7 +153,6 @@ jobs:
         run: |
           set -euo pipefail
           sha256sum --check --strict SHA256SUMS
-          jq -e '.package.private == false and .source.dirty == false' candidate.json > /dev/null
           archives=(steam-community-bbcode-*.tgz)
           test "${#archives[@]}" -eq 1
           test -f "${archives[0]}"
@@ -119,6 +168,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -127,7 +177,7 @@ jobs:
       - name: Select the qualified npm CLI
         run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
       - name: Install the verifier and TS 7 compiler
-        run: npm --prefix tools/steam-community-bbcode ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
@@ -140,7 +190,7 @@ jobs:
       - name: Verify public bytes, signatures, provenance and consumers
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-        run: npm --prefix tools/steam-community-bbcode run release:verify-registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --output "$GITHUB_WORKSPACE/registry-verification"
+        run: npm run release:verify-registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --output "$GITHUB_WORKSPACE/registry-verification"
       - name: Retain registry verification evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -101,7 +101,7 @@ test('standalone qualification runs root checks and native Node24 bootstrap with
 test('dependency review is PR-only while the job remains an unconditional prerequisite', () => {
   const events = workflow.get('on', true);
   assert.ok(isMap(events));
-  assert.deepEqual(events.items.map(pair => { assert.ok(isScalar(pair.key)); return pair.key.value; }), ['pull_request', 'push', 'workflow_dispatch']);
+  assert.deepEqual(events.items.map(pair => { assert.ok(isScalar(pair.key)); return pair.key.value; }), ['pull_request', 'push', 'workflow_call', 'workflow_dispatch']);
   const review = workflow.getIn(['jobs', 'dependency-review'], true);
   assert.ok(isMap(review));
   assert.equal(review.get('if'), undefined);

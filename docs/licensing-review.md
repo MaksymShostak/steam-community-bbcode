@@ -1,6 +1,6 @@
 # Licence compatibility assessment
 
-Reviewed 10 September 2026 for the current private `steam-community-bbcode` 1.0.0 source package and its four retained locked npm environments.
+Reviewed 10 September 2026 for the private `steam-community-bbcode` 1.0.0 source package, with a standalone development-tool supplement on 11 September 2026.
 This is the documented assessment selected by the owner, not an independent lawyer's opinion or authorization to publish.
 The accepted baseline requires explicit pre-release legal review; it does not prescribe independent legal counsel.
 
@@ -93,7 +93,7 @@ The subsequent comparator `qs` repair added six MIT entries and replaced `qs` 6.
 The sibling `../ci-34524391937-licences.json` preserves supplemental full texts for all seven changed components, whose exact versions, archive integrities and complete notices match the already assessed main development graph.
 Those terms continue to govern any separately retained copies of that historical tooling.
 The owner-approved retirement removes the 129-entry legacy Node comparison graph from current selection, leaving 447 entries across four npm environments and preserving the unchanged 66-entry production graph.
-The original and supplemental receipts remain intact; the table below identifies the current locks.
+The original and supplemental receipts remain intact; the table below identifies the source-handoff locks before the standalone release-tool additions.
 There are 38 uninstalled entries across platform-specific optional development compiler packages; their declared Apache terms and the selected compiler's notices are recorded without claiming an installed-file inspection for those platforms.
 Additional primary-source receipts record retrieval time, exact URL/revision, HTTP status and SHA-256. These local records supplement the existing SBOMs and archive/consumer checks; they are not included in Git or the npm archive and must be carried with the handoff.
 
@@ -103,3 +103,24 @@ Additional primary-source receipts record retrieval time, exact URL/revision, HT
 | `tooling/type-coverage/package-lock.json` | `4d759bb525c039b8e8036194317729b052b8a0d97f326620df5f5a842e9bf2e4` |
 | `tooling/api-docs/package-lock.json` | `2ca887f8c16c70f3c8634c2e03151f01e0df30a330ee182f7a00bd68f0afd346` |
 | `comparison/bbob/package-lock.json` | `06bf089fba6471e10fb92bb05b9c84e2085d8b978e09eacd58be18877b61cb2b` |
+
+## Standalone release-tool supplement — 11 September 2026
+
+The owner approved Sigstore 5.0.0 and its strict declaration prerequisites, `@types/make-fetch-happen` 10.0.4 and `@sigstore/rekor-types` 5.0.0, for authenticated release verification.
+Native npm 12.0.2 added 53 development-only lock entries without changing any existing version or archive integrity.
+The four environments now contain 500 entries; the 66-entry production graph remains unchanged.
+The current root lock SHA-256 is `c2f9aff3d79d8d2d23f4f9938613e83bb1d3c0cd95f82425a7aba020ff81369f`; the other three hashes above are unchanged.
+
+The additional entries declare 29 MIT, 14 ISC, eight Apache-2.0, one BSD-2-Clause and one BlueOak-1.0.0 licence.
+Full installed notice texts were retained for 50 entries.
+The omitted Apache text for `@sigstore/verify` 4.1.2 was recovered from its [exact upstream revision](https://github.com/sigstore/sigstore-js/blob/769a53d8713248a8bf49edfc2a5d1955b0dcc24d/LICENSE), bringing package-specific full-text coverage to 51 of 53.
+
+Two notice gaps remain: `@npmcli/agent` 5.0.2 [declares ISC](https://github.com/npm/agent/blob/3fadae4d3ea4cc6c73003db2b42456afab9e3cdd/package.json), and `proxy-agent-negotiate` 1.1.0 [declares MIT](https://github.com/TooTallNate/proxy-agents/blob/b7e5f7ccce1a3ac5b339cc4c587974e8989cbc16/packages/negotiate/package.json), but neither inspected package or corresponding repository location contains its own full notice.
+The canonical [ISC](https://spdx.org/licenses/ISC.html) and [MIT](https://spdx.org/licenses/MIT.html) terms are retained separately as the terms referenced by those declarations, not as recovered author-specific notices.
+No copyright year or sibling-package notice is substituted.
+This assessment supports using the declared permissive development tools locally; it does not establish complete notice evidence for redistributing those two packages.
+They remain outside the converter archive, and any separately distributed tooling bundle must resolve those notice gaps first.
+
+The Apache, MIT, ISC, BSD and BlueOak conditions above also apply to these additions.
+No incompatible term was identified for the unchanged converter distribution boundary, and this supplement does not grant publication approval.
+Full texts, declarations, retrieval URLs and hashes are retained in `artifacts/portability/release-development-license-texts.json` and `artifacts/portability/release-development-license-supplement.json`, with the private migration evidence.

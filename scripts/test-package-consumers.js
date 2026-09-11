@@ -121,7 +121,7 @@ try {
     await writeFile(join(artifacts, 'production.cdx.json'), run([npmCli, 'sbom', '--omit=dev', '--ignore-scripts', '--sbom-format=cyclonedx'], consumer));
   }
   if (values.coordinate) {
-    await writeFile(join(artifacts, 'signature-audit.json'), run([npmCli, 'audit', 'signatures', '--json', ...registryArgs], consumer));
+    await writeFile(join(artifacts, 'signature-audit.json'), run([npmCli, 'audit', 'signatures', '--json', '--include-attestations', ...registryArgs], consumer));
   }
   await writeFile(join(artifacts, 'consumer-report.json'), JSON.stringify({result: 'PASS',
     package: {name: manifest.name, version: manifest.version, private: manifest.private === true, license: manifest.license},

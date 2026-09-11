@@ -35,13 +35,37 @@ const pack = JSON.parse(readFileSync(join(output, 'pack-actual.json'), 'utf8'));
 const consumer = JSON.parse(readFileSync(join(output, 'consumer-report.json'), 'utf8'));
 assert.equal(consumer.result, 'PASS');
 assert.equal(consumer.productionAudit, 'PASS');
+/** @param {string} name */
+function requiredEnvironment(name) {
+  const value = process.env[name];
+  assert.ok(value, `Missing release environment ${name}.`);
+  return value;
+}
+/** @type {import('./release-artifacts.js').ReleaseIdentity | null} */
+let release = null;
+if (process.env['GITHUB_ACTIONS'] === 'true') {
+  assert.equal(consumer.package.version, requiredEnvironment('RELEASE_VERSION'));
+  for (const name of ['QUALIFICATION_RESULT', 'CONTROL_RESULT', 'SECURITY_RESULT']) {
+    assert.equal(requiredEnvironment(name), 'success', `Missing successful ${name}.`);
+  }
+  release = {
+    repository: requiredEnvironment('GITHUB_REPOSITORY'), repositoryId: requiredEnvironment('GITHUB_REPOSITORY_ID'),
+    ref: requiredEnvironment('GITHUB_REF'), workflowRef: requiredEnvironment('GITHUB_WORKFLOW_REF'),
+    workflowSha: requiredEnvironment('GITHUB_WORKFLOW_SHA'), runId: requiredEnvironment('GITHUB_RUN_ID'),
+    runAttempt: requiredEnvironment('GITHUB_RUN_ATTEMPT'), tag: requiredEnvironment('RELEASE_TAG'),
+    qualification: {runtimeAndMutation: 'success', controls: 'success', security: 'success'},
+  };
+  assert.equal(run('git', ['rev-parse', 'HEAD']).trim(), requiredEnvironment('GITHUB_SHA'));
+  assert.equal(run('git', ['status', '--porcelain']).length, 0, 'Hosted candidate inputs must be clean.');
+}
 /** @type {import('./release-artifacts.js').ReleaseCandidate} */
 const candidate = {
-  schemaVersion: 1, package: consumer.package,
+  schemaVersion: 2, package: consumer.package,
   tarball: {filename: pack.filename, sha256: sha256File(join(output, pack.filename)), integrity: pack.integrity},
   source: {commit: run('git', ['rev-parse', 'HEAD']).trim(), dirty: run('git', ['status', '--porcelain']).length > 0,
     node: process.version, npm: run(process.execPath, [npmCli, '--version']).trim()},
   checks: {installedConsumers: 'PASS', productionAudit: 'PASS'},
+  release,
 };
 writeFileSync(join(output, 'candidate.json'), JSON.stringify(candidate, null, 2) + '\n');
 readCandidate(output);

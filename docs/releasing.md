@@ -12,7 +12,7 @@ In source checkouts, `docs/migration/standalone-portability.md` records the froz
 ONI PR #4 is closed without merging; the source worktree and private recovery evidence remain intact.
 
 The commands below qualify local artifacts and describe publication only after destination controls and separate owner authorization.
-The imported workflows still require destination adaptation and activation; their presence is not evidence of a working standalone release route.
+The workflows use destination paths and identity gates; hosted release qualification and live publication remain separate acceptance steps.
 Do not publish through ONI or merge the package branch into ONI main.
 
 Preserve source, tests, isolated locks, licence notices, original plans and their execution lineage.
@@ -35,7 +35,8 @@ The second command prints a new directory under `artifacts/release-candidates/`.
 It builds declarations with TS 7, packs through native npm and installs that archive into a temporary consumer.
 The existing authored JavaScript, CLI, declaration contracts, licence and package-boundary checks run against the installed package.
 Native npm audits the actual installed production graph with the same low-severity floor as dependency review and emits its CycloneDX SBOM.
-The candidate retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`.
+The candidate retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`. Schema version 2 records the hosted repository ID, ref, workflow revision, run/attempt, tag and qualification results.
+Local candidates record `release: null` and cannot pass the hosted publication gate.
 
 Use `npm run release:pack -- --output artifacts/my-candidate` to choose an empty directory.
 The empty-directory requirement prevents mixing files from different attempts; it does not impose an immutable-release policy.
@@ -65,6 +66,9 @@ Keep the original comparison and qualification evidence with the approved releas
 
 The repository workflow **Steam Community BBCode release** has a manual `publish` input, defaulting to false.
 Its default run qualifies and retains a candidate without publishing.
+Supply the exact expected `version` and intended `tag` for both qualification and publication.
+The release run calls the same-revision runtime/mutation, SDLC and CodeQL workflows before creating the candidate.
+PR dependency review remains a reviewed-change gate; CodeQL analysis success does not itself mean zero findings.
 After destination workflow qualification, approve and commit the actual public package version and complete the release obligations.
 Configure npm's trusted publisher for that destination's reviewed workflow and environment; the current reusable names are `steam-community-bbcode-release.yml` and `npm-release`.
 Do not bind this package's publisher to the ONI repository.
@@ -72,9 +76,11 @@ The binding must allow direct `npm publish`; a binding limited to staged publish
 If npm requires an initial package before that binding can be created, the owner must arrange that first publication separately.
 No bootstrap token or credential is stored by this implementation.
 
-Dispatch the reviewed revision with `publish: true` and the intended distribution tag, such as `next` for a release candidate or `latest` for an approved stable release.
+Dispatch the reviewed `main` revision with `publish: true`, its exact package version and the intended distribution tag, such as `next` for a release candidate or `latest` for an approved stable release.
 The private development flag and a dirty candidate prevent publication.
-The publisher downloads the same run's artifact by ID, checks its native artifact digest and `SHA256SUMS`, and publishes its exact archive with native npm OIDC/provenance.
+The publisher downloads the same run's artifact by ID, checks its native artifact digest, candidate metadata hash and `SHA256SUMS`, and publishes its exact archive with native npm OIDC/provenance.
+The protected `npm-release` environment permits only `main`, requires the owner reviewer and disables administrator bypass.
+The owner may approve a run they initiated; independent technical review remains a separate release obligation.
 Only that job receives OIDC permission, and it executes no checked-out project code or package lifecycle scripts.
 The workflow does not create an immutable GitHub release or impose a single distribution channel.
 
@@ -83,7 +89,9 @@ The workflow does not create an immutable GitHub release or impose a single dist
 A separate job without publication credentials fetches the exact public version and requested tag.
 It verifies that the registry archive has the retained SHA-256 and published SHA-512 integrity, then installs the exact coordinate with a fresh npm cache.
 The installed lockfile must bind the package to the same archive integrity before the existing API, CLI and TS 7 consumers run.
-Native `npm audit signatures` verifies available registry signatures and provenance, and native production audit runs again.
+Native `npm audit signatures --json --include-attestations` verifies registry signatures and returns verified provenance bundles, and native production audit runs again.
+The native Sigstore verifier additionally requires the GitHub Actions issuer and exact destination workflow certificate identity.
+Expected provenance must match the archive subject, repository, source revision, workflow, ref and run attempt before verification reports success.
 Other distribution tags may coexist.
 
 To repeat this read-only verification from a qualified source checkout:
