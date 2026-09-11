@@ -45,7 +45,7 @@ A diagnosed presentation loss can be an intended conversion policy; it is not ev
 No finding class is waived by this document.
 
 The default 1-MiB input limit is configurable and does not establish a CPU deadline or bound every allocation in native parsers.
-Reverse node/depth checks run after GFM parsing; forward conversion also invokes a native GFM consumer. The [security model](docs/security-model.md) records these limits.
+Reverse node/depth checks run after GFM parsing; forward conversion also invokes a native GFM consumer. The [security model](https://github.com/MaksymShostak/steam-community-bbcode/blob/6d0d731399c5afb6418c11682b2ad63bdb02d600/docs/security-model.md) records these limits.
 Applications exposed to hostile concurrent requests need their own workload and process controls.
 
 Tests, coverage scores and a local package check do not establish independent security approval, current Steam/GitHub rendering, CI success or release readiness.
