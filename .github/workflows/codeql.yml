@@ -40,7 +40,34 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: none
           tools: linked
-      - name: Analyze and upload results
+      - name: Analyze source
         uses: github/codeql-action/analyze@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
         with:
           category: "/language:${{ matrix.language }}"
+          output: sarif-results
+          upload: ${{ matrix.language == 'javascript-typescript' && 'failure-only' || 'always' }}
+      - name: Preserve unfiltered JavaScript results
+        if: ${{ !cancelled() && matrix.language == 'javascript-typescript' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: codeql-unfiltered-javascript-${{ github.run_attempt }}
+          path: sarif-results/javascript.sarif
+          if-no-files-found: error
+      # Owner-approved temporary exception: LinkifyIt.match consumes text, not a regex.
+      # Remove when https://github.com/github/codeql/issues/22546 is fixed in our bundle
+      # and an unfiltered scan of this test confirms the false positive is absent.
+      # Scope includes any finding from this rule in this one test file.
+      - name: Filter confirmed LinkifyIt false positive
+        if: ${{ matrix.language == 'javascript-typescript' }}
+        uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1; Apache-2.0
+        with:
+          patterns: -test/link-recognition-qualification.test.js:js/incomplete-hostname-regexp
+          input: sarif-results/javascript.sarif
+          output: sarif-results/javascript.filtered.sarif
+      - name: Upload filtered JavaScript results
+        if: ${{ matrix.language == 'javascript-typescript' }}
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
+        with:
+          sarif_file: sarif-results/javascript.filtered.sarif
+          category: /language:javascript-typescript
+          wait-for-processing: true
