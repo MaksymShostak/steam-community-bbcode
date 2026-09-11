@@ -1,0 +1,21 @@
+# Native dependency locks and imported lifecycle provenance.
+**/package-lock.json
+skills-lock.json
+.sdlc/
+# Immutable acceptance plans, migration evidence and comparison observations.
+docs/plans/
+docs/migration/
+comparison/results/
+# Generated projections retain their owning generator's byte format.
+types/
+coverage.json
+src/steam/registry-identifiers.js
+src/steam/construct-registry.js
+docs/reference/
+docs/conversion-semantics.md
+docs/steam-support-matrix.md
+# Literal consumer and parser fixtures are qualification inputs.
+test/fixtures/
+tests/fixtures/
+test/documentation-fixtures/
+test/package-consumers/

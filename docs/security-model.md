@@ -36,13 +36,13 @@ A caller that offers it as a service must enforce its own authorization for file
 
 ## Resource limits and their scope
 
-| Dimension | Forward default | Reverse default | Enforcement |
-| --- | --- | --- | --- |
-| UTF-8 input bytes | 1,048,576 | 1,048,576 | Before parsing; CLI additionally bounds acquisition |
-| Nesting depth | 128 | 128 | Forward during grammar descent; reverse after native GFM parsing |
-| Node count | 100,000 source nodes | 100,000 native MDAST nodes | Forward during grammar traversal; reverse after native GFM parsing |
-| Attribute bytes | 65,536 per construct | Not applicable | Forward source header check |
-| UTF-8 output bytes | No separate output quota | 8,388,608 | Reverse rendered subtree assembly |
+| Dimension          | Forward default          | Reverse default            | Enforcement                                                        |
+| ------------------ | ------------------------ | -------------------------- | ------------------------------------------------------------------ |
+| UTF-8 input bytes  | 1,048,576                | 1,048,576                  | Before parsing; CLI additionally bounds acquisition                |
+| Nesting depth      | 128                      | 128                        | Forward during grammar descent; reverse after native GFM parsing   |
+| Node count         | 100,000 source nodes     | 100,000 native MDAST nodes | Forward during grammar traversal; reverse after native GFM parsing |
+| Attribute bytes    | 65,536 per construct     | Not applicable             | Forward source header check                                        |
+| UTF-8 output bytes | No separate output quota | 8,388,608                  | Reverse rendered subtree assembly                                  |
 
 Limits must be positive safe integers; nesting overrides cannot exceed 256.
 Forward node counting excludes grammar bookkeeping and attribute tokens.

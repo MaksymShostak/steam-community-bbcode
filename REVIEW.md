@@ -57,7 +57,6 @@ Triage feedback against the cited evidence and accepted contract; do not require
 Report target, accepted brief/baseline, passes performed, commands actually run, name/functionality pairs inspected (summarise groups where simple), findings, security bundle reference where applicable, unresolved gaps and outcome alignment.
 An `APPROVED` string from an agent is not the GitHub/human approval gate.
 
-
 ## Software selection review
 
 Check the actual REU-01 research, not only its reference: credible reuse candidates, primary sources, supported interfaces, residual custom gap, latest stable/LTS and LIC-01 exact terms/clearance.

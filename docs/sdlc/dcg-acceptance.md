@@ -25,27 +25,27 @@ Record `passed`, `failed`, `not-run`, `skipped`, or `not-applicable with evidenc
 For each row record exact environment, action/data, command, actual result, retained record and whether it blocks adoption.
 A skipped test is never converted to passed.
 
-| Check | Required result |
-|---|---|
-| Licence/terms clearance | Exact selected text/rider, intended use, actual clearance or required written permission; blocked means no execution |
-| Release verification and identity | Approved version/source, real binary digest and required verified signature/provenance |
-| Native schema/config loading | Consumer schema accepts candidate; deployed effective config matches approved intent |
-| Native diagnostics | Enabled/reachable trusted hook and actual diagnostic output; no unexplained failure |
-| Isolated 26-case protocol suite | Actual versioned binary gives expected JSON/allow behaviour; raw evidence retained |
-| Real safe commands | Work normally without DCG noise or inappropriate intervention |
-| Real hard reset/force/delete in disposable fixtures | DCG hook event attributable; original sentinel and Git state unchanged |
-| Options/wrappers used on the host | Actual Windows/POSIX spellings and executable variants are covered |
-| force-with-lease | Disallowed under the approved strict policy, not silently treated as authorized |
-| Rebase checkout/restore recovery | Real interrupted-rebase fixture tested; unwanted loss blocked or independently prevented |
-| Temp-directory deletion | Remaining consumers/evidence respected; literal temp allowance does not imply disposal permission |
-| Native unified execution | Actual `exec_command` path intercepted by this installed version |
-| Interactive stdin/other tool paths | Unhooked paths explicitly restricted with real capabilities or excluded from authorized operations |
-| Worker sessions | Effective native hook, trust/policy and permissions verified on actual spawned workers |
-| Missing/disabled/untrusted/malformed/timed-out hook | Missing protection detected; no claim of successful enforcement or automatic high-privilege continuation |
-| Scoped exception | Granted only by independent authority; exact scope and lifetime understood and tested |
-| Legitimate maintenance | Approved rebase/amend/worktree cleanup has a workable operator route without evasion |
-| Coexisting controls | SDLC Stop hook, sandbox, Issue/merge controls and unrelated hooks still function |
-| Initial host smoke | Native interception and coexisting controls work under the adopted exact host configuration |
+| Check                                               | Required result                                                                                                      |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Licence/terms clearance                             | Exact selected text/rider, intended use, actual clearance or required written permission; blocked means no execution |
+| Release verification and identity                   | Approved version/source, real binary digest and required verified signature/provenance                               |
+| Native schema/config loading                        | Consumer schema accepts candidate; deployed effective config matches approved intent                                 |
+| Native diagnostics                                  | Enabled/reachable trusted hook and actual diagnostic output; no unexplained failure                                  |
+| Isolated 26-case protocol suite                     | Actual versioned binary gives expected JSON/allow behaviour; raw evidence retained                                   |
+| Real safe commands                                  | Work normally without DCG noise or inappropriate intervention                                                        |
+| Real hard reset/force/delete in disposable fixtures | DCG hook event attributable; original sentinel and Git state unchanged                                               |
+| Options/wrappers used on the host                   | Actual Windows/POSIX spellings and executable variants are covered                                                   |
+| force-with-lease                                    | Disallowed under the approved strict policy, not silently treated as authorized                                      |
+| Rebase checkout/restore recovery                    | Real interrupted-rebase fixture tested; unwanted loss blocked or independently prevented                             |
+| Temp-directory deletion                             | Remaining consumers/evidence respected; literal temp allowance does not imply disposal permission                    |
+| Native unified execution                            | Actual `exec_command` path intercepted by this installed version                                                     |
+| Interactive stdin/other tool paths                  | Unhooked paths explicitly restricted with real capabilities or excluded from authorized operations                   |
+| Worker sessions                                     | Effective native hook, trust/policy and permissions verified on actual spawned workers                               |
+| Missing/disabled/untrusted/malformed/timed-out hook | Missing protection detected; no claim of successful enforcement or automatic high-privilege continuation             |
+| Scoped exception                                    | Granted only by independent authority; exact scope and lifetime understood and tested                                |
+| Legitimate maintenance                              | Approved rebase/amend/worktree cleanup has a workable operator route without evasion                                 |
+| Coexisting controls                                 | SDLC Stop hook, sandbox, Issue/merge controls and unrelated hooks still function                                     |
+| Initial host smoke                                  | Native interception and coexisting controls work under the adopted exact host configuration                          |
 
 Do not create real cloud/database resources, remotes, public Issues or vulnerable production data merely for a smoke test.
 Most rule evaluation uses inert command strings.

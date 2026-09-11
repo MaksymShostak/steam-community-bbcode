@@ -1,5 +1,11 @@
 # Testing and qualification
 
+`npm run format` applies Prettier using the owlapi EditorConfig convention.
+`npm run format:check` rejects formatting drift without writing and runs before qualification and local package creation.
+Markdown preserves semantic line wrapping and literal code blocks; the existing `docs:format:check` remains independently required.
+Native locks, immutable plans/evidence, fixtures and generated projections stay under their owning tools, as listed in `.prettierignore`.
+Repository-authored Markdown does not support two-space hard breaks; trailing-whitespace removal remains enabled.
+
 `npm run docs:api:check` qualifies imported generic JSDoc through the isolated native TypeDoc model and Markdown renderer, then checks all ten generated reference files for freshness.
 `npm run docs:api` explicitly regenerates them.
 Primary TS 7 checking and the strict 100% metric cover its orchestration script as well as the runtime, tests and other maintenance scripts.
@@ -14,19 +20,19 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command | Contract |
-| --- | --- |
-| `npm test` | Focused runtime examples and seeded properties |
-| `npm run qualify:parser` | Native grammar foundation and resource contracts |
-| `npm run qualify:performance` | Bounded subprocess regression for opaque text and adjacent formatting |
-| `npm run qualify:github` | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios |
-| `npm run test:coverage` | Both suites under c8/V8, including unloaded runtime source |
-| `npm run conformance:check` | Generated forward/reverse policy report matches executed cases |
-| `npm run docs:check` | Construct examples and package-local documentation links |
-| `npm run docs:format:check` | Native semantic line formatting of authored package guides, without writing |
-| `npm run qualify:prose` | Sentence boundaries, literal content, idempotence, native check behavior and generated-file exclusions |
-| `npm run test:mutation` | Sequential Stryker library and real-process CLI qualification |
-| `npm run test:package` | Packed source, declarations, maps, executable and fresh consumers |
+| Command                       | Contract                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `npm test`                    | Focused runtime examples and seeded properties                                                         |
+| `npm run qualify:parser`      | Native grammar foundation and resource contracts                                                       |
+| `npm run qualify:performance` | Bounded subprocess regression for opaque text and adjacent formatting                                  |
+| `npm run qualify:github`      | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                              |
+| `npm run test:coverage`       | Both suites under c8/V8, including unloaded runtime source                                             |
+| `npm run conformance:check`   | Generated forward/reverse policy report matches executed cases                                         |
+| `npm run docs:check`          | Construct examples and package-local documentation links                                               |
+| `npm run docs:format:check`   | Native semantic line formatting of authored package guides, without writing                            |
+| `npm run qualify:prose`       | Sentence boundaries, literal content, idempotence, native check behavior and generated-file exclusions |
+| `npm run test:mutation`       | Sequential Stryker library and real-process CLI qualification                                          |
+| `npm run test:package`        | Packed source, declarations, maps, executable and fresh consumers                                      |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.
@@ -35,10 +41,13 @@ Executable diagnostic arrays are counted even when unloaded.
 See `.c8rc.json` for the exact scope.
 
 Both mutation profiles require 90%; neither excludes surviving mutants or uses checker suppressions.
+Ordinary PR and main-push iteration checks skip mutation; manual checks opt in with `run-mutation`.
+The reusable workflow defaults to requiring mutation, and the release workflow explicitly requests both profiles before qualifying an RC archive.
+The aggregate accepts a skipped mutation job only when mutation was not requested; requested mutation failures, cancellations and skips block qualification.
 CI requires the dependency-review job to succeed before starting the six ordinary converter jobs.
-The full library and CLI profiles then run in separate parallel Linux jobs only after every ordinary check passes.
+When requested, the full library and CLI profiles run in separate parallel Linux jobs only after every ordinary check passes.
 The dependency-review action runs only for affected pull requests; its job remains eligible on push and manual runs so those events can reach the test stages.
-The existing Ubuntu/Node 24 qualification check requires dependency review and both matrices to succeed, and explicitly fails if an upstream stage fails or is skipped.
+The aggregate requires dependency review and the runtime matrix to succeed, plus the mutation result appropriate to the selected mode.
 Superseded PR runs are cancelled within the same workflow and PR; main and manual runs remain independent.
 The first remote run spent about 40 minutes on library mutation testing and ten minutes on CLI mutation testing, compared with 40 seconds for ordinary converter checks.
 Parallel jobs reduce the expected critical path without reducing mutation scope; runner availability still affects elapsed time.

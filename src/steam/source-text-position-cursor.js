@@ -7,22 +7,22 @@
  */
 export function sourceTextPositionCursor(node) {
   let cursor = 0;
-  const point = {...node.sourceSpan.start};
+  const point = { ...node.sourceSpan.start };
   /** @param {number} end @returns {import('unist').Position} */
   return function consume(end) {
-    const start = {...point};
+    const start = { ...point };
     for (let i = cursor; i < end; i++) {
-      if (node.value[i] === '\r') {
-        if (node.value[i + 1] === '\n' && i + 1 < end) i++;
+      if (node.value[i] === "\r") {
+        if (node.value[i + 1] === "\n" && i + 1 < end) i++;
         point.line++;
         point.column = 1;
-      } else if (node.value[i] === '\n') {
+      } else if (node.value[i] === "\n") {
         point.line++;
         point.column = 1;
       } else point.column++;
     }
     point.offset = (node.sourceSpan.start.offset ?? 0) + end;
     cursor = end;
-    return {start, end: {...point}};
+    return { start, end: { ...point } };
   };
 }

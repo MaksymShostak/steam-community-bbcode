@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import {gfmFromMarkdown} from 'mdast-util-gfm';
+import { gfmFromMarkdown } from "mdast-util-gfm";
 
 /**
  * Native GFM tree transforms model GitHub's additional post-parse autolinker.
@@ -21,8 +21,17 @@ export function rendererAutolinkDiagnostics(intended) {
     }
   }
   const added = linkCount(rendered) - linkCount(intended);
-  return added > 0 ? [{scope: 'input', severity: 'warning', fidelity: 'approximate', code: 'GFM_RENDERER_AUTOLINK_POSSIBLE',
-    message: `GFM syntax retains literal text, but GitHub surfaces with additional autolinking may turn ${added} literal address(es) into links.`}] : [];
+  return added > 0
+    ? [
+        {
+          scope: "input",
+          severity: "warning",
+          fidelity: "approximate",
+          code: "GFM_RENDERER_AUTOLINK_POSSIBLE",
+          message: `GFM syntax retains literal text, but GitHub surfaces with additional autolinking may turn ${added} literal address(es) into links.`,
+        },
+      ]
+    : [];
 }
 
 /** @param {import('mdast').Root} tree */
@@ -33,8 +42,8 @@ function linkCount(tree) {
   while (pending.length) {
     const node = pending.pop();
     if (!node) break;
-    if (node.type === 'link') count++;
-    if ('children' in node) pending.push(...node.children);
+    if (node.type === "link") count++;
+    if ("children" in node) pending.push(...node.children);
   }
   return count;
 }

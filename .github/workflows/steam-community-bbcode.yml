@@ -3,7 +3,18 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_call:
+    inputs:
+      run-mutation:
+        description: Require both mutation profiles for candidate qualification
+        type: boolean
+        default: true
   workflow_dispatch:
+    inputs:
+      run-mutation:
+        description: Run both mutation profiles in addition to iteration checks
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -24,6 +35,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -75,6 +87,7 @@ jobs:
             artifacts/prose/
   mutation:
     name: BBCode / Mutation / ${{ matrix.profile }}
+    if: ${{ inputs.run-mutation == true }}
     needs: converter
     timeout-minutes: 60
     strategy:
@@ -86,6 +99,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -112,12 +126,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - name: Require dependency review, converter checks and both mutation profiles
+      - name: Require iteration checks and the requested mutation result
         env:
+          MUTATION_REQUIRED: ${{ inputs.run-mutation == true }}
           DEPENDENCY_REVIEW_RESULT: ${{ needs.dependency-review.result }}
           CHECK_RESULT: ${{ needs.converter.result }}
           MUTATION_RESULT: ${{ needs.mutation.result }}
-        run: test "$DEPENDENCY_REVIEW_RESULT" = success && test "$CHECK_RESULT" = success && test "$MUTATION_RESULT" = success
+        run: |
+          test "$DEPENDENCY_REVIEW_RESULT" = success
+          test "$CHECK_RESULT" = success
+          case "$MUTATION_REQUIRED" in
+            true) test "$MUTATION_RESULT" = success ;;
+            false) test "$MUTATION_RESULT" = skipped ;;
+            *) exit 1 ;;
+          esac
   dependency-review:
     name: BBCode / Dependency review
     runs-on: ubuntu-latest
@@ -128,6 +150,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:

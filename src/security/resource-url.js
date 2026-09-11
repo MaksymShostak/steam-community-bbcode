@@ -11,6 +11,11 @@
  */
 export function isAllowedResourceUrl(value, kind) {
   if (!value || /[\p{Control}\\]/u.test(value)) return false;
-  const parsed = URL.parse(value, 'https://steam-bbcode.invalid/');
-  return parsed !== null && (parsed.protocol === 'https:' || parsed.protocol === 'http:' || (kind === 'link' && parsed.protocol === 'mailto:'));
+  const parsed = URL.parse(value, "https://steam-bbcode.invalid/");
+  return (
+    parsed !== null &&
+    (parsed.protocol === "https:" ||
+      parsed.protocol === "http:" ||
+      (kind === "link" && parsed.protocol === "mailto:"))
+  );
 }

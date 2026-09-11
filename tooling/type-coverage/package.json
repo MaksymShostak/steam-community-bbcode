@@ -5,7 +5,9 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "packageManager": "npm@12.0.2",
-  "engines": {"node": ">=22"},
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "check": "type-coverage --project ../../tsconfig.json --not-only-in-cwd --at-least 100 --is 100 --strict --detail --report-semantic-error",
     "check:api-docs": "type-coverage --project ../api-docs/tsconfig.json --not-only-in-cwd --at-least 100 --is 100 --strict --detail --report-semantic-error"

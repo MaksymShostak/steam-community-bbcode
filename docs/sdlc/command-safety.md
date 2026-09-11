@@ -21,15 +21,15 @@ Do not confuse an exact pin with proof that the release is still current.
 
 ### Responsibility split
 
-| Component | Owns | Does not establish |
-|---|---|---|
-| Native DCG hook | Classifies covered command strings and returns its protocol decision | Task authority, complete command semantics, all execution paths |
-| Native Codex sandbox/permissions | Capability and access boundaries where enforced | Requirement correctness or an outcome |
-| Project lifecycle rules | Requests/denies specified merge/Issue operations | Exhaustive matching of every CLI/API/MCP spelling |
-| GitHub permissions/rulesets | Remote write and merge authority | Local command safety |
-| SDLC verification and Stop hook | Required evidence and local lifecycle state | Application security or tamper-proof enforcement |
-| Codex Security | Application vulnerability assessment/remediation | General command dispatch protection |
-| Cleanup policy | Ownership, consumers, retention and disposal conditions | A blanket permission to delete a temporary directory |
+| Component                        | Owns                                                                 | Does not establish                                              |
+| -------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Native DCG hook                  | Classifies covered command strings and returns its protocol decision | Task authority, complete command semantics, all execution paths |
+| Native Codex sandbox/permissions | Capability and access boundaries where enforced                      | Requirement correctness or an outcome                           |
+| Project lifecycle rules          | Requests/denies specified merge/Issue operations                     | Exhaustive matching of every CLI/API/MCP spelling               |
+| GitHub permissions/rulesets      | Remote write and merge authority                                     | Local command safety                                            |
+| SDLC verification and Stop hook  | Required evidence and local lifecycle state                          | Application security or tamper-proof enforcement                |
+| Codex Security                   | Application vulnerability assessment/remediation                     | General command dispatch protection                             |
+| Cleanup policy                   | Ownership, consumers, retention and disposal conditions              | A blanket permission to delete a temporary directory            |
 
 DCG is an **executable**, not a new skill, MCP server or Codex Security plugin.
 Install one native hook per covered dispatch.

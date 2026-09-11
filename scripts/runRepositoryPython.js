@@ -15,7 +15,11 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
  */
 export function runRepositoryPython(
   args,
-  { root = repositoryRoot, platform = process.platform, spawn = spawnSync } = {},
+  {
+    root = repositoryRoot,
+    platform = process.platform,
+    spawn = spawnSync,
+  } = {},
 ) {
   const executable = join(
     root,

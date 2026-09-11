@@ -2,7 +2,11 @@
   "all": true,
   "src": ["src"],
   "include": ["src/**/*.js"],
-  "exclude": ["src/diagnostics/conversion-result.js", "src/mdast/steam-mdast-nodes.js", "src/steam/steam-bbcode-syntax.js"],
+  "exclude": [
+    "src/diagnostics/conversion-result.js",
+    "src/mdast/steam-mdast-nodes.js",
+    "src/steam/steam-bbcode-syntax.js"
+  ],
   "check-coverage": true,
   "statements": 98,
   "lines": 98,

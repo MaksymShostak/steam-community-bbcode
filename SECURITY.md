@@ -2,14 +2,14 @@
 
 This policy covers the `steam-community-bbcode` Node.js package, its CLI and its development/release tooling.
 The package is under qualification and has no stable public release.
-Its AGPL-3.0-only boundary is this directory; the repository's `.NET` mods and root licensing have their own contracts.
+Its AGPL-3.0-only boundary is this standalone repository; copied third-party helpers and fixtures retain their original notices.
 
 ## Reporting a vulnerability
 
-Use the repository's [private vulnerability report](https://github.com/MaksymShostak/oxygen-not-included/security/advisories/new).
+Use the repository's [private vulnerability report](https://github.com/MaksymShostak/steam-community-bbcode/security/advisories/new).
 Include the package version or commit, Node version, API or CLI invocation, smallest useful input, observed result and security impact.
 Keep sensitive data and exploit details in that private report.
-The channel was verified enabled on 9 September 2026.
+The destination channel was verified enabled on 11 September 2026.
 No response-time or supported-release commitment is implied.
 
 ## Trust boundaries and required properties

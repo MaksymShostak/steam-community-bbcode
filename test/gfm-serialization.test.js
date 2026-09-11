@@ -1,67 +1,110 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import assert from 'node:assert/strict';
-import test from 'node:test';
-import {fromMarkdown} from 'mdast-util-from-markdown';
-import {gfmFromMarkdown} from 'mdast-util-gfm';
-import {gfm} from 'micromark-extension-gfm';
-import {steamCommunityBbcodeToGfm, gfmToSteamCommunityBbcode} from '../src/index.js';
+import assert from "node:assert/strict";
+import test from "node:test";
+import { fromMarkdown } from "mdast-util-from-markdown";
+import { gfmFromMarkdown } from "mdast-util-gfm";
+import { gfm } from "micromark-extension-gfm";
+import {
+  steamCommunityBbcodeToGfm,
+  gfmToSteamCommunityBbcode,
+} from "../src/index.js";
 
 /** @param {string} markdown */
 function targetTree(markdown) {
-  return fromMarkdown(markdown, {extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()]});
+  return fromMarkdown(markdown, {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  });
 }
 
-test('both JavaScript conversion directions reject non-string input instead of coercing it', () => {
-  for (const source of [null, undefined, 42, Buffer.from('[b]x[/b]'), {toString: () => '[b]x[/b]'}]) {
-    assert.throws(() => Reflect.apply(steamCommunityBbcodeToGfm, undefined, [source]), TypeError);
-    assert.throws(() => Reflect.apply(gfmToSteamCommunityBbcode, undefined, [source]), TypeError);
+test("both JavaScript conversion directions reject non-string input instead of coercing it", () => {
+  for (const source of [
+    null,
+    undefined,
+    42,
+    Buffer.from("[b]x[/b]"),
+    { toString: () => "[b]x[/b]" },
+  ]) {
+    assert.throws(
+      () => Reflect.apply(steamCommunityBbcodeToGfm, undefined, [source]),
+      TypeError,
+    );
+    assert.throws(
+      () => Reflect.apply(gfmToSteamCommunityBbcode, undefined, [source]),
+      TypeError,
+    );
   }
 });
 
-test('the GFM parser observes literal Markdown and HTML-shaped source without formatting', () => {
-  const source = '*literal* <script>alert(1)</script> [sd]';
+test("the GFM parser observes literal Markdown and HTML-shaped source without formatting", () => {
+  const source = "*literal* <script>alert(1)</script> [sd]";
   const result = steamCommunityBbcodeToGfm(source);
   const paragraph = targetTree(result.value).children[0];
-  assert.ok(paragraph?.type === 'paragraph');
-  assert.deepEqual(paragraph.children.map(child => child.type), ['text']);
-  assert.equal(paragraph.children[0]?.type === 'text' ? paragraph.children[0].value : '', source);
+  assert.ok(paragraph?.type === "paragraph");
+  assert.deepEqual(
+    paragraph.children.map((child) => child.type),
+    ["text"],
+  );
+  assert.equal(
+    paragraph.children[0]?.type === "text" ? paragraph.children[0].value : "",
+    source,
+  );
 });
 
-test('maintained GFM serialization preserves nested lists, deletion and table cells', () => {
-  const result = steamCommunityBbcodeToGfm('[olist][*]Parent[olist][*]Child[/olist][*]Sibling[/olist][table][tr][th]H[/th][/tr][tr][td][strike]Old[/strike][/td][/tr][/table]');
+test("maintained GFM serialization preserves nested lists, deletion and table cells", () => {
+  const result = steamCommunityBbcodeToGfm(
+    "[olist][*]Parent[olist][*]Child[/olist][*]Sibling[/olist][table][tr][th]H[/th][/tr][tr][td][strike]Old[/strike][/td][/tr][/table]",
+  );
   const [list, table] = targetTree(result.value).children;
-  assert.ok(list?.type === 'list');
+  assert.ok(list?.type === "list");
   assert.equal(list.ordered, true);
   assert.equal(list.children.length, 2);
-  assert.equal(list.children[0]?.children[1]?.type, 'list');
-  assert.ok(table?.type === 'table');
-  assert.equal(table.children[1]?.children[0]?.children[0]?.type, 'delete');
+  assert.equal(list.children[0]?.children[1]?.type, "list");
+  assert.ok(table?.type === "table");
+  assert.equal(table.children[1]?.children[0]?.children[0]?.type, "delete");
 });
 
-for (const literal of ['a`b', '\n```\ntext\n', '~~~\n[code]raw\n```']) {
+for (const literal of ["a`b", "\n```\ntext\n", "~~~\n[code]raw\n```"]) {
   test(`code fences chosen by the serializer preserve content: ${JSON.stringify(literal)}`, () => {
     const result = steamCommunityBbcodeToGfm(`[code]${literal}[/code]`);
     const code = targetTree(result.value).children[0];
-    assert.ok(code?.type === 'code');
+    assert.ok(code?.type === "code");
     assert.equal(code.value, literal);
   });
 }
 
-test('noparse is lowered to literal text only at the GFM boundary', () => {
-  const result = steamCommunityBbcodeToGfm('[noparse][b]*literal*[/b][/noparse]');
+test("noparse is lowered to literal text only at the GFM boundary", () => {
+  const result = steamCommunityBbcodeToGfm(
+    "[noparse][b]*literal*[/b][/noparse]",
+  );
   const paragraph = targetTree(result.value).children[0];
-  assert.ok(paragraph?.type === 'paragraph');
+  assert.ok(paragraph?.type === "paragraph");
   assert.equal(paragraph.children.length, 1);
   const text = paragraph.children[0];
-  assert.ok(text?.type === 'text');
-  assert.equal(text.value, '[b]*literal*[/b]');
+  assert.ok(text?.type === "text");
+  assert.equal(text.value, "[b]*literal*[/b]");
 });
 
-test('quote attribution without comment metadata is equivalent visible text', () => {
-  const result = steamCommunityBbcodeToGfm('[quote=Author]Quoted text[/quote]');
+test("quote attribution without comment metadata is equivalent visible text", () => {
+  const result = steamCommunityBbcodeToGfm("[quote=Author]Quoted text[/quote]");
   const quote = targetTree(result.value).children[0];
-  assert.ok(quote?.type === 'blockquote');
-  assert.deepEqual(quote.children.map(node => node.type === 'paragraph' ? node.children.map(child => child.type === 'text' ? child.value : child.type).join('') : node.type), ['Originally posted by Author:', 'Quoted text']);
-  assert.ok(result.diagnostics.some(d => d.code === 'STEAM_QUOTE_METADATA_LOWERED' && d.fidelity === 'equivalent'));
-  assert.equal(result.coverage.constructs[0]?.fidelity, 'equivalent');
+  assert.ok(quote?.type === "blockquote");
+  assert.deepEqual(
+    quote.children.map((node) =>
+      node.type === "paragraph"
+        ? node.children
+            .map((child) => (child.type === "text" ? child.value : child.type))
+            .join("")
+        : node.type,
+    ),
+    ["Originally posted by Author:", "Quoted text"],
+  );
+  assert.ok(
+    result.diagnostics.some(
+      (d) =>
+        d.code === "STEAM_QUOTE_METADATA_LOWERED" &&
+        d.fidelity === "equivalent",
+    ),
+  );
+  assert.equal(result.coverage.constructs[0]?.fidelity, "equivalent");
 });

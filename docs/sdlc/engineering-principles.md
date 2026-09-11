@@ -51,13 +51,13 @@ Names such as `data`, `manager`, `helper`, `new`, `final` and `v2` are not autom
 
 Examples (illustrative, not a universal vocabulary):
 
-| Mismatch | Required treatment |
-|---|---|
-| `customer_id` now identifies an account | Rename to the accepted account-identifier term and update consumers. |
-| `validate_configuration` now persists a repair | Separate validation from repair/persistence, or give the operation an accurate name. |
-| `timeout` is ambiguous between seconds and milliseconds | Qualify or use a type/context that makes the unit unambiguous. |
-| `report.json` contains a schema, not a report | Use the repository's precise schema filename and update references. |
-| `parse_invoice.py` now performs import and persistence | Reassess both entry point and file name; do not preserve false parsing-only semantics. |
+| Mismatch                                                | Required treatment                                                                     |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `customer_id` now identifies an account                 | Rename to the accepted account-identifier term and update consumers.                   |
+| `validate_configuration` now persists a repair          | Separate validation from repair/persistence, or give the operation an accurate name.   |
+| `timeout` is ambiguous between seconds and milliseconds | Qualify or use a type/context that makes the unit unambiguous.                         |
+| `report.json` contains a schema, not a report           | Use the repository's precise schema filename and update references.                    |
+| `parse_invoice.py` now performs import and persistence  | Reassess both entry point and file name; do not preserve false parsing-only semantics. |
 
 ### Externally fixed identifiers and compatibility
 
@@ -90,6 +90,7 @@ Renaming a shim `adapter`, `helper` or `normalizer` does not exempt it.
 Normal error handling and validated resilience behaviour are not shims merely because they contain a branch.
 
 The exception record belongs in the existing decision/Issue/PR and MUST contain:
+
 - exact scope and affected consumers/contracts;
 - why a coordinated direct change or native capability is insufficient;
 - accountable approver and actual approval reference;
@@ -107,12 +108,12 @@ Choose the least process that establishes the required confidence given impact, 
 Small diff is not synonymous with low risk.
 Semantic correctness, preservation of user work, honest evidence, no unauthorised shims and accepted security boundaries apply at every risk level.
 
-| Route | Minimum task artefacts and evidence |
-|---|---|
-| R0 | Existing task/PR intent and criterion, naming/reuse/outcome check, focused evidence, diff and cleanup inspection. No mandatory Issue, new plan document, research subagent or scan. |
-| R1 | Compact accepted task or Issue brief, ordinary PR and affected checks. A frozen brief may be included in the same PR. One ordinary review covers principles; no automatic specialist fan-out. |
-| R2 | Previously accepted protected baseline, plan only for unresolved material design/coordination, full relevant verification, independent verifier and triggered specialists. |
-| R3 | R2 plus accountable assurance design, controlled evidence/retention and organisational independence as required. |
+| Route | Minimum task artefacts and evidence                                                                                                                                                           |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R0    | Existing task/PR intent and criterion, naming/reuse/outcome check, focused evidence, diff and cleanup inspection. No mandatory Issue, new plan document, research subagent or scan.           |
+| R1    | Compact accepted task or Issue brief, ordinary PR and affected checks. A frozen brief may be included in the same PR. One ordinary review covers principles; no automatic specialist fan-out. |
+| R2    | Previously accepted protected baseline, plan only for unresolved material design/coordination, full relevant verification, independent verifier and triggered specialists.                    |
+| R3    | R2 plus accountable assurance design, controlled evidence/retention and organisational independence as required.                                                                              |
 
 R1 implementation starts from accepted intent (for example the user's instruction or an accepted Issue revision), not from an invented requirement.
 Review of the combined PR later binds the exact requirement representation and implementation.
@@ -302,19 +303,19 @@ No auto-deletion hook is introduced.
 
 ## Enforcement and exceptions
 
-| Rule | Main assessment | Deterministic support | Waiver |
-|---|---|---|---|
-| NAM-01 | Meaning/behaviour/name review of the changed objects | Language-aware references, paths, lint and rename checks | None |
-| NSH-01 | Bridge classification and approval | Exception-reference presence can be checked; not its truth | Specific prior owner override |
-| PRP-01 | Risk/uncertainty and minimum route | Profile routing and baseline rules | Stronger controls may be explicitly selected |
-| REU-01 | Deep reuse research and explicit residual-gap justification | Required research-reference presence, not research quality | No silent research omission for new functionality |
-| VER-01 | Authoritative latest stable/LTS selection and current pins | Native registry/manager/update tooling | Explicit evidenced owner exception, not convenience |
-| LIC-01 | Exact terms, intended use and actual clearance | Existing compliance tooling and retained notices | No agent waiver of third-party restrictions |
-| VAL-01 | Actual consumer-contract evidence | Native parsers and schema validators | Justified missing/unsafe interface decision |
-| OUT-01 | Purpose anchor, cross-system trade-offs and reassessment | Link presence only; not value or optimality | No silent outcome change |
-| SEC-01 | Native scan evidence and accountable disposition | Native schemas, scanners, access/CI controls | Risk-owned alternative when required capability unavailable |
-| CMD-01 | Native DCG decisions, actual host interception, and separate authority | Native packs/protocol, sandbox and provider permissions | Exact operator-owned exception; no self-bypass |
-| CLEAN-01 | Ownership, remaining consumers and retention | Tool-specific scoped operations | Retain with explicit reason and trigger |
+| Rule     | Main assessment                                                        | Deterministic support                                      | Waiver                                                      |
+| -------- | ---------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| NAM-01   | Meaning/behaviour/name review of the changed objects                   | Language-aware references, paths, lint and rename checks   | None                                                        |
+| NSH-01   | Bridge classification and approval                                     | Exception-reference presence can be checked; not its truth | Specific prior owner override                               |
+| PRP-01   | Risk/uncertainty and minimum route                                     | Profile routing and baseline rules                         | Stronger controls may be explicitly selected                |
+| REU-01   | Deep reuse research and explicit residual-gap justification            | Required research-reference presence, not research quality | No silent research omission for new functionality           |
+| VER-01   | Authoritative latest stable/LTS selection and current pins             | Native registry/manager/update tooling                     | Explicit evidenced owner exception, not convenience         |
+| LIC-01   | Exact terms, intended use and actual clearance                         | Existing compliance tooling and retained notices           | No agent waiver of third-party restrictions                 |
+| VAL-01   | Actual consumer-contract evidence                                      | Native parsers and schema validators                       | Justified missing/unsafe interface decision                 |
+| OUT-01   | Purpose anchor, cross-system trade-offs and reassessment               | Link presence only; not value or optimality                | No silent outcome change                                    |
+| SEC-01   | Native scan evidence and accountable disposition                       | Native schemas, scanners, access/CI controls               | Risk-owned alternative when required capability unavailable |
+| CMD-01   | Native DCG decisions, actual host interception, and separate authority | Native packs/protocol, sandbox and provider permissions    | Exact operator-owned exception; no self-bypass              |
+| CLEAN-01 | Ownership, remaining consumers and retention                           | Tool-specific scoped operations                            | Retain with explicit reason and trigger                     |
 
 An agent declaration, checked box, schema pass or renamed file does not prove adherence.
 CI enforces only what it actually measures; independent review supplies judgement.

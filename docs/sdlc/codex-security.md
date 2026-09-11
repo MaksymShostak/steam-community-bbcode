@@ -23,15 +23,15 @@ Do not fabricate a pin flag or assume repository `main` equals the installed bui
 
 ## Trigger and ownership matrix
 
-| Situation | Default action |
-|---|---|
-| R0, non-security change | Ordinary principles/correctness review; no mandatory scan. |
-| Security-relevant change at any size | `$codex-security:security-diff-scan` for the frozen change and directly relevant support code. |
-| New repository/component assessment | `$codex-security:security-scan` for an authorised scope. |
-| Higher assurance with explicit budget | Consider the installed plugin's deep scan; do not multiply full scans per reviewer/finding. |
-| Accepted security finding | One `$codex-security:fix-finding` task. TDD can implement a delegated regression/repair slice. |
-| Existing proposed fix | Separate `$codex-security:verify-fix`; no edits during verification. |
-| Cross-system requirements or unclear coverage | `security_requirements_reviewer`, not another generic vulnerability scan. |
+| Situation                                     | Default action                                                                                 |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| R0, non-security change                       | Ordinary principles/correctness review; no mandatory scan.                                     |
+| Security-relevant change at any size          | `$codex-security:security-diff-scan` for the frozen change and directly relevant support code. |
+| New repository/component assessment           | `$codex-security:security-scan` for an authorised scope.                                       |
+| Higher assurance with explicit budget         | Consider the installed plugin's deep scan; do not multiply full scans per reviewer/finding.    |
+| Accepted security finding                     | One `$codex-security:fix-finding` task. TDD can implement a delegated regression/repair slice. |
+| Existing proposed fix                         | Separate `$codex-security:verify-fix`; no edits during verification.                           |
+| Cross-system requirements or unclear coverage | `security_requirements_reviewer`, not another generic vulnerability scan.                      |
 
 Security-relevant means auth/authorisation, tenant isolation, trust boundaries, parsers/input validation, secrets, privileged filesystem/network/execution, sensitive data, important dependency or CI/agent-permission changes.
 A harmless identifier rename need not automatically require a full security campaign; examine reach and contract effects.
