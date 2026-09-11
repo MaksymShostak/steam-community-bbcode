@@ -171,6 +171,7 @@ try {
     "tooling",
     ".github",
     ".sdlc",
+    "spec",
     "docs/plans",
     "docs/migration",
   ]) {
@@ -180,6 +181,11 @@ try {
       `Unexpected installed development path: ${excluded}`,
     );
   }
+  assert.deepEqual(
+    await readdir(join(installed, "docs")),
+    ["third-party-notices.md"],
+    "The installed package retains notices, not repository documentation.",
+  );
   await checkDocumentationLinks(pathToFileURL(installed + sep));
   const mapNames = (
     await readdir(join(installed, "types"), { recursive: true })

@@ -16,7 +16,7 @@ Dependencies installed through npm retain their own licence and notice files.
 
 ## Generated unist descriptions
 
-The generated [SourceSpan reference](reference/index-1.md#sourcespan) includes descriptions from `@types/unist` 3.0.3.
+The generated [SourceSpan reference](https://github.com/MaksymShostak/steam-community-bbcode/blob/6d0d731399c5afb6418c11682b2ad63bdb02d600/docs/reference/index-1.md#sourcespan) includes descriptions from `@types/unist` 3.0.3.
 Its published package supplies the following notice:
 
 ```text

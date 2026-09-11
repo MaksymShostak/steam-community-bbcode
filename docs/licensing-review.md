@@ -11,7 +11,8 @@ Its 66 production dependency entries comprise 60 MIT and six Apache-2.0 entries,
 This conclusion depends on preserving those dependencies' separate grants, copyright notices and applicable notices.
 AGPL-3.0-only describes this package's own work; it does not replace the licences of its dependencies or copied fixture material.
 
-The native npm archive contains authored source, declarations, specifications and documentation, including the full AGPL and the [Microsoft notice for generated unist descriptions](third-party-notices.md).
+The lean npm archive contains authored runtime source, declarations and maps, the CLI's conformance data, a concise README, security guidance, the full AGPL and the [Microsoft notice for generated unist descriptions](third-party-notices.md).
+Detailed documentation, source specifications and generation tooling remain available in the versioned source repository, outside the npm payload.
 Dependencies are installed separately through npm; the archive does not bundle their implementations.
 Tests, comparators, development tools, `node_modules`, local evidence and the historical mod-description fixture are outside its allowlist.
 The owlapi release-script reuse retains attribution within the same AGPL-3.0-only boundary described in [software selection](software-selection.md#release-tooling-reuse-9-september-2026).

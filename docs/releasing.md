@@ -24,6 +24,12 @@ The historical ONI trusted-base PR linkage failure remains recorded; destination
 
 ## Qualify a candidate
 
+The lean npm allowlist ships runtime source, declarations and maps, `coverage.json`, the README, security guidance, licence and third-party notices.
+Source specifications, generated API references, design decisions and maintainer guides stay in Git.
+The shipped README links to a fixed documentation commit; when public behavior changes, update those links to a published commit documenting that behavior before qualifying the archive.
+Do not point release-specific instructions at a moving branch or remove notices with the documentation.
+The installed-consumer checks reject extra documentation and specifications, validate local links and execute the public API, CLI and declarations from the actual tarball.
+
 From this package's source checkout with the locked development tools installed, run:
 
 ```sh
@@ -80,6 +86,25 @@ No bootstrap token or credential is stored by this implementation.
 
 The owner selected a local, owner-authenticated 2FA bootstrap for the first available `1.0.0-rc.N` version under `next`, followed by OIDC for subsequent releases.
 Prepare and qualify the exact public candidate before requesting publication approval.
+Use the owner-approved bootstrap entry point from a clean checkout of the candidate's source commit:
+
+```sh
+npm run release:preflight -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-preflight.json
+npm run release:publish-bootstrap -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-publication.json
+```
+
+Each command requires a new report path and re-runs the complete preflight.
+It reuses `owlapi`'s exact npm dry-run comparisons and bootstrap state classification from commit `2ac41c94e6630ca47ce110a484ec9af3b0b1f335`.
+The converter-specific additions compare the candidate with the successful hosted run's downloaded artifact, run native `publint --strict` on that exact tarball, and install it into a fresh consumer with a fresh npm cache.
+The existing ONI `pipeline sync-readme --check` command must confirm that generated Workshop BBCode produces the current README without diagnostics or byte changes.
+The ONI checkout must also be clean so its recorded commit identifies the tested implementation; local probes against uncommitted work are not release acceptance.
+No replacement BBCode parser, package archive parser or ONI workflow is implemented here.
+The `publint@0.3.24` dependency is MIT-licensed development tooling and is excluded from runtime installations.
+This bounded adaptation uses preservation tests for the reused contracts and focused tests for the ONI result boundary; mutation remains part of hosted final candidate qualification.
+Authenticate the native GitHub CLI for artifact retrieval and use the owner's native npm login for publication.
+Environment npm tokens are rejected; no credential is retained in the report.
+An attempted publication is recorded as requiring registry verification even when native npm exits successfully.
+
 Publish its retained tarball with native npm, `--ignore-scripts`, the explicit public registry and `--tag next`; do not repack it during publication.
 This local bootstrap has no GitHub workflow provenance and must not be reported as an OIDC release.
 Verify its registry archive hashes, exact installed coordinate, API/CLI/declarations, registry signatures and production audit, retaining a separately labelled bootstrap report.
