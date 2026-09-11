@@ -7,6 +7,12 @@
  * @returns {string}
  */
 export function encodeSteamLiteral(value) {
-  return value.split('[').map((part, index) =>
-    (index === 0 ? '' : '[noparse][[/noparse]') + (part ? `[noparse]${part}[/noparse]` : '')).join('');
+  return value
+    .split("[")
+    .map(
+      (part, index) =>
+        (index === 0 ? "" : "[noparse][[/noparse]") +
+        (part ? `[noparse]${part}[/noparse]` : ""),
+    )
+    .join("");
 }

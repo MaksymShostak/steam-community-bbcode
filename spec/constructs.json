@@ -33,9 +33,7 @@
         "fidelity": "exact",
         "strategy": "mdast-heading"
       },
-      "examples": [
-        "[h1]Title[/h1]"
-      ]
+      "examples": ["[h1]Title[/h1]"]
     },
     {
       "id": "steam.bbcode.h2",
@@ -68,9 +66,7 @@
         "fidelity": "exact",
         "strategy": "mdast-heading"
       },
-      "examples": [
-        "[h2]Title[/h2]"
-      ]
+      "examples": ["[h2]Title[/h2]"]
     },
     {
       "id": "steam.bbcode.h3",
@@ -103,9 +99,7 @@
         "fidelity": "exact",
         "strategy": "mdast-heading"
       },
-      "examples": [
-        "[h3]Title[/h3]"
-      ]
+      "examples": ["[h3]Title[/h3]"]
     },
     {
       "id": "steam.bbcode.b",
@@ -138,9 +132,7 @@
         "fidelity": "exact",
         "strategy": "mdast-strong"
       },
-      "examples": [
-        "[b]Bold[/b]"
-      ]
+      "examples": ["[b]Bold[/b]"]
     },
     {
       "id": "steam.bbcode.u",
@@ -173,9 +165,7 @@
         "fidelity": "lossy",
         "strategy": "diagnosed-underline-fallback"
       },
-      "examples": [
-        "[u]Marked[/u]"
-      ],
+      "examples": ["[u]Marked[/u]"],
       "notes": "HTML underline requires independent target rendering qualification."
     },
     {
@@ -209,9 +199,7 @@
         "fidelity": "exact",
         "strategy": "mdast-emphasis"
       },
-      "examples": [
-        "[i]Emphasis[/i]"
-      ]
+      "examples": ["[i]Emphasis[/i]"]
     },
     {
       "id": "steam.bbcode.strike",
@@ -244,9 +232,7 @@
         "fidelity": "exact",
         "strategy": "mdast-delete"
       },
-      "examples": [
-        "[strike]Deleted[/strike]"
-      ]
+      "examples": ["[strike]Deleted[/strike]"]
     },
     {
       "id": "steam.bbcode.spoiler",
@@ -279,9 +265,7 @@
         "fidelity": "approximate",
         "strategy": "github-details-or-diagnosed-fallback"
       },
-      "examples": [
-        "[spoiler]Hidden[/spoiler]"
-      ]
+      "examples": ["[spoiler]Hidden[/spoiler]"]
     },
     {
       "id": "steam.bbcode.noparse",
@@ -314,9 +298,7 @@
         "fidelity": "exact",
         "strategy": "mdast-literal-text"
       },
-      "examples": [
-        "[noparse][b]*literal*[/b][/noparse]"
-      ]
+      "examples": ["[noparse][b]*literal*[/b][/noparse]"]
     },
     {
       "id": "steam.bbcode.hr",
@@ -349,9 +331,7 @@
         "fidelity": "exact",
         "strategy": "mdast-thematic-break"
       },
-      "examples": [
-        "[hr][/hr]"
-      ]
+      "examples": ["[hr][/hr]"]
     },
     {
       "id": "steam.bbcode.url",
@@ -420,9 +400,7 @@
         "fidelity": "exact",
         "strategy": "mdast-unordered-list"
       },
-      "examples": [
-        "[list][*]One[*]Two[/list]"
-      ]
+      "examples": ["[list][*]One[*]Two[/list]"]
     },
     {
       "id": "steam.bbcode.olist",
@@ -455,9 +433,7 @@
         "fidelity": "exact",
         "strategy": "mdast-ordered-list"
       },
-      "examples": [
-        "[olist][*]One[*]Two[/olist]"
-      ]
+      "examples": ["[olist][*]One[*]Two[/olist]"]
     },
     {
       "id": "steam.bbcode.list-item",
@@ -490,9 +466,7 @@
         "fidelity": "exact",
         "strategy": "mdast-list-item"
       },
-      "examples": [
-        "[*]One"
-      ]
+      "examples": ["[*]One"]
     },
     {
       "id": "steam.bbcode.quote",
@@ -525,10 +499,7 @@
         "fidelity": "equivalent",
         "strategy": "mdast-blockquote-with-attribution"
       },
-      "examples": [
-        "[quote]Text[/quote]",
-        "[quote=Author;123]Text[/quote]"
-      ]
+      "examples": ["[quote]Text[/quote]", "[quote=Author;123]Text[/quote]"]
     },
     {
       "id": "steam.bbcode.code",
@@ -561,9 +532,7 @@
         "fidelity": "exact",
         "strategy": "mdast-protected-code"
       },
-      "examples": [
-        "[code]`literal` [b]text[/b][/code]"
-      ]
+      "examples": ["[code]`literal` [b]text[/b][/code]"]
     },
     {
       "id": "steam.bbcode.table",
@@ -622,9 +591,7 @@
         "fidelity": "equivalent",
         "strategy": "gfm-table-row"
       },
-      "examples": [
-        "[tr][td]A[/td][/tr]"
-      ]
+      "examples": ["[tr][td]A[/td][/tr]"]
     },
     {
       "id": "steam.bbcode.th",
@@ -652,9 +619,7 @@
         "fidelity": "equivalent",
         "strategy": "gfm-header-cell"
       },
-      "examples": [
-        "[th]A[/th]"
-      ]
+      "examples": ["[th]A[/th]"]
     },
     {
       "id": "steam.bbcode.td",
@@ -682,9 +647,7 @@
         "fidelity": "equivalent",
         "strategy": "gfm-table-cell"
       },
-      "examples": [
-        "[td]A[/td]"
-      ]
+      "examples": ["[td]A[/td]"]
     },
     {
       "id": "steam.bbcode.p",
@@ -702,9 +665,7 @@
         "fidelity": "exact",
         "strategy": "mdast-paragraph"
       },
-      "examples": [
-        "[p]Paragraph[/p]"
-      ]
+      "examples": ["[p]Paragraph[/p]"]
     },
     {
       "id": "steam.bbcode.pullquote",
@@ -722,9 +683,7 @@
         "fidelity": "approximate",
         "strategy": "mdast-blockquote-with-style-diagnostic"
       },
-      "examples": [
-        "[pullquote]Excerpt[/pullquote]"
-      ]
+      "examples": ["[pullquote]Excerpt[/pullquote]"]
     },
     {
       "id": "steam.bbcode.img",
@@ -744,9 +703,7 @@
         "fidelity": "equivalent",
         "strategy": "mdast-image"
       },
-      "examples": [
-        "[img]https://example.org/image.png[/img]"
-      ]
+      "examples": ["[img]https://example.org/image.png[/img]"]
     },
     {
       "id": "steam.bbcode.previewyoutube",
@@ -767,9 +724,7 @@
         "fidelity": "approximate",
         "strategy": "youtube-link-with-widget-diagnostic"
       },
-      "examples": [
-        "[previewyoutube=videoid;leftthumb][/previewyoutube]"
-      ]
+      "examples": ["[previewyoutube=videoid;leftthumb][/previewyoutube]"]
     },
     {
       "id": "steam.bbcode.video",
@@ -882,9 +837,7 @@
         "fidelity": "lossy",
         "strategy": "text-with-obsolete-color-diagnostic"
       },
-      "examples": [
-        "[color]Text[/color]"
-      ],
+      "examples": ["[color]Text[/color]"],
       "notes": "Historical syntax; no current profile support inferred."
     },
     {
@@ -917,9 +870,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://www.youtube.com/watch?v=videoid"
-      ]
+      "examples": ["https://www.youtube.com/watch?v=videoid"]
     },
     {
       "id": "steam.renderer.store-widget",
@@ -951,9 +902,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://store.steampowered.com/app/123/"
-      ]
+      "examples": ["https://store.steampowered.com/app/123/"]
     },
     {
       "id": "steam.renderer.ugc-widget",
@@ -985,9 +934,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://steamcommunity.com/sharedfiles/filedetails/?id=123"
-      ]
+      "examples": ["https://steamcommunity.com/sharedfiles/filedetails/?id=123"]
     },
     {
       "id": "steam.renderer.inventory-widget",
@@ -1010,9 +957,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://steamcommunity.com/id/example/inventory/#440_2_123"
-      ]
+      "examples": ["https://steamcommunity.com/id/example/inventory/#440_2_123"]
     },
     {
       "id": "steam.renderer.vimeo-widget",
@@ -1030,9 +975,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://vimeo.com/123"
-      ],
+      "examples": ["https://vimeo.com/123"],
       "notes": "Surface applicability remains unclassified."
     },
     {
@@ -1051,9 +994,7 @@
         "fidelity": "approximate",
         "strategy": "link-with-widget-diagnostic"
       },
-      "examples": [
-        "https://sketchfab.com/3d-models/example"
-      ],
+      "examples": ["https://sketchfab.com/3d-models/example"],
       "notes": "Surface applicability remains unclassified."
     },
     {
@@ -1076,9 +1017,7 @@
         "fidelity": "approximate",
         "strategy": "literal-token-with-renderer-diagnostic"
       },
-      "examples": [
-        ":steamthumbsup:"
-      ]
+      "examples": [":steamthumbsup:"]
     },
     {
       "id": "steam.renderer.bracket-expansion",
@@ -1149,9 +1088,7 @@
         "fidelity": "approximate",
         "strategy": "resolve-explicit-base-or-diagnose"
       },
-      "examples": [
-        "{STEAM_CLAN_IMAGE}/image.png"
-      ],
+      "examples": ["{STEAM_CLAN_IMAGE}/image.png"],
       "notes": "Expansion requires explicit local context; never fetch it."
     }
   ]

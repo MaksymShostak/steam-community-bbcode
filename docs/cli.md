@@ -25,11 +25,11 @@ Stdout contains only the requested result.
 Stderr emits one JSON object per diagnostic, including argument and I/O errors.
 `--profile` is forward-only.
 
-| Exit | Meaning |
-| --- | --- |
-| 0 | Conversion accepted under the selected policy |
-| 1 | Conversion error or fidelity below the selected CLI threshold |
-| 2 | Invalid arguments, I/O failure or malformed UTF-8 |
+| Exit | Meaning                                                       |
+| ---- | ------------------------------------------------------------- |
+| 0    | Conversion accepted under the selected policy                 |
+| 1    | Conversion error or fidelity below the selected CLI threshold |
+| 2    | Invalid arguments, I/O failure or malformed UTF-8             |
 
 `--fail-on=none` is the default; conversion errors still fail.
 Other values are `approximate`, `lossy` and `unsupported`, each rejecting that fidelity and worse.

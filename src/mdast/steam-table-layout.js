@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import {parseSteamNamedAttributes} from '../steam/parse-steam-bbcode-syntax.js';
+import { parseSteamNamedAttributes } from "../steam/parse-steam-bbcode-syntax.js";
 
 /** @typedef {{noborder?: boolean, equalcells?: boolean}} SteamTableLayout */
 /**
@@ -15,10 +15,16 @@ export function steamTableLayout(rawAttributes) {
   /** @type {Set<string>} */
   const names = new Set();
   for (const attribute of attributes) {
-    if (names.has(attribute.name) || (attribute.value !== '0' && attribute.value !== '1')) return undefined;
+    if (
+      names.has(attribute.name) ||
+      (attribute.value !== "0" && attribute.value !== "1")
+    )
+      return undefined;
     names.add(attribute.name);
-    if (attribute.name === 'noborder') layout.noborder = attribute.value === '1';
-    else if (attribute.name === 'equalcells') layout.equalcells = attribute.value === '1';
+    if (attribute.name === "noborder")
+      layout.noborder = attribute.value === "1";
+    else if (attribute.name === "equalcells")
+      layout.equalcells = attribute.value === "1";
     else return undefined;
   }
   return layout;

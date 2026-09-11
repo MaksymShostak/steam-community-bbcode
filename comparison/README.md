@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+
 # Comparative conversion evidence
 
 This benchmark executes unmodified published tools through their documented APIs.
@@ -16,12 +17,12 @@ below. The result date is an execution timestamp, not a release designation.
 
 ## Scope and interpretation
 
-| Provider | Version | Applicable direction and evidence |
-| --- | --- | --- |
-| Candidate | Private development package 1.0.0 | Forward registry policies and the explicitly partial reverse subset |
-| [Steamify](https://github.com/pivoshenko/steamify) | 2.0.1 | Both directions; README supported-feature lists |
-| [Steam Editor Tools](https://github.com/cainmagi/steam-editor-tools) | 0.5.1 | `DocumentParser.parse_markdown` followed by `BBCodeRenderer.render` |
-| [BUTR Markdown converter](https://github.com/BUTR/Converter.MarkdownToBBCode) | 1.0.0.29 | Native Markdown-to-Steam CLI, default options |
+| Provider                                                                      | Version                           | Applicable direction and evidence                                   |
+| ----------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------- |
+| Candidate                                                                     | Private development package 1.0.0 | Forward registry policies and the explicitly partial reverse subset |
+| [Steamify](https://github.com/pivoshenko/steamify)                            | 2.0.1                             | Both directions; README supported-feature lists                     |
+| [Steam Editor Tools](https://github.com/cainmagi/steam-editor-tools)          | 0.5.1                             | `DocumentParser.parse_markdown` followed by `BBCodeRenderer.render` |
+| [BUTR Markdown converter](https://github.com/BUTR/Converter.MarkdownToBBCode) | 1.0.0.29                          | Native Markdown-to-Steam CLI, default options                       |
 
 All three active comparator packages carry MIT licences. Installed licence texts
 and package metadata were inspected; their identities are retained. The isolated

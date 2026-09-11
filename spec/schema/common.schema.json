@@ -31,10 +31,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "sourceId",
-          "status"
-        ],
+        "required": ["sourceId", "status"],
         "properties": {
           "sourceId": {
             "$ref": "#/definitions/identifier"
@@ -48,19 +45,10 @@
     "mapping": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "fidelity",
-        "strategy"
-      ],
+      "required": ["fidelity", "strategy"],
       "properties": {
         "fidelity": {
-          "enum": [
-            "exact",
-            "equivalent",
-            "approximate",
-            "lossy",
-            "unsupported"
-          ]
+          "enum": ["exact", "equivalent", "approximate", "lossy", "unsupported"]
         },
         "strategy": {
           "$ref": "#/definitions/identifier"

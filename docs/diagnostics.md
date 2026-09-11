@@ -4,12 +4,12 @@ Diagnostics explain parsing problems, rejected input, literal preservation and t
 A successful function call does not imply lossless conversion.
 Inspect diagnostics and occurrence outcomes before adopting output.
 
-| Fidelity | Meaning |
-| --- | --- |
-| `exact` | The selected construct has an exact target mapping in the qualified contract |
-| `equivalent` | Target syntax differs while the qualified semantics are retained |
-| `approximate` | A documented target approximation retains the useful content |
-| `lossy` | Content is retained but a documented source meaning or presentation is lost |
+| Fidelity      | Meaning                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| `exact`       | The selected construct has an exact target mapping in the qualified contract                            |
+| `equivalent`  | Target syntax differs while the qualified semantics are retained                                        |
+| `approximate` | A documented target approximation retains the useful content                                            |
+| `lossy`       | Content is retained but a documented source meaning or presentation is lost                             |
 | `unsupported` | The source cannot be faithfully mapped under the current policy and is preserved or rejected explicitly |
 
 For example, underline becomes text with `STEAM_UNDERLINE_LOWERED_TO_TEXT`; a block spoiler becomes a details block with `STEAM_SPOILER_LOWERED_TO_DETAILS`.
@@ -21,11 +21,11 @@ Each conversion diagnostic carries `code`, `severity`, `fidelity` and `message`.
 `code` belongs to the generated declaration's closed `DiagnosticCode` union; messages are human explanations, not identifiers to parse.
 A `sourceSpan` is present when a meaningful source location is available.
 
-| Scope | Additional identity | Interpretation |
-| --- | --- | --- |
-| `construct` | `constructId` | A Steam construct occurrence, including explicit unknown syntax |
-| `input` | None | A whole-input limit or target-renderer concern |
-| `gfm-node` | `nodeType` | A reverse-conversion source node outside the qualified subset |
+| Scope       | Additional identity | Interpretation                                                  |
+| ----------- | ------------------- | --------------------------------------------------------------- |
+| `construct` | `constructId`       | A Steam construct occurrence, including explicit unknown syntax |
+| `input`     | None                | A whole-input limit or target-renderer concern                  |
+| `gfm-node`  | `nodeType`          | A reverse-conversion source node outside the qualified subset   |
 
 The low-level parser has its own closed parser-code union and structural diagnostics; conversion turns those into the richer outcome contract.
 Codes for input/attribute/node/depth limits are stable distinct identifiers, not vendor exception messages.

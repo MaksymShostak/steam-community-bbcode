@@ -2,12 +2,12 @@
 
 Version 1.0.0 · Pre-release.
 
-| Route | Documentation/approval | Required local profile | Research obligation |
-|---|---|---|---|
-| R0 | Existing accepted task, concise criterion and review | focused | Mandatory deep assessment if adding capability; compact native reuse can be sufficient. No unrelated survey for a typo. |
-| R1 | Accepted brief and normal PR; snapshot may accompany code | affected | Completed/current assessment before a new capability's design or implementation. |
-| R2 | Prior protected accepted baseline, independent assurance | full relevant | Source-backed selection, actual rights, current versions and material integration/recovery work. |
-| R3 | R2 plus controlled assurance and required separation | full + accepted assurance | Same research duty, with the required independent/legal/security decisions. |
+| Route | Documentation/approval                                    | Required local profile    | Research obligation                                                                                                     |
+| ----- | --------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| R0    | Existing accepted task, concise criterion and review      | focused                   | Mandatory deep assessment if adding capability; compact native reuse can be sufficient. No unrelated survey for a typo. |
+| R1    | Accepted brief and normal PR; snapshot may accompany code | affected                  | Completed/current assessment before a new capability's design or implementation.                                        |
+| R2    | Prior protected accepted baseline, independent assurance  | full relevant             | Source-backed selection, actual rights, current versions and material integration/recovery work.                        |
+| R3    | R2 plus controlled assurance and required separation      | full + accepted assurance | Same research duty, with the required independent/legal/security decisions.                                             |
 
 No route permits false naming, fabricated searches, unauthorised shims, inaccurate licence clearance or convenience downgrades.
 Small scope reduces record length and agent fan-out, not the correctness and reuse obligations.

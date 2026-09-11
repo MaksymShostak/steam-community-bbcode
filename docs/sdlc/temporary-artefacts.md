@@ -22,12 +22,12 @@ A read-only reviewer reports cleanup findings; it does not delete anything.
 
 The creator MUST distinguish:
 
-| Class | Treatment |
-|---|---|
-| Durable asset | Maintain with the product: code, regression tests/fixtures, contracts, accepted baselines, ADRs, useful runbooks, maintained tooling and licensed/provenance material. |
-| Retained evidence | Store under the applicable access and retention policy: actual test results, accepted reproductions, review dispositions, security scan bundles and release/incident evidence. |
-| Temporary working material | Keep only for a bounded use; remove when the cleanup predicate below is satisfied. |
-| Uncertain or externally owned material | Preserve while resolving its owner, purpose, dependencies or retention obligations. |
+| Class                                  | Treatment                                                                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Durable asset                          | Maintain with the product: code, regression tests/fixtures, contracts, accepted baselines, ADRs, useful runbooks, maintained tooling and licensed/provenance material.         |
+| Retained evidence                      | Store under the applicable access and retention policy: actual test results, accepted reproductions, review dispositions, security scan bundles and release/incident evidence. |
+| Temporary working material             | Keep only for a bounded use; remove when the cleanup predicate below is satisfied.                                                                                             |
+| Uncertain or externally owned material | Preserve while resolving its owner, purpose, dependencies or retention obligations.                                                                                            |
 
 An artefact MAY move from temporary to durable/evidence status, but promotion MUST include an appropriate maintained location, ownership and verification/retention arrangements.
 Renaming `tmp.py` to `utility.py` is not sufficient promotion.

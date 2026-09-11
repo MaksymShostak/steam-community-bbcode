@@ -8,12 +8,12 @@ See [JavaScript and types](javascript-and-types.md).
 The [generated package-root reference](reference/index-1.md) documents signatures, options and result types from checked JSDoc.
 Its [module index](reference/index.md) also includes source-owned supporting types; those source modules are internal and are not additional package import entry points.
 
-| Function | Input | Result |
-| --- | --- | --- |
-| `parseSteamCommunityBbcode(source, options?)` | A BBCode string | Immutable source syntax, original source, profile and parser diagnostics |
-| `steamCommunityBbcodeToMdast(input, options?)` | A BBCode string or a parser-issued result | Steam-aware MDAST, diagnostics and observed construct coverage |
-| `steamCommunityBbcodeToGfm(source, options?)` | A BBCode string | Serialized GFM, diagnostics and observed construct coverage |
-| `gfmToSteamCommunityBbcode(source, options?)` | A Markdown string | Partial Steam output, diagnostics, unsupported source nodes and reverse node accounting |
+| Function                                       | Input                                     | Result                                                                                  |
+| ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| `parseSteamCommunityBbcode(source, options?)`  | A BBCode string                           | Immutable source syntax, original source, profile and parser diagnostics                |
+| `steamCommunityBbcodeToMdast(input, options?)` | A BBCode string or a parser-issued result | Steam-aware MDAST, diagnostics and observed construct coverage                          |
+| `steamCommunityBbcodeToGfm(source, options?)`  | A BBCode string                           | Serialized GFM, diagnostics and observed construct coverage                             |
+| `gfmToSteamCommunityBbcode(source, options?)`  | A Markdown string                         | Partial Steam output, diagnostics, unsupported source nodes and reverse node accounting |
 
 All functions run synchronously and perform no document-triggered I/O.
 Wrong JavaScript argument types, unknown options and invalid limits throw `TypeError` or `RangeError`.

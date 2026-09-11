@@ -24,10 +24,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "description"
-        ],
+        "required": ["id", "description"],
         "properties": {
           "id": {
             "$ref": "common.schema.json#/definitions/identifier"

@@ -30,25 +30,25 @@ These bounds do not claim a timeout or limit native parser intermediate memory.
 The library returns no partial output on quota failure.
 Seeded generated checks exercise arbitrary bounded Markdown and literal delimiter injection; they do not establish universal Steam renderer equivalence or replace independent review.
 
-| Component | Current selected/candidate version | Role and evidence |
-|---|---|---|
-| Node | 24.20.0 | Repository development LTS; package target remains Node 22/24/26. |
-| npm | 12.0.2 | Repository-selected native package manager, invoked with npm exec. |
-| TypeScript | 7.0.2 | Primary strict JavaScript checker and declaration emitter; installed type consumer passed. |
-| @types/node | 22.20.1 | Latest Node 22 declarations for the oldest supported runtime, as required by the plan. |
-| @types/mdast / @types/unist | 4.0.4 / 3.0.3 | Public declaration dependencies, installed without dev dependency hoisting. |
-| mdast-util-from-markdown | 2.0.3 | Maintained independent target parser, selected for semantic regression oracles. |
-| mdast-util-to-markdown | 2.1.2 | Maintained runtime serializer; owns Markdown escaping and code-fence selection. |
-| mdast-util-gfm / micromark-extension-gfm | 3.1.0 / 3.0.0 | Maintained GFM extensions; no custom Markdown grammar. |
-| @bbob/parser | 4.4.1 | Rejected for full-parser adoption; 17 syntax/span cases pass but strict declaration checking fails. |
-| Chevrotain | 13.2.0 | Selected runtime toolkit after Steam grammar, opaque-body, item-boundary, malformed-input, attribute, limit and strict-checker qualification. |
-| Peggy | 5.1.0 | Current MIT parser generator; credible alternative, but requires generated parser/build/source-map work. Not installed. |
-| Ajv | 8.20.0 | Native JSON Schema consumer for registry validation; development dependency. |
-| ajv-formats | 3.0.1 | Ajv's maintained MIT format implementation; full URI/date validation with its shipped licence inspected. |
-| fast-check | 4.9.0 | Maintained MIT property generation, seed replay and shrinking; shipped licence and manifest inspected, installed without lifecycle scripts. |
-| vfile-location | 5.0.3 | Considered for unist positions; rejected after a 1 MiB newline-heavy lookup took 5.39 seconds. Native lexer coordinates are already available. |
-| type-coverage | 2.30.1 | Fails against TypeScript 7.0.2's absent compiler API; isolated TypeScript 6.0.3 qualification authorized below. |
-| tsd | 0.33.0 | Alternative declaration harness; includes @tsd/typescript 5.9. It does not measure authored JavaScript type coverage. Not installed. |
+| Component                                | Current selected/candidate version | Role and evidence                                                                                                                              |
+| ---------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node                                     | 24.20.0                            | Repository development LTS; package target remains Node 22/24/26.                                                                              |
+| npm                                      | 12.0.2                             | Repository-selected native package manager, invoked with npm exec.                                                                             |
+| TypeScript                               | 7.0.2                              | Primary strict JavaScript checker and declaration emitter; installed type consumer passed.                                                     |
+| @types/node                              | 22.20.1                            | Latest Node 22 declarations for the oldest supported runtime, as required by the plan.                                                         |
+| @types/mdast / @types/unist              | 4.0.4 / 3.0.3                      | Public declaration dependencies, installed without dev dependency hoisting.                                                                    |
+| mdast-util-from-markdown                 | 2.0.3                              | Maintained independent target parser, selected for semantic regression oracles.                                                                |
+| mdast-util-to-markdown                   | 2.1.2                              | Maintained runtime serializer; owns Markdown escaping and code-fence selection.                                                                |
+| mdast-util-gfm / micromark-extension-gfm | 3.1.0 / 3.0.0                      | Maintained GFM extensions; no custom Markdown grammar.                                                                                         |
+| @bbob/parser                             | 4.4.1                              | Rejected for full-parser adoption; 17 syntax/span cases pass but strict declaration checking fails.                                            |
+| Chevrotain                               | 13.2.0                             | Selected runtime toolkit after Steam grammar, opaque-body, item-boundary, malformed-input, attribute, limit and strict-checker qualification.  |
+| Peggy                                    | 5.1.0                              | Current MIT parser generator; credible alternative, but requires generated parser/build/source-map work. Not installed.                        |
+| Ajv                                      | 8.20.0                             | Native JSON Schema consumer for registry validation; development dependency.                                                                   |
+| ajv-formats                              | 3.0.1                              | Ajv's maintained MIT format implementation; full URI/date validation with its shipped licence inspected.                                       |
+| fast-check                               | 4.9.0                              | Maintained MIT property generation, seed replay and shrinking; shipped licence and manifest inspected, installed without lifecycle scripts.    |
+| vfile-location                           | 5.0.3                              | Considered for unist positions; rejected after a 1 MiB newline-heavy lookup took 5.39 seconds. Native lexer coordinates are already available. |
+| type-coverage                            | 2.30.1                             | Fails against TypeScript 7.0.2's absent compiler API; isolated TypeScript 6.0.3 qualification authorized below.                                |
+| tsd                                      | 0.33.0                             | Alternative declaration harness; includes @tsd/typescript 5.9. It does not measure authored JavaScript type coverage. Not installed.           |
 
 Versions were queried through the authoritative npm registry before locking.
 The native package locks retain exact resolved identities/integrities.
@@ -128,6 +128,7 @@ On 2026-09-08 the user explicitly authorized unmodified TypeScript 6.0.3 solely 
 This is the evidenced owner exception required by VER-01.
 Reassess when a stable TypeScript API and a maintained coverage tool support the primary compiler directly, or before dependency refresh/ release.
 Execution results belong in the execution record; the exception itself does not turn a failed check into a pass.
+
 # Plain URL recognition qualification (9 September 2026)
 
 The registry resolved `linkify-it` **6.1.0** as the current stable release.

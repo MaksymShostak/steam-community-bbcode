@@ -4,11 +4,7 @@
   "$comment": "SPDX-License-Identifier: AGPL-3.0-only",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schemaVersion",
-    "registryVersion",
-    "constructs"
-  ],
+  "required": ["schemaVersion", "registryVersion", "constructs"],
   "properties": {
     "schemaVersion": {
       "const": 1
@@ -96,41 +92,44 @@
         },
         "allOf": [
           {
-            "if": {"required": ["observation"], "properties": {"observation": {"const": "contextOnly"}}},
+            "if": {
+              "required": ["observation"],
+              "properties": { "observation": { "const": "contextOnly" } }
+            },
             "then": {
               "required": ["contextReason"],
               "properties": {
                 "contextReason": true,
-                "syntaxKind": {"const": "rendererTransformation"},
-                "examples": {"type": "array", "maxItems": 0},
-                "gfmMapping": {"type": "object", "properties": {"fidelity": {"const": "unsupported"}}}
+                "syntaxKind": { "const": "rendererTransformation" },
+                "examples": { "type": "array", "maxItems": 0 },
+                "gfmMapping": {
+                  "type": "object",
+                  "properties": { "fidelity": { "const": "unsupported" } }
+                }
               }
             },
-            "else": {"properties": {"examples": {"type": "array", "minItems": 1}, "contextReason": false}}
+            "else": {
+              "properties": {
+                "examples": { "type": "array", "minItems": 1 },
+                "contextReason": false
+              }
+            }
           },
           {
             "if": {
               "properties": {
                 "syntaxKind": {
-                  "enum": [
-                    "pairedTag",
-                    "boundaryTag",
-                    "opaqueTag"
-                  ]
+                  "enum": ["pairedTag", "boundaryTag", "opaqueTag"]
                 }
               }
             },
             "then": {
-              "properties": {"tagName": true, "rendererKind": false},
-              "required": [
-                "tagName"
-              ]
+              "properties": { "tagName": true, "rendererKind": false },
+              "required": ["tagName"]
             },
             "else": {
-              "properties": {"rendererKind": true, "tagName": false},
-              "required": [
-                "rendererKind"
-              ]
+              "properties": { "rendererKind": true, "tagName": false },
+              "required": ["rendererKind"]
             }
           }
         ]

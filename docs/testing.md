@@ -1,5 +1,11 @@
 # Testing and qualification
 
+`npm run format` applies Prettier using the owlapi EditorConfig convention.
+`npm run format:check` rejects formatting drift without writing and runs before qualification and local package creation.
+Markdown preserves semantic line wrapping and literal code blocks; the existing `docs:format:check` remains independently required.
+Native locks, immutable plans/evidence, fixtures and generated projections stay under their owning tools, as listed in `.prettierignore`.
+Repository-authored Markdown does not support two-space hard breaks; trailing-whitespace removal remains enabled.
+
 `npm run docs:api:check` qualifies imported generic JSDoc through the isolated native TypeDoc model and Markdown renderer, then checks all ten generated reference files for freshness.
 `npm run docs:api` explicitly regenerates them.
 Primary TS 7 checking and the strict 100% metric cover its orchestration script as well as the runtime, tests and other maintenance scripts.
@@ -14,19 +20,19 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command | Contract |
-| --- | --- |
-| `npm test` | Focused runtime examples and seeded properties |
-| `npm run qualify:parser` | Native grammar foundation and resource contracts |
-| `npm run qualify:performance` | Bounded subprocess regression for opaque text and adjacent formatting |
-| `npm run qualify:github` | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios |
-| `npm run test:coverage` | Both suites under c8/V8, including unloaded runtime source |
-| `npm run conformance:check` | Generated forward/reverse policy report matches executed cases |
-| `npm run docs:check` | Construct examples and package-local documentation links |
-| `npm run docs:format:check` | Native semantic line formatting of authored package guides, without writing |
-| `npm run qualify:prose` | Sentence boundaries, literal content, idempotence, native check behavior and generated-file exclusions |
-| `npm run test:mutation` | Sequential Stryker library and real-process CLI qualification |
-| `npm run test:package` | Packed source, declarations, maps, executable and fresh consumers |
+| Command                       | Contract                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `npm test`                    | Focused runtime examples and seeded properties                                                         |
+| `npm run qualify:parser`      | Native grammar foundation and resource contracts                                                       |
+| `npm run qualify:performance` | Bounded subprocess regression for opaque text and adjacent formatting                                  |
+| `npm run qualify:github`      | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                              |
+| `npm run test:coverage`       | Both suites under c8/V8, including unloaded runtime source                                             |
+| `npm run conformance:check`   | Generated forward/reverse policy report matches executed cases                                         |
+| `npm run docs:check`          | Construct examples and package-local documentation links                                               |
+| `npm run docs:format:check`   | Native semantic line formatting of authored package guides, without writing                            |
+| `npm run qualify:prose`       | Sentence boundaries, literal content, idempotence, native check behavior and generated-file exclusions |
+| `npm run test:mutation`       | Sequential Stryker library and real-process CLI qualification                                          |
+| `npm run test:package`        | Packed source, declarations, maps, executable and fresh consumers                                      |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.

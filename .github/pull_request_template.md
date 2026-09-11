@@ -1,4 +1,5 @@
 <!-- These seven fields are the SDLC metadata contract. Use none where applicable. -->
+
 Change issue: none
 Accepted baseline: none
 Risk class: select R0/R1/R2/R3
@@ -21,7 +22,7 @@ Summarize the focused implementation.
 - [ ] Relevant focused automated tests pass.
 - [ ] Package, SDLC and setup checks pass; commands and gaps are stated.
 - [ ] Relevant installed-consumer, hosted matrix, mutation or renderer evidence is
-  recorded, with missing evidence distinguished from passing local checks.
+      recorded, with missing evidence distinguished from passing local checks.
 
 Manual scenarios and evidence:
 

@@ -1,7 +1,7 @@
 name: Steam Community BBCode renderer conformance
 on:
   schedule:
-    - cron: '17 6 * * 1'
+    - cron: "17 6 * * 1"
   workflow_dispatch:
 permissions:
   contents: read

@@ -29,16 +29,16 @@ It adds statements, handoff fields and review checks, not a new orchestrator, pe
 Issue #123 adds a tenant-disclosure rule.
 The implementation has been committed; independent review and rollout validation remain in progress.
 
-| Artefact | Disposition | Reason/checkpoint |
-|---|---|---|
-| `.sdlc/tmp/issue-123/run-a/probe_disclosure.py` | Remove when redundant | The maintained regression now exercises the real protected-record fixture. |
-| Maintained tenant-disclosure tests and fixtures | Keep | They are durable protection, not a temporary reproduction. |
-| Local copied security report | Remove only after retained bundle is checked | Reviewers need the original scan evidence; local duplication does not add value. |
-| Disposable exploit checkout | Keep briefly, then remove | A named reviewer is still validating the original attack path; collect its evidence first. |
-| Accepted Issue baseline | Keep under record policy | Historical acceptance must remain identifiable. |
-| Backfill script needed by Issue #128 | Retain or promote | Consumer #128 is concrete; owner records reconciliation and rollback release conditions. |
-| Draft plan duplicated by the accepted baseline | Remove working copy | No unfinished decision or consumer needs the draft; the accepted reasoning is retained. |
-| Temporary production telemetry | Remove in a later reviewed change | Its rollout purpose has not yet ended just because code was committed. |
+| Artefact                                        | Disposition                                  | Reason/checkpoint                                                                          |
+| ----------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `.sdlc/tmp/issue-123/run-a/probe_disclosure.py` | Remove when redundant                        | The maintained regression now exercises the real protected-record fixture.                 |
+| Maintained tenant-disclosure tests and fixtures | Keep                                         | They are durable protection, not a temporary reproduction.                                 |
+| Local copied security report                    | Remove only after retained bundle is checked | Reviewers need the original scan evidence; local duplication does not add value.           |
+| Disposable exploit checkout                     | Keep briefly, then remove                    | A named reviewer is still validating the original attack path; collect its evidence first. |
+| Accepted Issue baseline                         | Keep under record policy                     | Historical acceptance must remain identifiable.                                            |
+| Backfill script needed by Issue #128            | Retain or promote                            | Consumer #128 is concrete; owner records reconciliation and rollback release conditions.   |
+| Draft plan duplicated by the accepted baseline  | Remove working copy                          | No unfinished decision or consumer needs the draft; the accepted reasoning is retained.    |
+| Temporary production telemetry                  | Remove in a later reviewed change            | Its rollout purpose has not yet ended just because code was committed.                     |
 
 An existing Issue/PR section is sufficient:
 

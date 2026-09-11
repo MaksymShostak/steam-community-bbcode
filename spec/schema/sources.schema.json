@@ -4,11 +4,7 @@
   "$comment": "SPDX-License-Identifier: AGPL-3.0-only",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schemaVersion",
-    "registryVersion",
-    "sources"
-  ],
+  "required": ["schemaVersion", "registryVersion", "sources"],
   "properties": {
     "schemaVersion": {
       "const": 1
@@ -23,13 +19,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "title",
-          "url",
-          "authority",
-          "checkedAt"
-        ],
+        "required": ["id", "title", "url", "authority", "checkedAt"],
         "properties": {
           "id": {
             "$ref": "common.schema.json#/definitions/identifier"

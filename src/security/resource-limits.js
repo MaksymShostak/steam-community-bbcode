@@ -30,14 +30,20 @@ export const defaultSteamParseResourceLimits = Object.freeze({
  * @returns {Readonly<SteamParseResourceLimits>}
  */
 export function resolveSteamParseResourceLimits(overrides) {
-  if (!overrides || typeof overrides !== 'object' || Array.isArray(overrides)) throw new TypeError('Resource limits must be an object.');
+  if (!overrides || typeof overrides !== "object" || Array.isArray(overrides))
+    throw new TypeError("Resource limits must be an object.");
   for (const key of Object.keys(overrides)) {
-    if (!Object.hasOwn(defaultSteamParseResourceLimits, key)) throw new TypeError(`Unknown resource limit: ${key}`);
+    if (!Object.hasOwn(defaultSteamParseResourceLimits, key))
+      throw new TypeError(`Unknown resource limit: ${key}`);
   }
-  const limits = {...defaultSteamParseResourceLimits, ...overrides};
+  const limits = { ...defaultSteamParseResourceLimits, ...overrides };
   for (const [key, value] of Object.entries(limits)) {
-    if (!Number.isSafeInteger(value) || value < 1) throw new RangeError(`${key} must be a positive safe integer.`);
+    if (!Number.isSafeInteger(value) || value < 1)
+      throw new RangeError(`${key} must be a positive safe integer.`);
   }
-  if (limits.maxNestingDepth > 256) throw new RangeError('maxNestingDepth cannot exceed the supported grammar depth of 256.');
+  if (limits.maxNestingDepth > 256)
+    throw new RangeError(
+      "maxNestingDepth cannot exceed the supported grammar depth of 256.",
+    );
   return Object.freeze(limits);
 }

@@ -33,6 +33,8 @@
     "LICENSE"
   ],
   "scripts": {
+    "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check --ignore-unknown .",
     "cli": "node src/cli.js",
     "comparison:run": "node scripts/compare-alternatives.js",
     "sbom": "npm sbom --package-lock-only --offline --ignore-scripts --sbom-format=cyclonedx",
@@ -64,7 +66,7 @@
     "release:pack": "node scripts/build-release-candidate.js",
     "release:verify-registry": "node scripts/qualify-public-registry.js",
     "type-coverage": "npm --prefix tooling/type-coverage run check && npm --prefix tooling/type-coverage run check:api-docs",
-    "check": "npm run spec:check && npm run lint && npm run docs:api:check && npm run qualify:prose && npm run docs:format:check && npm run test:coverage && npm run qualify:performance && npm run conformance:check && npm run typecheck && npm run type-coverage && npm run types:check && npm run test:types && npm run test:package",
+    "check": "npm run format:check && npm run spec:check && npm run lint && npm run docs:api:check && npm run qualify:prose && npm run docs:format:check && npm run test:coverage && npm run qualify:performance && npm run conformance:check && npm run typecheck && npm run type-coverage && npm run types:check && npm run test:types && npm run test:package",
     "test:types": "tsc --project test/type-contracts/tsconfig.json",
     "qualify:parser": "node --test test/parser-qualification/*.test.js",
     "validate:spec": "node scripts/validate-specification.js",
@@ -102,8 +104,10 @@
     "ajv-formats": "3.0.1",
     "c8": "12.0.0",
     "eslint": "10.10.0",
+    "eslint-config-prettier": "10.1.8",
     "fast-check": "4.9.0",
     "globals": "17.12.0",
+    "prettier": "3.9.6",
     "sigstore": "5.0.0",
     "typescript": "7.0.2",
     "yaml": "2.9.0"

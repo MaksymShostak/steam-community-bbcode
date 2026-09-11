@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import {defaultSteamDialectProfile, steamDialectProfileIds} from './registry-identifiers.js';
-import {parseSteamBbcodeSyntax} from './parse-steam-bbcode-syntax.js';
+import {
+  defaultSteamDialectProfile,
+  steamDialectProfileIds,
+} from "./registry-identifiers.js";
+import { parseSteamBbcodeSyntax } from "./parse-steam-bbcode-syntax.js";
 
 /** @typedef {import('./registry-identifiers.js').SteamDialectProfileId} SteamDialectProfileId */
 /** @typedef {import('./steam-bbcode-syntax.js').SteamBbcodeSyntaxNode} SteamBbcodeSyntaxNode */
@@ -21,20 +24,38 @@ const issuedParseResults = new WeakSet();
  * @returns {SteamBbcodeParseResult}
  */
 export function parseSteamCommunityBbcode(source, options = {}) {
-  if (!options || typeof options !== 'object' || Array.isArray(options)) throw new TypeError('Parse options must be an object.');
+  if (!options || typeof options !== "object" || Array.isArray(options))
+    throw new TypeError("Parse options must be an object.");
   for (const key of Object.keys(options)) {
-    if (key !== 'profile' && key !== 'resourceLimits') throw new TypeError(`Unknown parse option: ${key}`);
+    if (key !== "profile" && key !== "resourceLimits")
+      throw new TypeError(`Unknown parse option: ${key}`);
   }
-  const profile = options.profile === undefined ? defaultSteamDialectProfile : options.profile;
-  if (!steamDialectProfileIds.some(candidate => candidate === profile)) throw new RangeError('Unknown Steam dialect profile.');
+  const profile =
+    options.profile === undefined
+      ? defaultSteamDialectProfile
+      : options.profile;
+  if (!steamDialectProfileIds.some((candidate) => candidate === profile))
+    throw new RangeError("Unknown Steam dialect profile.");
   const parsed = parseSteamBbcodeSyntax(source, options.resourceLimits);
-  const diagnostics = parsed.diagnostics.map(diagnostic => Object.freeze({
-    ...diagnostic,
-    ...(diagnostic.sourceSpan ? {sourceSpan: Object.freeze({
-      start: Object.freeze(diagnostic.sourceSpan.start), end: Object.freeze(diagnostic.sourceSpan.end),
-    })} : {}),
-  }));
-  const result = Object.freeze({source, profile, children: Object.freeze(parsed.children), diagnostics: Object.freeze(diagnostics)});
+  const diagnostics = parsed.diagnostics.map((diagnostic) =>
+    Object.freeze({
+      ...diagnostic,
+      ...(diagnostic.sourceSpan
+        ? {
+            sourceSpan: Object.freeze({
+              start: Object.freeze(diagnostic.sourceSpan.start),
+              end: Object.freeze(diagnostic.sourceSpan.end),
+            }),
+          }
+        : {}),
+    }),
+  );
+  const result = Object.freeze({
+    source,
+    profile,
+    children: Object.freeze(parsed.children),
+    diagnostics: Object.freeze(diagnostics),
+  });
   issuedParseResults.add(result);
   return result;
 }
@@ -47,5 +68,7 @@ export function parseSteamCommunityBbcode(source, options = {}) {
  * @returns {value is SteamBbcodeParseResult}
  */
 export function isIssuedSteamBbcodeParseResult(value) {
-  return typeof value === 'object' && value !== null && issuedParseResults.has(value);
+  return (
+    typeof value === "object" && value !== null && issuedParseResults.has(value)
+  );
 }
