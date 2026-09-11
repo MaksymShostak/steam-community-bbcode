@@ -76,6 +76,24 @@ The binding must allow direct `npm publish`; a binding limited to staged publish
 If npm requires an initial package before that binding can be created, the owner must arrange that first publication separately.
 No bootstrap token or credential is stored by this implementation.
 
+### First prerelease and GitHub release
+
+The owner selected a local, owner-authenticated 2FA bootstrap for the first available `1.0.0-rc.N` version under `next`, followed by OIDC for subsequent releases.
+Prepare and qualify the exact public candidate before requesting publication approval.
+Publish its retained tarball with native npm, `--ignore-scripts`, the explicit public registry and `--tag next`; do not repack it during publication.
+This local bootstrap has no GitHub workflow provenance and must not be reported as an OIDC release.
+Verify its registry archive hashes, exact installed coordinate, API/CLI/declarations, registry signatures and production audit, retaining a separately labelled bootstrap report.
+The normal `release:verify-registry` command remains strict about expected CI provenance; it is not a bootstrap success oracle.
+
+Prepare a GitHub prerelease draft for the matching `v<version>` tag and exact qualified source commit.
+Include release notes, the identical npm tarball, checksums, production SBOM and public qualification evidence.
+Keep private recovery bundles and undisclosed security evidence out of release assets.
+Publish the GitHub prerelease after the authorized npm publication passes registry verification, with the exact npm coordinate and bootstrap provenance limitation in its notes.
+GitHub's automatically generated source archives are separate from the npm tarball; do not claim they are byte-identical.
+Use the native GitHub CLI to create the draft and upload assets; this procedure adds no privileged project-code execution to the npm publishing job.
+If immutable releases are enabled under a separately approved repository setting, attach and verify every asset while the release is still a draft, as recommended by [GitHub](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
+Release publication remains a separate owner approval; creating a draft does not establish acceptance or npm publication.
+
 Dispatch the reviewed `main` revision with `publish: true`, its exact package version and the intended distribution tag, such as `next` for a release candidate or `latest` for an approved stable release.
 The private development flag and a dirty candidate prevent publication.
 The publisher downloads the same run's artifact by ID, checks its native artifact digest, candidate metadata hash and `SHA256SUMS`, and publishes its exact archive with native npm OIDC/provenance.

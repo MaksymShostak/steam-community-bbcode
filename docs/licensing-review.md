@@ -109,7 +109,8 @@ Additional primary-source receipts record retrieval time, exact URL/revision, HT
 The owner approved Sigstore 5.0.0 and its strict declaration prerequisites, `@types/make-fetch-happen` 10.0.4 and `@sigstore/rekor-types` 5.0.0, for authenticated release verification.
 Native npm 12.0.2 added 53 development-only lock entries without changing any existing version or archive integrity.
 The four environments now contain 500 entries; the 66-entry production graph remains unchanged.
-The current root lock SHA-256 is `c2f9aff3d79d8d2d23f4f9938613e83bb1d3c0cd95f82425a7aba020ff81369f`; the other three hashes above are unchanged.
+At release-tool commit `ddf08f91695a0d5f7047c36a73f4fc3d5f09acab`, the root lock SHA-256 is `c2f9aff3d79d8d2d23f4f9938613e83bb1d3c0cd95f82425a7aba020ff81369f`; the other three hashes above are unchanged.
+The subsequent `1.0.0-rc.1` preparation changes only the root package version fields, giving root lock SHA-256 `6fff66434168765710a530e4964bc95d4efa575a9ccc95cbad267f0c8309dbaa`; dependency entries and their terms are unchanged.
 
 The additional entries declare 29 MIT, 14 ISC, eight Apache-2.0, one BSD-2-Clause and one BlueOak-1.0.0 licence.
 Full installed notice texts were retained for 50 entries.

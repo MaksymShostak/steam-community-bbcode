@@ -1,7 +1,7 @@
 {
   "name": "steam-community-bbcode",
-  "version": "1.0.0",
-  "private": true,
+  "version": "1.0.0-rc.1",
+  "private": false,
   "description": "Steam Community BBCode package under qualification; no released converter API yet",
   "license": "AGPL-3.0-only",
   "type": "module",
