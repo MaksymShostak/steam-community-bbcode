@@ -5,8 +5,8 @@
 Primary TS 7 checking and the strict 100% metric cover its orchestration script as well as the runtime, tests and other maintenance scripts.
 
 Run commands from this package's source checkout with the locked dependencies installed.
-`npm run check` combines specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers.
-The repository entry point is `npm run check:converter`.
+`npm run check` combines specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers. The standalone repository entry point is `npm run check`, after `npm run setup:development`. It includes the standalone workflow regression under `test/bbcode-workflow.test.js`, using native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results. The qualification workflow runs for every pull request and main push, with `BBCode / Qualification` as its aggregate name. Its Windows/Linux Node 24 entries exercise the actual development bootstrap; the Node 22 and 26 entries install the same locked tooling explicitly because the maintainer bootstrap requires the pinned development runtime.
+These local workflow checks do not establish hosted execution or branch-protection enforcement; those require destination run and settings evidence.
 Native ESLint recommended rules also run without inline configuration or warning allowances.
 
 On 9 September 2026 the full package check passed locally on Windows x64 under Node 22.23.2 and 26.8.1, supplementing the existing Node 24.20.0 full verification.
@@ -67,7 +67,7 @@ The unmutated suite passes; an invalid instrumented grammar is not a production 
 Scores measure the configured code and tests.
 They do not prove complete Steam syntax, rendering fidelity, security approval or stable-release readiness.
 The shipped `coverage.json` is a separate **conformance** report, not runtime coverage.
-Current numerical results and retained logs belong to the [execution record](../../../docs/plans/2026-09-08-steam-community-bbcode-execution.md).
+Current numerical results and retained logs belong to the [execution record](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-08-steam-community-bbcode-execution.md).
 
 The [release workflow](releasing.md) reuses the same installed API, CLI and TS 7 declaration consumers for both retained archives and exact public coordinates.
 `npm run release:pack` also retains native production audit, CycloneDX inventory and archive integrity.

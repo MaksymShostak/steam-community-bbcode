@@ -22,7 +22,7 @@ original probe: `d2d80f2e374a2eb7360d480cd139c458c1404f6ae4592e4131c009e452eb8a3
 None of the nine retained Git versions, including their CRLF checkouts, matched;
 the probe had read an uncommitted description. A test checks the recovered bytes
 before executing all 16 original description obligations against the new converter.
-The copied mod description retains the repository's [MIT/Klei licence](../../../../../LICENSE);
+The copied mod description retains the repository's [MIT/Klei licence](ONI-LICENSE.txt);
 it is fixture input, not newly authored AGPL implementation source.
 
 All 17 minimal probe inputs are retained verbatim in the historical evidence.

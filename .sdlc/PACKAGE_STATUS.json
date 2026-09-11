@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "status": "pre-release",
+  "deployed": false,
+  "deploymentConfirmation": "Standalone source adoption in progress. Generated configuration, native loading/trust, hosted checks and owner acceptance require separate evidence; no source receipts are active destination approvals.",
+  "versionPolicy": "Keep SDLC 1.0.0 pre-release unless Max explicitly approves a version/status change. Repository integration does not publish a product or establish hook trust."
+}

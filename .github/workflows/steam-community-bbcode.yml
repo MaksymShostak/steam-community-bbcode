@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   converter:
-    name: BBCode / ${{ matrix.os }} / Node ${{ matrix.node }}${{ matrix.os == 'ubuntu-latest' && matrix.node == '24.20.0' && ' / checks' || '' }}
+    name: BBCode / ${{ matrix.os }} / Node ${{ matrix.node }}
     needs: dependency-review
     timeout-minutes: 60
     strategy:
@@ -28,53 +28,51 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: ${{ matrix.node }}
-      - name: Select affected converter checks
-        id: scope
-        run: node scripts/selectPullRequestChecks.js --scope converter
+          package-manager-cache: false
       - name: Install locked converter development dependencies
-        if: steps.scope.outputs.converter == 'true'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tools/steam-community-bbcode ci --ignore-scripts
+        if: matrix.node != '24.20.0'
+        run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
       - name: Install the approved isolated type-coverage tool
-        if: steps.scope.outputs.converter == 'true'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tools/steam-community-bbcode/tooling/type-coverage ci --ignore-scripts
+        if: matrix.node != '24.20.0'
+        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tooling/type-coverage ci --ignore-scripts
       - name: Install the approved isolated API documentation tool
-        if: steps.scope.outputs.converter == 'true'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tools/steam-community-bbcode/tooling/api-docs ci --ignore-scripts
+        if: matrix.node != '24.20.0'
+        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tooling/api-docs ci --ignore-scripts
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        if: steps.scope.outputs.converter == 'true'
         with:
           python-version-file: .python-version
-      - name: Install the hash-locked native prose formatter
-        if: steps.scope.outputs.converter == 'true'
+      - name: Exercise standalone development setup
+        if: matrix.node == '24.20.0'
+        run: npm exec --yes --package=npm@12.0.2 -- npm run setup:development
+      - name: Create the matrix prose environment
+        if: matrix.node != '24.20.0'
+        run: python -m venv .venv
+      - name: Install and inventory the hash-locked native prose formatter
         run: |
-          python -m venv .venv
-          node scripts/runRepositoryPython.js -c "from pathlib import Path; Path('tools/steam-community-bbcode/artifacts/supply-chain').mkdir(parents=True, exist_ok=True)"
-          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: --report tools/steam-community-bbcode/artifacts/supply-chain/prose-install.json -r tools/steam-community-bbcode/tooling/prose/requirements.txt
-          node scripts/runRepositoryPython.js -c "from importlib.metadata import distribution; from shutil import copyfile; d = distribution('snapper-fmt'); f = next(f for f in d.files if f.name == 'snapper-fmt.cyclonedx.json'); copyfile(d.locate_file(f), 'tools/steam-community-bbcode/artifacts/supply-chain/prose.cdx.json')"
+          node scripts/runRepositoryPython.js -c "from pathlib import Path; Path('artifacts/supply-chain').mkdir(parents=True, exist_ok=True)"
+          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: --report artifacts/supply-chain/prose-install.json -r tooling/prose/requirements.txt
+          node scripts/runRepositoryPython.js -c "from importlib.metadata import distribution; from shutil import copyfile; d = distribution('snapper-fmt'); f = next(f for f in d.files if f.name == 'snapper-fmt.cyclonedx.json'); copyfile(d.locate_file(f), 'artifacts/supply-chain/prose.cdx.json')"
       - name: Generate locked dependency inventories
-        if: steps.scope.outputs.converter == 'true'
-        working-directory: tools/steam-community-bbcode
         run: |
           node --input-type=module -e "import {mkdirSync} from 'node:fs'; mkdirSync('artifacts/supply-chain', {recursive: true});"
           npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom > artifacts/supply-chain/package.cdx.json
           npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:type-coverage > artifacts/supply-chain/type-coverage.cdx.json
           npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
       - name: Check the converter and real packed consumer
-        if: steps.scope.outputs.converter == 'true'
-        run: npm exec --yes --package=npm@12.0.2 -- npm run check:converter
+        run: npm exec --yes --package=npm@12.0.2 -- npm run check
       - name: Retain qualification reports
-        if: always() && steps.scope.outputs.converter == 'true'
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: bbcode-${{ matrix.os }}-node-${{ matrix.node }}
           retention-days: 30
           if-no-files-found: warn
           path: |
-            tools/steam-community-bbcode/artifacts/runtime-coverage/
-            tools/steam-community-bbcode/artifacts/supply-chain/
-            tools/steam-community-bbcode/artifacts/api-reference/
-            tools/steam-community-bbcode/artifacts/api-documentation-fixture/
-            tools/steam-community-bbcode/artifacts/prose/
+            artifacts/runtime-coverage/
+            artifacts/supply-chain/
+            artifacts/api-reference/
+            artifacts/api-documentation-fixture/
+            artifacts/prose/
   mutation:
     name: BBCode / Mutation / ${{ matrix.profile }}
     needs: converter
@@ -92,27 +90,23 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24.20.0
-      - name: Select affected converter checks
-        id: scope
-        run: node scripts/selectPullRequestChecks.js --scope converter
+          package-manager-cache: false
       - name: Install locked converter development dependencies
-        if: steps.scope.outputs.converter == 'true'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tools/steam-community-bbcode ci --ignore-scripts
+        run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
       - name: Qualify mutation sensitivity
-        if: steps.scope.outputs.converter == 'true'
         env:
           MUTATION_PROFILE: ${{ matrix.profile }}
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tools/steam-community-bbcode run "test:mutation:$MUTATION_PROFILE"
+        run: npm exec --yes --package=npm@12.0.2 -- npm run "test:mutation:$MUTATION_PROFILE"
       - name: Retain mutation reports
-        if: always() && steps.scope.outputs.converter == 'true'
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: bbcode-mutation-${{ matrix.profile }}
           retention-days: 30
           if-no-files-found: warn
-          path: tools/steam-community-bbcode/artifacts/mutation-${{ matrix.profile }}/
+          path: artifacts/mutation-${{ matrix.profile }}/
   qualification:
-    name: BBCode / ubuntu-latest / Node 24.20.0
+    name: BBCode / Qualification
     needs: [dependency-review, converter, mutation]
     if: always()
     runs-on: ubuntu-latest
@@ -138,11 +132,9 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24.20.0
-      - name: Select affected converter checks
-        id: scope
-        run: node scripts/selectPullRequestChecks.js --scope converter
+          package-manager-cache: false
       - name: Review introduced dependencies
-        if: github.event_name == 'pull_request' && steps.scope.outputs.converter == 'true'
+        if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: low

@@ -76,7 +76,7 @@ No Unicode table is copied into the converter or its distribution.
 
 ## Fixture and transfer rights
 
-The [Steamify fixture record](../test/fixtures/steamify/README.md) distinguishes independently authored AGPL fixtures from the recovered original mod description.
+The [historical Steamify fixture record](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/tools/steam-community-bbcode/test/fixtures/steamify/README.md) distinguishes independently authored AGPL fixtures from the recovered original mod description.
 The original is user-authored repository material under the root MIT grant, with its SHA-256 and recovery provenance recorded.
 Keep that original MIT copyright/permission text and the Klei disclaimer when transferring the fixture; the AGPL package licence does not replace them.
 The fixture contains text and references, not copied game binaries or image assets.

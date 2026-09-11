@@ -5,17 +5,16 @@ Use a source checkout; there is no published release to install.
 Node 22, 24 and 26 are the declared CI lines.
 Local evidence currently comes from Node 24.20.0 and npm 12.0.2 on Windows x64; the configured matrix is not itself proof that every combination passes.
 
-From `tools/steam-community-bbcode` in the source checkout:
+From the root of this standalone checkout with Node 24.20.0, npm 12.0.2 and Python 3.14.7 installed:
 
 ```text
-npm ci --ignore-scripts
-npm --prefix tooling/type-coverage ci --ignore-scripts
+npm run setup:development
 npm run check
 npm run cli -- to-gfm path/to/description.bbcode
 ```
 
-The first two commands install the locked parent graph and approved isolated type-coverage tool.
-They do not run package installation scripts.
+Setup installs the locked root and both isolated tooling graphs, then the hash-locked prose formatter in `.venv`.
+Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 The library executes ordinary JavaScript; checking and declaration generation are development steps.
 See [JavaScript and types](javascript-and-types.md).
 
@@ -43,4 +42,4 @@ The [generated matrix](steam-support-matrix.md) describes executed policies, inc
 Use the [CLI fidelity policy](cli.md) when conversion participates in automation.
 
 This package is [AGPL version 3 only](../LICENSE).
-The enclosing repository's different licence does not replace this subpackage licence.
+Copied helper and fixture material retains its separately recorded original notices.

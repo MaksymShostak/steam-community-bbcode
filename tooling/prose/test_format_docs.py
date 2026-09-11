@@ -72,7 +72,9 @@ class NativeProseFormattingTests(unittest.TestCase):
             included = ["README.md", "SECURITY.md", "docs/testing.md", "docs/decisions/design.md"]
             excluded = ["docs/reference/index.md", "docs/reference/nested/type.md",
                         "docs/conversion-semantics.md", "docs/steam-support-matrix.md",
-                        "test/fixtures/README.md", "node_modules/vendor/README.md"]
+                        "test/fixtures/README.md", "node_modules/vendor/README.md",
+                        "docs/plans/original.md", "docs/plans/nested/evidence.md",
+                        "docs/migration/source-record.md"]
             for name in [*included, *excluded]:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)

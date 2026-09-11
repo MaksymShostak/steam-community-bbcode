@@ -1,5 +1,16 @@
-/node_modules/
+node_modules/
 /types/
 /coverage/
 /artifacts/
 *.tgz
+/.venv/
+__pycache__/
+
+# Generated SDLC activation and local evidence
+/.agents/
+/.codex/
+/.agent-tools/
+/.sdlc/runtime/
+/.sdlc/tmp/
+/.mcp.json.repository-setup.*.staged.tmp
+/.mcp.json.repository-setup.*.activation.backup

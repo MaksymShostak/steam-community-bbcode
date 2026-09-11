@@ -1,7 +1,7 @@
 # Contributing
 
 This package is AGPL-3.0-only from its first implementation.
-Keep its licence boundary separate from the enclosing MIT/Klei repository and retain dependency notices.
+Retain dependency notices and the separately attributed MIT-licensed helper and historical fixture.
 Do not add an "or later" grant.
 
 Follow the [Code of Conduct](CODE_OF_CONDUCT.md) in converter community spaces.
@@ -17,8 +17,8 @@ See [JavaScript and types](docs/javascript-and-types.md) for the compiler roles 
 Public declaration changes are API changes.
 Do not patch dependencies, add compatibility shims, suppress checks or relax failing assertions.
 
-Install the three locked development environments described in the README, then run `npm run check`.
-Use the enclosing repository's SDLC verification entry point for the complete affected route.
+Run `npm run setup:development` with the pinned tools, then `npm run check`.
+Destination lifecycle and GitHub controls are a separate migration stage; the archived source task is not an active destination approval.
 A local pass does not authorize a commit, push, npm release, GitHub protection change or Steam publication.
 
 Edit source JSDoc to change the API reference and run `npm run docs:api`.
@@ -28,6 +28,6 @@ Supporting source modules in that reference explain referenced types; the packag
 Use semantic line breaks for authored package guides: one sentence per source line, with editor soft wrapping for long sentences.
 Install the hash-locked native formatter in the checkout's `.venv` as described in the README, then run `npm run docs:format`.
 `npm run docs:format:check` enforces the same result without writing and is included in `npm run check` and CI.
-The gate covers package-root Markdown and authored `docs/**/*.md`; generated references and the conformance and support projections remain owned by their generators.
+The gate covers package-root Markdown and maintained `docs/**/*.md`; historical `docs/plans/` and `docs/migration/` are excluded, while generated references and conformance projections remain owned by their generators.
 Code blocks, tables and explicit Markdown hard breaks retain their meaning.
 The formatter uses deterministic sentence detection; review language and unusual abbreviations as normal prose.

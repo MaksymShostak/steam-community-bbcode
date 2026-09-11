@@ -1,0 +1,399 @@
+{
+  "repository": "https://github.com/MaksymShostak/oxygen-not-included",
+  "commit": "fe75c5d8e29f68e43812439fbc6ec73df2f43b05",
+  "importedAt": "2026-09-11",
+  "license": "UPSTREAM-LICENSE",
+  "adaptations": "docs/sdlc/adoption.md",
+  "files": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "sourcePath": ".github/ISSUE_TEMPLATE/config.yml",
+      "sha256": "1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/sdlc-bug.yml",
+      "sourcePath": ".github/ISSUE_TEMPLATE/sdlc-bug.yml",
+      "sha256": "0287b8806b6c5419340a18506b3cdb92ddedcb9a4fe569998dcf0255cc717a6a"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/sdlc-change.yml",
+      "sourcePath": ".github/ISSUE_TEMPLATE/sdlc-change.yml",
+      "sha256": "123b334f1f316d798a744df5b3adc6e0563d9d28aaec789f58a141aed11423de"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "sourcePath": ".github/pull_request_template.md",
+      "sha256": "ae864fe973e4d60c72234982cac0eab275e439d96f485322a7ef7165d08e5bde"
+    },
+    {
+      "path": ".github/workflows/sdlc-issue-acceptance.yml",
+      "sourcePath": ".github/workflows/sdlc-issue-acceptance.yml",
+      "sha256": "4ac33cea0eb460b89a5cf14de1865b58a414fdf90ece3fb17891b08dbc9091b5"
+    },
+    {
+      "path": ".github/workflows/sdlc-pr.yml",
+      "sourcePath": ".github/workflows/sdlc-pr.yml",
+      "sha256": "dab4ba9e54ea7c7f732c6ad58a5e6fca0b4c223abb67ddac1dc679b11dcc1e49"
+    },
+    {
+      "path": ".sdlc/PACKAGE_STATUS.json",
+      "sourcePath": ".sdlc/PACKAGE_STATUS.json",
+      "sha256": "b9b80493dd413107d6c23efc1a07cba09a8d3895dbfa4b901151eb668781d3db"
+    },
+    {
+      "path": ".sdlc/SOURCE_PACKAGE.json",
+      "sourcePath": ".sdlc/SOURCE_PACKAGE.json",
+      "sha256": "8f6b8f02158eb6a264a05188b2f15d32352576505e18c2fed94b5455a6aa4e4b"
+    },
+    {
+      "path": ".sdlc/UPSTREAM-LICENSE",
+      "sourcePath": ".sdlc/UPSTREAM-LICENSE",
+      "sha256": "69448cf2562bd17902878fa1a96567c82d8062c0868937775129d6b6603e65c8"
+    },
+    {
+      "path": ".sdlc/codex/agents/principles_reviewer.toml",
+      "sourcePath": ".sdlc/codex/agents/principles_reviewer.toml",
+      "sha256": "45f85e4dded0ce7e0ec29dd13d84081a9cf2007ac0df075f2927234b7ca489b6"
+    },
+    {
+      "path": ".sdlc/codex/agents/repo_explorer.toml",
+      "sourcePath": ".sdlc/codex/agents/repo_explorer.toml",
+      "sha256": "061c62e224b38dbc076aefd5035d01a7d78654aadbbbd941677817c1ff30de82"
+    },
+    {
+      "path": ".sdlc/codex/agents/researcher.toml",
+      "sourcePath": ".sdlc/codex/agents/researcher.toml",
+      "sha256": "021a8655adda0d3d83c69193bb6ea5f6685b1bb6595c80d0e13ba50b8c783d14"
+    },
+    {
+      "path": ".sdlc/codex/agents/review_maintainability.toml",
+      "sourcePath": ".sdlc/codex/agents/review_maintainability.toml",
+      "sha256": "68b07a43eb0cb1c9979914af67f59b5fba9c0bb32e75fb038bef92aad2caf35d"
+    },
+    {
+      "path": ".sdlc/codex/agents/review_operability.toml",
+      "sourcePath": ".sdlc/codex/agents/review_operability.toml",
+      "sha256": "982b5f3551a6bde2947cb0829ec6d25af5fdf8efff6a0a0c29426bf6d5f65465"
+    },
+    {
+      "path": ".sdlc/codex/agents/security_requirements_reviewer.toml",
+      "sourcePath": ".sdlc/codex/agents/security_requirements_reviewer.toml",
+      "sha256": "f95d72710c100a32915f9db6190a31f538ed2795d1a0b20dbca1e4559b746c97"
+    },
+    {
+      "path": ".sdlc/codex/agents/test_oracle_reviewer.toml",
+      "sourcePath": ".sdlc/codex/agents/test_oracle_reviewer.toml",
+      "sha256": "8b8d806a0a023dc92c24092ea24242e6ac758aeb19e79db3815d147b856a5a19"
+    },
+    {
+      "path": ".sdlc/codex/agents/verifier.toml",
+      "sourcePath": ".sdlc/codex/agents/verifier.toml",
+      "sha256": "6460cdcc80f7b8f4ddead4bbd2098987c10ee0219b67cd1805ce22fb9f8401c1"
+    },
+    {
+      "path": ".sdlc/codex/config.toml",
+      "sourcePath": ".sdlc/codex/config.toml",
+      "sha256": "c288ad9fa8a386d5cf0aa3000ec5c17f59457e3d2c78673fb841c5b0ac3b92e4"
+    },
+    {
+      "path": ".sdlc/codex/hooks.json",
+      "sourcePath": ".sdlc/codex/hooks.json",
+      "sha256": "a2e00536033b5b6dd6b4d755fd55bedc646b9eac1209c8d387931336ce0c9ab9"
+    },
+    {
+      "path": ".sdlc/codex/rules/default.rules",
+      "sourcePath": ".sdlc/codex/rules/default.rules",
+      "sha256": "5c8421cec5f73c89730d2fa91b04d5309d3a2888c8f21bc28f16f87e64e06458"
+    },
+    {
+      "path": ".sdlc/dcg/UPSTREAM.json",
+      "sourcePath": ".sdlc/dcg/UPSTREAM.json",
+      "sha256": "11a703c1d9552811430524d1c036b6aa0ef75dd3fafd76f4926a058eb9923c58"
+    },
+    {
+      "path": ".sdlc/dcg/codex-hook.example.json",
+      "sourcePath": ".sdlc/dcg/codex-hook.example.json",
+      "sha256": "1f9cfc8b78b0f3419806112567e672b6dd5649ceaaa111d77499b3e3910dd277"
+    },
+    {
+      "path": ".sdlc/dcg/git-reset-hard.yaml",
+      "sourcePath": ".sdlc/dcg/git-reset-hard.yaml",
+      "sha256": "e62af55b59293b84194ded18117e4183f835922ca9f69d6fa829e7c124cff9aa"
+    },
+    {
+      "path": ".sdlc/dcg/hook-probe-cases.json",
+      "sourcePath": ".sdlc/dcg/hook-probe-cases.json",
+      "sha256": "d7c1ee25acf8f3977c2925f8a6f04ecfe6b7d753cf554da5e1a7d54b18788c11"
+    },
+    {
+      "path": ".sdlc/dcg/operator-config.example.toml",
+      "sourcePath": ".sdlc/dcg/operator-config.example.toml",
+      "sha256": "f69d7ef54714213836cb8ffd3484b272b277ba4383874bf9560667becbdf6b34"
+    },
+    {
+      "path": ".sdlc/pipeline-policy.json",
+      "sourcePath": ".sdlc/pipeline-policy.json",
+      "sha256": "13c254add78f3186719c990333bb0c5b9068c094589eaf34ad8eaec179128a26"
+    },
+    {
+      "path": ".sdlc/schemas/accepted-baseline.schema.json",
+      "sourcePath": ".sdlc/schemas/accepted-baseline.schema.json",
+      "sha256": "7411fd7a393768b5ac772943ebb7ce925f407b4f088ae4929340d43d3edfe485"
+    },
+    {
+      "path": ".sdlc/schemas/pipeline-policy.schema.json",
+      "sourcePath": ".sdlc/schemas/pipeline-policy.schema.json",
+      "sha256": "0ed4e2212f8302bf0320719de2a188c855187293e71ab9df5031901ad7782dad"
+    },
+    {
+      "path": ".sdlc/schemas/verification-config.schema.json",
+      "sourcePath": ".sdlc/schemas/verification-config.schema.json",
+      "sha256": "84a79026100f3df984a19fcc83d65b5dcf227df46a7b43ec801b3677aa67ceb5"
+    },
+    {
+      "path": ".sdlc/skill-policies.json",
+      "sourcePath": ".sdlc/skill-policies.json",
+      "sha256": "e1cf150eb6f31ea19425ddc018f3c4ef37090040b78d78a8428d38fcdc844c12"
+    },
+    {
+      "path": ".sdlc/skills/motivation-to-evidence/SKILL.md",
+      "sourcePath": ".sdlc/skills/motivation-to-evidence/SKILL.md",
+      "sha256": "f8afd5fb82bc7e5bf75205e0dd5323647a60ddf07208d9d40e779086471a0692"
+    },
+    {
+      "path": ".sdlc/skills/quality-attribute-scenarios/SKILL.md",
+      "sourcePath": ".sdlc/skills/quality-attribute-scenarios/SKILL.md",
+      "sha256": "5d674655b68f8176aa246f27f84eda137b1e848fa376a57d3aa31ba711d2e507"
+    },
+    {
+      "path": ".sdlc/skills/release-readiness/SKILL.md",
+      "sourcePath": ".sdlc/skills/release-readiness/SKILL.md",
+      "sha256": "0d64ca82622965fd5c84f100528db15ca865a7dd9c9d29c4d494d4d097c5d608"
+    },
+    {
+      "path": ".sdlc/skills/sdlc-route/SKILL.md",
+      "sourcePath": ".sdlc/skills/sdlc-route/SKILL.md",
+      "sha256": "45f267955fd93e995ad30e3a3776531d87c3c7642a77430eb04372e4d51559cd"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/LICENSE",
+      "sourcePath": ".sdlc/skills/test-driven-development/LICENSE",
+      "sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/SKILL.md",
+      "sourcePath": ".sdlc/skills/test-driven-development/SKILL.md",
+      "sha256": "06b78be8167a2fa193feb60a477894b1bfd363f0d7746f8daae06ad6a9597830"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/UPSTREAM.json",
+      "sourcePath": ".sdlc/skills/test-driven-development/UPSTREAM.json",
+      "sha256": "75bfe88fa53a9cbf3b0856dcc411ca2b2e4b1d63cb88eba9a993e13ea2506e3c"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/agents/openai.yaml",
+      "sourcePath": ".sdlc/skills/test-driven-development/agents/openai.yaml",
+      "sha256": "5caf523e7aff1278ad2961434d848dcaf8c4e6318cf6446fd96a60019107988e"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/references/evidence-and-handoffs.md",
+      "sourcePath": ".sdlc/skills/test-driven-development/references/evidence-and-handoffs.md",
+      "sha256": "1eb4ca28625ac1b203337b3fc0291aa1dcc1e7a24606f548450b3a9a611bef9c"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/references/verification-routes.md",
+      "sourcePath": ".sdlc/skills/test-driven-development/references/verification-routes.md",
+      "sha256": "115d45ee13e4da007bcd3f6eee6169781cdcba11eaae3e52172a500a04be5954"
+    },
+    {
+      "path": ".sdlc/skills/test-driven-development/writing-good-tests.md",
+      "sourcePath": ".sdlc/skills/test-driven-development/writing-good-tests.md",
+      "sha256": "5f35d091c63f647a598a8db0c3cfe3302692f1a628b897c7ed382b321aa07259"
+    },
+    {
+      "path": ".sdlc/skills/thin-implementation-plan/SKILL.md",
+      "sourcePath": ".sdlc/skills/thin-implementation-plan/SKILL.md",
+      "sha256": "8c70dcd10758add142a2ec1d819f17a7e5cdab379926b2a0620a7b5140402ebf"
+    },
+    {
+      "path": "REVIEW.md",
+      "sourcePath": "REVIEW.md",
+      "sha256": "bf4eba4c75a830343d0cd752f12a18b5689d286cd7f0f8ac6f04e8bb7c74b638"
+    },
+    {
+      "path": "docs/sdlc/baselines/.gitkeep",
+      "sourcePath": "docs/sdlc/baselines/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/sdlc/codex-security.md",
+      "sourcePath": "docs/sdlc/codex-security.md",
+      "sha256": "ca61bb242213bcdc415d38becec64af58656886ba06dec8616579945f4acadd2"
+    },
+    {
+      "path": "docs/sdlc/command-safety.md",
+      "sourcePath": "docs/sdlc/command-safety.md",
+      "sha256": "d8e4b32a361615bffcdbfaf94f12af279e296d6b793cfd02fbf65b8231cb0250"
+    },
+    {
+      "path": "docs/sdlc/dcg-acceptance.md",
+      "sourcePath": "docs/sdlc/dcg-acceptance.md",
+      "sha256": "b752a49a10da2d5c3fc9f6cc6c4d0d0bd6871cba69053ce9db1fc19cbba552db"
+    },
+    {
+      "path": "docs/sdlc/engineering-principles.md",
+      "sourcePath": "docs/sdlc/engineering-principles.md",
+      "sha256": "e142a9a6904cd191a1a91c04fc0c37368de62418c7966c2f22ab68cd54bddc80"
+    },
+    {
+      "path": "docs/sdlc/github-governance.md",
+      "sourcePath": "docs/sdlc/github-governance.md",
+      "sha256": "94da970ffe0b848d0f388e7a52ba75cd3443f15962f45c41afaaf70b9ed4654c"
+    },
+    {
+      "path": "docs/sdlc/package-reuse-assessment.md",
+      "sourcePath": "docs/sdlc/package-reuse-assessment.md",
+      "sha256": "2de36415b5f861eac6190c47e6d9af2fb86aa836038da30a5b72df2e74462b0d"
+    },
+    {
+      "path": "docs/sdlc/proportional-workflow.md",
+      "sourcePath": "docs/sdlc/proportional-workflow.md",
+      "sha256": "348ce6608320de9800760a4e598f13b2cf05f0be8a82ba92cc47861adcb84f22"
+    },
+    {
+      "path": "docs/sdlc/software-selection.md",
+      "sourcePath": "docs/sdlc/software-selection.md",
+      "sha256": "81d639f3f8ae785949d5c0d8586aa8e6208f6be35c4ed533738fc879b8bc9452"
+    },
+    {
+      "path": "docs/sdlc/sources.md",
+      "sourcePath": "docs/sdlc/sources.md",
+      "sha256": "224f9f57a1822b2e76649d97e7a77b69733db0f856c583d5f94664c31cd5dcd3"
+    },
+    {
+      "path": "docs/sdlc/subagent-playbook.md",
+      "sourcePath": "docs/sdlc/subagent-playbook.md",
+      "sha256": "4cf80f6b1ec04ab98db79e3eeb0fcbefc73f16514299e52941ea40aa0215a0fb"
+    },
+    {
+      "path": "docs/sdlc/temporary-artefacts-howto.md",
+      "sourcePath": "docs/sdlc/temporary-artefacts-howto.md",
+      "sha256": "c2c2232883484765e3ba92a8d0d8bb1a85dee6c54be8d273cc67f33b7cb0bb82"
+    },
+    {
+      "path": "docs/sdlc/temporary-artefacts.md",
+      "sourcePath": "docs/sdlc/temporary-artefacts.md",
+      "sha256": "53cb621b14f28f2c787d190e8602d8a9490716a35358fc2e8c889f2905c867d2"
+    },
+    {
+      "path": "docs/sdlc/toolchain-selection.md",
+      "sourcePath": "docs/sdlc/toolchain-selection.md",
+      "sha256": "f18ecb976f3aa46ab8a6f1cc67eb77aae470f2c528e3cb0826af675591896d97"
+    },
+    {
+      "path": "docs/sdlc/verification.md",
+      "sourcePath": "docs/sdlc/verification.md",
+      "sha256": "66e8c66044d39b4c37a4d814ff13ba027385005371c66e24b50d5b430c5eee7a"
+    },
+    {
+      "path": "requirements-sdlc.txt",
+      "sourcePath": "requirements-sdlc.txt",
+      "sha256": "f28d36c262213364151ea65639cffb54dd32c7567eb5e452d288ecc30679e5eb"
+    },
+    {
+      "path": "scripts/_commands.py",
+      "sourcePath": "scripts/_commands.py",
+      "sha256": "12cd243049a61b640288020f38b2e598392fed571b6cb80459a04d534e6f98c5"
+    },
+    {
+      "path": "scripts/_repository.py",
+      "sourcePath": "scripts/_repository.py",
+      "sha256": "ba33678c2b959bf1ed5a9fcaa8ec162d85390055427351270bd22b0803c22366"
+    },
+    {
+      "path": "scripts/_sdlc_baseline.py",
+      "sourcePath": "scripts/_sdlc_baseline.py",
+      "sha256": "23fdda2c9f1b2fa57dd28efa518e2851dbf007b4f121608125272c0a34e62a20"
+    },
+    {
+      "path": "scripts/_sdlc_state.py",
+      "sourcePath": "scripts/_sdlc_state.py",
+      "sha256": "0dcd8e80ec24e1620f12bce45b743c8ca5a4df2751ed96482fdc5ba74475e37e"
+    },
+    {
+      "path": "scripts/bootstrap_github_sdlc.py",
+      "sourcePath": "scripts/bootstrap_github_sdlc.py",
+      "sha256": "8a2945fb20ea20077a8135fe00770bc5d17db1c1c3e09be9c81801553335e2bf"
+    },
+    {
+      "path": "scripts/probe_dcg_hook_protocol.py",
+      "sourcePath": "scripts/probe_dcg_hook_protocol.py",
+      "sha256": "2a585a24c1531eea2db4ed119695f2e1a94317bc17e4a1f7c6934f0378938c8e"
+    },
+    {
+      "path": "scripts/sdlc.py",
+      "sourcePath": "scripts/sdlc.py",
+      "sha256": "ece7546fbd16ba037e4dd57c35ebfb80ca40acc3675cf20f4f85725005273d90"
+    },
+    {
+      "path": "scripts/sdlc_stop_gate.py",
+      "sourcePath": "scripts/sdlc_stop_gate.py",
+      "sha256": "999975bfadc1561f39d87a4d91b61d185487bf4a7ebe3f757ca11f4b69bf3507"
+    },
+    {
+      "path": "scripts/set_up_agent_skills.py",
+      "sourcePath": "scripts/set_up_agent_skills.py",
+      "sha256": "287986a5e76c9aa33da6e3880146b0454e9fd167c2123858f0067f7585080786"
+    },
+    {
+      "path": "scripts/set_up_mcp_servers.py",
+      "sourcePath": "scripts/set_up_mcp_servers.py",
+      "sha256": "e932deec0c2d83aa78f8e8aa0e272e8b53149002db1f2cf9863324a33520a5e1"
+    },
+    {
+      "path": "scripts/set_up_sdlc.py",
+      "sourcePath": "scripts/set_up_sdlc.py",
+      "sha256": "d4191df3e8f8d862aa0cca4c7aaf20cf4d70387861c5820e7121ff74a691fc1f"
+    },
+    {
+      "path": "scripts/validate_sdlc_pr.py",
+      "sourcePath": "scripts/validate_sdlc_pr.py",
+      "sha256": "5b617bf5ae23350ae8e22837365b1026ae2ef92482ae8b6a0449c8b6d45f0dad"
+    },
+    {
+      "path": "skills-lock.json",
+      "sourcePath": "skills-lock.json",
+      "sha256": "6d57406a7c5268c5c99442d2874449bd59ca8bbdec340ead8d6e7e5605b657d2"
+    },
+    {
+      "path": "tests/sdlc/test_dcg_protocol_probe.py",
+      "sourcePath": "tests/sdlc/test_dcg_protocol_probe.py",
+      "sha256": "236b4da9670d6c92c48d3a8b95475c7987c56ac6d4febca3e198c0fb3389037d"
+    },
+    {
+      "path": "tests/sdlc/test_github_destination.py",
+      "sourcePath": "tests/sdlc/test_github_destination.py",
+      "sha256": "356cc72d8080da260b87c589f567ac31f1c46d610e588e6068b67968b037bb1a"
+    },
+    {
+      "path": "tests/sdlc/test_pipeline_controls.py",
+      "sourcePath": "tests/sdlc/test_pipeline_controls.py",
+      "sha256": "3229020b6de3f7ee3db4ff77b87e12ef2a39aac2e42fcc6821c358b0aadf6f4e"
+    },
+    {
+      "path": "tests/sdlc/test_repository_integration.py",
+      "sourcePath": "tests/sdlc/test_repository_integration.py",
+      "sha256": "d14a94bcd3976d18a1d5a95f91eb98afd80cbea48e4676da96a77e84529cfb5e"
+    },
+    {
+      "path": "tests/test_set_up_agent_skills.py",
+      "sourcePath": "tests/test_set_up_agent_skills.py",
+      "sha256": "9b6943dabae7a09cc320ebd06c6af9170b6f04c8d8ef648cb4e7c33b35c6fdca"
+    },
+    {
+      "path": "tests/test_set_up_mcp_servers.py",
+      "sourcePath": "tests/test_set_up_mcp_servers.py",
+      "sha256": "86be0eed3e8df2d918fb4837b77c1f38e38b00c794f73a2fc8a2f36ad0f53794"
+    }
+  ]
+}

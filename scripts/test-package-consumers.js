@@ -4,8 +4,9 @@ import {spawnSync} from 'node:child_process';
 import {mkdtemp, mkdir, readFile, readdir, writeFile, lstat, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {basename, dirname, join, resolve, sep} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {parseArgs} from 'node:util';
+import {checkDocumentationLinks} from './check-documentation-links.js';
 import {registry} from './release-artifacts.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -66,9 +67,10 @@ try {
   for (const hook of ['preinstall', 'install', 'postinstall', 'prepare']) {
     assert.equal(manifest.scripts?.[hook], undefined, 'Consumers must not compile during installation.');
   }
-  for (const excluded of ['test', 'scripts', 'comparison', 'node_modules']) {
-    assert.equal(await lstat(join(installed, excluded)).catch(() => undefined), undefined);
+  for (const excluded of ['test', 'tests', 'scripts', 'comparison', 'node_modules', 'tooling', '.github', '.sdlc', 'docs/plans', 'docs/migration']) {
+    assert.equal(await lstat(join(installed, excluded)).catch(() => undefined), undefined, `Unexpected installed development path: ${excluded}`);
   }
+  await checkDocumentationLinks(pathToFileURL(installed + sep));
   const mapNames = (await readdir(join(installed, 'types'), {recursive: true})).filter(name => name.endsWith('.map'));
   assert.ok(mapNames.length > 0);
   for (const name of mapNames) {

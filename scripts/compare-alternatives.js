@@ -14,7 +14,7 @@ import {classifyResult} from './comparison/classify-result.js';
 
 /** @param {string} path */
 const local = path => fileURLToPath(new URL(`../${path}`, import.meta.url));
-const python = fileURLToPath(new URL('../../../.venv/Scripts/python.exe', import.meta.url));
+const python = fileURLToPath(new URL('../.venv/Scripts/python.exe', import.meta.url));
 const pythonEnvironment = {...process.env, PYTHONPATH: local('artifacts/comparison/python'), PYTHONIOENCODING: 'utf-8', PYTHONNOUSERSITE: '1'};
 const dotnetPackage = 'artifacts/comparison/dotnet/.store/converter.markdowntobbcodesteam.tool/1.0.0.29/converter.markdowntobbcodesteam.tool/1.0.0.29/';
 const syntax = gfmFromMarkdown().map(({transforms: _rendererTransforms, ...extension}) => extension);

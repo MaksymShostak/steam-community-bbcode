@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Maksym Shostak. See runRepositoryPython.LICENSE.
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -6,9 +8,14 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
+/** @typedef {(command: string, args: string[], options: import("node:child_process").SpawnSyncOptions) => {status: number | null, signal: NodeJS.Signals | null, error?: Error}} PythonProcess */
+/**
+ * @param {string[]} args
+ * @param {{root?: string, platform?: NodeJS.Platform, spawn?: PythonProcess}} [options]
+ */
 export function runRepositoryPython(
   args,
-  { root = repositoryRoot, platform = process.platform } = {},
+  { root = repositoryRoot, platform = process.platform, spawn = spawnSync } = {},
 ) {
   const executable = join(
     root,
@@ -23,7 +30,7 @@ export function runRepositoryPython(
   if (!args.length) {
     throw new Error("Provide a repository Python script or module arguments.");
   }
-  const result = spawnSync(executable, ["-B", ...args], {
+  const result = spawn(executable, ["-B", ...args], {
     cwd: root,
     stdio: "inherit",
     windowsHide: true,
@@ -41,7 +48,7 @@ if (
   try {
     process.exitCode = runRepositoryPython(process.argv.slice(2));
   } catch (error) {
-    console.error(error.message);
+    console.error(error instanceof Error ? error.message : String(error));
     process.exitCode = 1;
   }
 }

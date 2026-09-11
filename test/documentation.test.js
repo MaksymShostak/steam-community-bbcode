@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {access, readFile, readdir} from 'node:fs/promises';
+import {readFile} from 'node:fs/promises';
 import {fromMarkdown} from 'mdast-util-from-markdown';
-import {gfmFromMarkdown} from 'mdast-util-gfm';
-import {gfm} from 'micromark-extension-gfm';
+import {checkDocumentationLinks} from '../scripts/check-documentation-links.js';
 import {steamConstructDefinitions} from '../src/steam/construct-registry.js';
 import {constructCases} from './conformance/construct-cases.js';
 
@@ -31,29 +30,5 @@ test('each construct has an executed example or an explicit context-only explana
 });
 
 test('package-local documentation links resolve to real files', async () => {
-  const packageUrl = new URL('../', import.meta.url);
-  const docs = await readdir(new URL('docs/', packageUrl), {recursive: true});
-  const paths = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'SECURITY.md',
-    ...docs.filter(path => path.endsWith('.md')).map(path => `docs/${path.replaceAll('\\', '/')}`)];
-  let checked = 0;
-  for (const path of paths) {
-    const documentUrl = new URL(path, packageUrl);
-    const tree = fromMarkdown(await readFile(documentUrl, 'utf8'), {extensions: [gfm()], mdastExtensions: gfmFromMarkdown()});
-    /** @type {import('mdast').Nodes[]} */
-    const pending = [tree];
-    while (pending.length) {
-      const node = pending.pop();
-      assert.ok(node);
-      if ('children' in node) pending.push(...node.children);
-      if (node.type !== 'link' && node.type !== 'image' && node.type !== 'definition') continue;
-      const destination = new URL(node.url, documentUrl);
-      if (destination.protocol !== 'file:') continue;
-      // Source-checkout plan references outside the package are not shipped.
-      // This contract also runs in the package-only mutation sandbox.
-      if (!destination.href.startsWith(packageUrl.href)) continue;
-      await assert.doesNotReject(access(destination), `${path}: ${node.url}`);
-      checked++;
-    }
-  }
-  assert.ok(checked > 0, 'the documentation must exercise actual local links');
+  await checkDocumentationLinks(new URL('../', import.meta.url));
 });

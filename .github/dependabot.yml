@@ -1,0 +1,31 @@
+# Native update proposals; latest-first selection does not mean automatic approval.
+version: 2
+multi-ecosystem-groups:
+  repository-version-updates:
+    schedule:
+      interval: daily
+updates:
+  - package-ecosystem: npm
+    directories:
+      - /
+      - /tooling/type-coverage
+      - /tooling/api-docs
+      - /comparison/bbob
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    cooldown:
+      default-days: 0
+  - package-ecosystem: pip
+    directories:
+      - /
+      - /tooling/prose
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    cooldown:
+      default-days: 0
+  - package-ecosystem: github-actions
+    directory: /
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    cooldown:
+      default-days: 0

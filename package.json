@@ -25,7 +25,9 @@
     "types/",
     "spec/",
     "coverage.json",
-    "docs/",
+    "docs/*.md",
+    "docs/reference/",
+    "docs/decisions/",
     "README.md",
     "SECURITY.md",
     "LICENSE"
@@ -41,9 +43,9 @@
     "docs:check": "node --test test/documentation.test.js",
     "docs:api": "npm --prefix tooling/api-docs run generate",
     "docs:api:check": "npm --prefix tooling/api-docs run check",
-    "docs:format": "node ../../scripts/runRepositoryPython.js tools/steam-community-bbcode/tooling/prose/format_docs.py --write",
-    "docs:format:check": "node ../../scripts/runRepositoryPython.js tools/steam-community-bbcode/tooling/prose/format_docs.py --check",
-    "qualify:prose": "node ../../scripts/runRepositoryPython.js -m unittest discover -s tools/steam-community-bbcode/tooling/prose -p test_format_docs.py",
+    "docs:format": "node scripts/runRepositoryPython.js tooling/prose/format_docs.py --write",
+    "docs:format:check": "node scripts/runRepositoryPython.js tooling/prose/format_docs.py --check",
+    "qualify:prose": "node scripts/runRepositoryPython.js -m unittest discover -s tooling/prose -p test_format_docs.py",
     "lint": "eslint src scripts test tooling/api-docs/*.js eslint.config.js --max-warnings 0",
     "qualify:github": "node scripts/qualify-github-rendering.js --live",
     "qualify:performance": "node --test test/performance/*.test.js",
@@ -67,7 +69,16 @@
     "qualify:parser": "node --test test/parser-qualification/*.test.js",
     "validate:spec": "node scripts/validate-specification.js",
     "spec:generate": "node scripts/generate-registry-modules.js",
-    "spec:check": "node scripts/generate-registry-modules.js --check"
+    "spec:check": "node scripts/generate-registry-modules.js --check",
+    "setup:development": "node scripts/setup-development.js",
+    "setup:sdlc:dependencies": "node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r requirements-sdlc.txt",
+    "setup:sdlc": "node scripts/runRepositoryPython.js scripts/set_up_sdlc.py",
+    "setup:skills": "node scripts/runRepositoryPython.js scripts/set_up_agent_skills.py --agent codex --local-only",
+    "setup:sdlc:github": "node scripts/runRepositoryPython.js scripts/bootstrap_github_sdlc.py",
+    "sdlc": "node scripts/runRepositoryPython.js scripts/sdlc.py",
+    "check:sdlc": "node scripts/runRepositoryPython.js scripts/set_up_sdlc.py --check",
+    "test:sdlc": "node scripts/runRepositoryPython.js -m unittest discover -s tests/sdlc -v",
+    "test:setup": "node scripts/runRepositoryPython.js -m unittest discover -s tests -p test_set_up_*.py"
   },
   "dependencies": {
     "@types/mdast": "4.0.4",
@@ -91,7 +102,8 @@
     "eslint": "10.10.0",
     "fast-check": "4.9.0",
     "globals": "17.12.0",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "yaml": "2.9.0"
   },
   "overrides": {
     "typed-rest-client@2.3.1": {
@@ -100,7 +112,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaksymShostak/oxygen-not-included.git",
-    "directory": "tools/steam-community-bbcode"
-  }
+    "url": "git+https://github.com/MaksymShostak/steam-community-bbcode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MaksymShostak/steam-community-bbcode/issues"
+  },
+  "homepage": "https://github.com/MaksymShostak/steam-community-bbcode#readme"
 }

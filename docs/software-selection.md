@@ -1,7 +1,7 @@
 # Software selection and qualification
 
 Checked 2026-09-08.
-Reuses the complete research and alternatives in the [v2 plan](../../../docs/plans/2026-09-08-steam-community-bbcode-implementation-plan-v2.md).
+Reuses the complete research and alternatives in the [v2 plan](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-08-steam-community-bbcode-implementation-plan-v2.md).
 This refresh changes package/tooling facts; it does not rewrite the source dialect or declare future conformance and release gates passed.
 
 ## Partial reverse continuation (9 September 2026)
@@ -164,7 +164,7 @@ Sources: [maintainer explanation](https://github.com/syntax-tree/mdast-util-gfm-
 
 ## Literal labels and flow whitespace (9 September 2026)
 
-The owner-approved [forward refinement plan](../../../docs/plans/2026-09-09-steam-community-bbcode-forward-refinements.md) corrects two interpretation policies without changing dependencies or the serializer.
+The owner-approved [forward refinement plan](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-09-steam-community-bbcode-forward-refinements.md) corrects two interpretation policies without changing dependencies or the serializer.
 Unpaired unknown labels such as `[sd]` retain source and the unknown-construct diagnostic.
 A missing-closer diagnostic requires a recognized tag.
 Known malformed tags, incomplete headers and unmatched closers remain diagnosed; explicitly paired unknown constructs retain their whole body without activating nested formatting.

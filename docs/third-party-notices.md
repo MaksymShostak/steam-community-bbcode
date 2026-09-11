@@ -1,5 +1,15 @@
 # Third-party notices
 
+The repository's source-only Python lifecycle and setup controls retain the frozen source's MIT notice in `scripts/SDLC-LICENSE` and `tests/SDLC-LICENSE`.
+Their upstream provenance and separately retained skill notices are recorded under `.sdlc/`; these development controls are excluded from the npm payload.
+
+## Imported repository helper and historical fixture
+
+`scripts/runRepositoryPython.js` was copied from the ONI repository at source commit `fe75c5d8e29f68e43812439fbc6ec73df2f43b05` and remains MIT-licensed.
+Its complete original notice is retained in `scripts/runRepositoryPython.LICENSE` in source checkouts; it is development tooling and is not distributed in the npm archive.
+The copied historical Workshop fixture retains the original MIT/Klei text in `test/fixtures/steamify/ONI-LICENSE.txt`.
+These source-only materials do not change the runtime package's AGPL-3.0-only licence.
+
 The converter's own code is licensed under [AGPL-3.0-only](../LICENSE).
 This document preserves the separate terms for third-party text included in its generated documentation.
 Dependencies installed through npm retain their own licence and notice files.

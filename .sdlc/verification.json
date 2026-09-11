@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "profiles": {
+    "focused": [
+      {
+        "name": "Working-tree whitespace",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ]
+      },
+      {
+        "name": "Generated Codex configuration",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "scripts/set_up_sdlc.py",
+          "--check"
+        ]
+      }
+    ],
+    "affected": [
+      {
+        "name": "Working-tree whitespace",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ]
+      },
+      {
+        "name": "Generated Codex configuration",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "scripts/set_up_sdlc.py",
+          "--check"
+        ]
+      },
+      {
+        "name": "Standalone converter qualification",
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import assert from 'node:assert/strict'; import {spawnSync} from 'node:child_process'; const cli=process.env.npm_execpath; assert.ok(cli, 'Invoke verification through npm run sdlc'); const result=spawnSync(process.execPath,[cli,'run','check'],{stdio:'inherit',windowsHide:true}); if(result.error) throw result.error; process.exit(result.status ?? 1);"
+        ],
+        "timeoutSeconds": 1200
+      },
+      {
+        "name": "SDLC control contracts",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/sdlc",
+          "-v"
+        ],
+        "timeoutSeconds": 600
+      },
+      {
+        "name": "Native setup preservation",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_set_up_*.py"
+        ],
+        "timeoutSeconds": 600
+      }
+    ],
+    "full": [
+      {
+        "name": "Working-tree whitespace",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ]
+      },
+      {
+        "name": "Generated Codex configuration",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "scripts/set_up_sdlc.py",
+          "--check"
+        ]
+      },
+      {
+        "name": "Standalone converter qualification",
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import assert from 'node:assert/strict'; import {spawnSync} from 'node:child_process'; const cli=process.env.npm_execpath; assert.ok(cli, 'Invoke verification through npm run sdlc'); const result=spawnSync(process.execPath,[cli,'run','check'],{stdio:'inherit',windowsHide:true}); if(result.error) throw result.error; process.exit(result.status ?? 1);"
+        ],
+        "timeoutSeconds": 1200
+      },
+      {
+        "name": "SDLC control contracts",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/sdlc",
+          "-v"
+        ],
+        "timeoutSeconds": 600
+      },
+      {
+        "name": "Native setup preservation",
+        "argv": [
+          "node",
+          "scripts/runRepositoryPython.js",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_set_up_*.py"
+        ],
+        "timeoutSeconds": 600
+      }
+    ]
+  },
+  "additionalFingerprintInputs": [
+    ".sdlc/verification.json",
+    ".node-version",
+    ".python-version",
+    "package-lock.json",
+    "tooling/type-coverage/package-lock.json",
+    "tooling/api-docs/package-lock.json",
+    "comparison/bbob/package-lock.json",
+    "tooling/prose/requirements.txt",
+    "requirements-sdlc.in",
+    "requirements-sdlc.txt"
+  ]
+}

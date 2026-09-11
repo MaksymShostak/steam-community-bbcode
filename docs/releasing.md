@@ -6,21 +6,21 @@ The package is still a private development package at version 1.0.0; that number
 
 ## Current delivery scope
 
-The owner's 10 September 2026 direction keeps further work local on the `steam-community-bbcode` branch for a future move to a purpose-built repository.
-Do not push this work, merge it into the ONI repository's `main`, dispatch remote workflows or publish a package from this checkout.
-Previously authorized remote commits and draft PR #4 remain historical evidence.
-The destination repository has not been selected.
-The commands below support local qualification and describe publication after the move and separate authorization.
+The source implementation was selectively imported into the standalone `steam-community-bbcode` repository.
+The destination identity is `MaksymShostak/steam-community-bbcode`.
+In source checkouts, `docs/migration/standalone-portability.md` records the frozen source, verified import and local approval boundary.
+ONI PR #4 is closed without merging; the source worktree and private recovery evidence remain intact.
 
-Move the source package with its tests, comparison environments, isolated tooling, lockfiles, complete licence texts and retained notices.
-Carry the accepted implementation plan and execution record, together with the required evidence under `.sdlc/runtime/converter/` and package `artifacts/`; these ignored directories are not included in Git or the npm archive.
-Keep the unsent upstream serializer report and its reproduction evidence private.
-Retain the original MIT/Klei notice for the copied Workshop-description fixture as well as the package's AGPL-3.0-only licence.
+The commands below qualify local artifacts and describe publication only after destination controls and separate owner authorization.
+The imported workflows still require destination adaptation and activation; their presence is not evidence of a working standalone release route.
+Do not publish through ONI or merge the package branch into ONI main.
 
-Adapt the existing check and release workflows to the destination rather than designing another publication system.
-The prose npm commands currently use the ONI root's `scripts/runRepositoryPython.js` and `.venv`; repository metadata, documentation links and workflow paths also require deliberate adjustment after the destination layout is known.
-The current npm archive is an installable development artifact, not a complete source-checkout transfer.
-The ONI trusted-base PR prerequisite is outside this delivery scope.
+Preserve source, tests, isolated locks, licence notices, original plans and their execution lineage.
+The private recovery archive retains ignored qualification evidence, raw failures, original candidates and the unsent upstream report; none belongs in active destination lifecycle state or npm archives.
+The copied Workshop-description fixture retains its local MIT/Klei notice, and the reused Python launcher retains its MIT notice.
+The standalone prose commands use this repository's own launcher and `.venv`.
+The installable development archive is not a complete recovery bundle.
+The historical ONI trusted-base PR linkage failure remains recorded; destination lifecycle setup must support the accepted baseline.
 
 ## Qualify a candidate
 
@@ -65,7 +65,7 @@ Keep the original comparison and qualification evidence with the approved releas
 
 The repository workflow **Steam Community BBCode release** has a manual `publish` input, defaulting to false.
 Its default run qualifies and retains a candidate without publishing.
-After moving to the selected repository, approve and commit the actual public package version and destination metadata and complete the release obligations.
+After destination workflow qualification, approve and commit the actual public package version and complete the release obligations.
 Configure npm's trusted publisher for that destination's reviewed workflow and environment; the current reusable names are `steam-community-bbcode-release.yml` and `npm-release`.
 Do not bind this package's publisher to the ONI repository.
 The binding must allow direct `npm publish`; a binding limited to staged publishing cannot authorize this workflow.

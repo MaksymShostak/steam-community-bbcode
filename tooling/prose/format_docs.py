@@ -27,7 +27,7 @@ def authored_document_paths(package_root: Path) -> list[Path]:
             path
             for path in docs.rglob("*.md")
             if path.is_file()
-            and not path.is_relative_to(docs / "reference")
+            and not any(path.is_relative_to(docs / name) for name in ("reference", "plans", "migration"))
             and path not in {docs / name for name in generated}
         ]
     )

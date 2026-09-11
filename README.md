@@ -1,37 +1,38 @@
 # steam-community-bbcode
 
-This AGPL-3.0-only subpackage implements Steam Community BBCode parsing, MDAST conversion and GFM serialization.
+This AGPL-3.0-only package implements Steam Community BBCode parsing, MDAST conversion and GFM serialization.
 All 39 registry entries have executed conversion policies: 37 observable source constructs and two context-only renderer rules.
 The [generated matrix](docs/steam-support-matrix.md) distinguishes preserved, approximated and unsupported semantics.
 Stable release qualification remains unfinished; the private `1.0.0` development label does not attest readiness.
 
-The [accepted implementation plan](../../docs/plans/2026-09-08-steam-community-bbcode-implementation-plan-v2.md) (source checkout) defines an ESM JavaScript package with checked JSDoc, generated declarations, source-provenanced Steam constructs, MDAST semantics and native GFM serialization.
+The [accepted implementation plan](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-08-steam-community-bbcode-implementation-plan-v2.md) (source checkout) defines an ESM JavaScript package with checked JSDoc, generated declarations, source-provenanced Steam constructs, MDAST semantics and native GFM serialization.
 Steam-to-GFM is the primary direction; GFM-to-Steam implements an explicit subset.
 The default source profile is `workshop-item`.
 The library performs no network or filesystem I/O.
 Unavoidable loss must receive structured diagnostics.
 
-This directory is a separate licensing boundary.
-The repository root MIT/Klei licence and .NET/ONI Mod Pipeline are unchanged.
+This standalone repository retains the package's AGPL-3.0-only licence.
+The historical Workshop fixture and copied Python launcher retain their original MIT notices; the fixture also retains the Klei disclaimer.
 See [LICENSE](LICENSE) for AGPL version 3 only.
 Dependency notices retain their original terms; [third-party notices](docs/third-party-notices.md) accompany the descriptions copied into generated API documentation.
-Publication and pre-release legal review are separate gates.
+The retained licence assessment and source qualification do not authorize destination publication.
 The [release guide](docs/releasing.md) describes candidate construction, manual publication and registry verification.
 
-Use npm 12.0.2; `npm --version` should report that exact version.
-Install this directory with `npm ci --ignore-scripts`, and install the approved coverage environment with `npm --prefix tooling/type-coverage ci --ignore-scripts`.
-Install the separate approved docs environment with `npm --prefix tooling/api-docs ci --ignore-scripts`.
-TypeScript 7 owns primary checking, declarations and consumers; the two TS 6 environments have only their documented metric and API-generation roles.
-For source-checkout documentation checks, use the repository's Python 3.14.7 `.venv` (created by root `npm run setup:development`).
-From the repository root, install the development-only formatter:
+Use Node 24.20.0, npm 12.0.2 and Python 3.14.7 for development, matching the retained version pins.
+From the repository root, run:
 
 ```text
-node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r tools/steam-community-bbcode/tooling/prose/requirements.txt
+npm run setup:development
+npm run check
 ```
 
-`npm run docs:format` in this package applies semantic sentence line breaks to authored guides.
-`npm run docs:format:check` checks them without writing.
-Run `npm run check` here, or `npm run check:converter` at the repository root.
+Setup installs the unchanged root, type-coverage and API-documentation locks with lifecycle scripts disabled, creates or validates the local `.venv`, and installs the hash-locked prose formatter.
+It requires the selected tools to be installed already and stops on a version mismatch or command failure.
+Set `PYTHON` to the selected interpreter's executable path if `python` on Windows or `python3` on Unix does not resolve to Python 3.14.7.
+No ONI checkout, game installation, global npm link or optional comparator is required.
+TypeScript 7 owns primary checking, declarations and consumers; the two TS 6 environments retain their metric and API-generation roles.
+`npm run docs:format` applies semantic sentence line breaks to maintained package guides; `npm run docs:format:check` checks without writing.
+Historical plans and migration evidence are excluded from formatting and npm distribution.
 Chevrotain 13.2.0 now supplies the qualified grammar foundation.
 Source parsing qualification is separate from the converter API and conformance requirements.
 
@@ -66,8 +67,7 @@ See [testing](docs/testing.md) for exact scope and retained evidence.
 
 Start with [getting started](docs/getting-started.md), the [API](docs/api.md), [CLI](docs/cli.md), [per-construct examples](docs/conversion-semantics.md) and [diagnostics](docs/diagnostics.md).
 Local package checks pass on Windows x64 with Node 22.23.2, 24.20.0 and 26.8.1.
-The configured Linux matrix and remote security checks still require execution.
-The [security model](docs/security-model.md) states resource and HTML boundaries, and [SECURITY.md](SECURITY.md) provides private reporting.
+The original source passed all six Windows/Linux jobs and both mutation gates at `fe75c5d8`; destination CI and release identity still require qualification. The [security model](docs/security-model.md) states resource and HTML boundaries, and [SECURITY.md](SECURITY.md) provides private reporting.
 [Comparison](docs/comparison.md) and [release qualification](docs/releasing.md) distinguish recorded results from outstanding acceptance.
 
 The forward URL policy uses native WHATWG parsing, permits HTTP/HTTPS and relative references (plus `mailto:` for links), and rejects control characters and backslashes before normalization.

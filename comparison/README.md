@@ -109,10 +109,10 @@ Python lock is platform-specific. The converter's ordinary documented dependency
 setup must already be complete.
 
 ```powershell
-.venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes --target tools/steam-community-bbcode/artifacts/comparison/python -r tools/steam-community-bbcode/comparison/python/requirements-windows-py314.txt
-dotnet tool install Converter.MarkdownToBBCodeSteam.Tool --tool-path tools/steam-community-bbcode/artifacts/comparison/dotnet --version 1.0.0.29 --configfile tools/steam-community-bbcode/comparison/dotnet/NuGet.Config
-npm --prefix tools/steam-community-bbcode run comparison:run
-npm --prefix tools/steam-community-bbcode test
+.venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes --target artifacts/comparison/python -r comparison/python/requirements-windows-py314.txt
+dotnet tool install Converter.MarkdownToBBCodeSteam.Tool --tool-path artifacts/comparison/dotnet --version 1.0.0.29 --configfile comparison/dotnet/NuGet.Config
+npm run comparison:run
+npm test
 ```
 
 Install into empty isolated targets. Reuse an existing matching installation;
