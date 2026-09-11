@@ -40,7 +40,31 @@ test("short checks gate mutation without tolerating failed prerequisites", () =>
     "dependency-review",
   );
   assert.equal(workflow.getIn(["jobs", "mutation", "needs"]), "converter");
-  for (const job of ["dependency-review", "converter", "mutation"]) {
+  assert.equal(
+    workflow.getIn(["jobs", "mutation", "if"]),
+    "${{ inputs.run-mutation == true }}",
+  );
+  assert.equal(
+    workflow.getIn([
+      "on",
+      "workflow_call",
+      "inputs",
+      "run-mutation",
+      "default",
+    ]),
+    true,
+  );
+  assert.equal(
+    workflow.getIn([
+      "on",
+      "workflow_dispatch",
+      "inputs",
+      "run-mutation",
+      "default",
+    ]),
+    false,
+  );
+  for (const job of ["dependency-review", "converter"]) {
     assert.equal(workflow.getIn(["jobs", job, "if"]), undefined);
     assert.equal(workflow.getIn(["jobs", job, "continue-on-error"]), undefined);
   }
@@ -79,19 +103,36 @@ test("aggregate observes every prerequisite even after failure", () => {
 
 /** @type {Record<string, string>} */
 const success = {
+  MUTATION_REQUIRED: "true",
   DEPENDENCY_REVIEW_RESULT: "success",
   CHECK_RESULT: "success",
   MUTATION_RESULT: "success",
 };
 const cases = [
   { name: "all succeed", env: success, status: 0 },
-  ...Object.keys(success).flatMap((stage) =>
-    ["failure", "cancelled", "skipped", ""].map((result) => ({
-      name: `${stage} ${result || "absent"}`,
-      env: { ...success, [stage]: result },
-      status: 1,
-    })),
+  ...["DEPENDENCY_REVIEW_RESULT", "CHECK_RESULT", "MUTATION_RESULT"].flatMap(
+    (stage) =>
+      ["failure", "cancelled", "skipped", ""].map((result) => ({
+        name: `${stage} ${result || "absent"}`,
+        env: { ...success, [stage]: result },
+        status: 1,
+      })),
   ),
+  {
+    name: "iteration permits only an unrequested skip",
+    env: { ...success, MUTATION_REQUIRED: "false", MUTATION_RESULT: "skipped" },
+    status: 0,
+  },
+  ...["success", "failure", "cancelled", ""].map((result) => ({
+    name: `iteration rejects unexpected mutation ${result || "absence"}`,
+    env: { ...success, MUTATION_REQUIRED: "false", MUTATION_RESULT: result },
+    status: 1,
+  })),
+  ...["", "typo"].map((required) => ({
+    name: `invalid mutation requirement ${required || "absence"}`,
+    env: { ...success, MUTATION_REQUIRED: required },
+    status: 1,
+  })),
 ];
 for (const scenario of cases) {
   test(`actual Bash aggregate: ${scenario.name}`, () => {

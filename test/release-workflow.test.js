@@ -187,6 +187,10 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
 
 test("release qualification reuses all same-revision runtime, mutation, control and security workflows", () => {
   const { document } = readWorkflow("steam-community-bbcode-release");
+  assert.equal(
+    document.getIn(["jobs", "qualification", "with", "run-mutation"]),
+    true,
+  );
   /** @type {[string, string][]} */
   const required = [
     ["qualification", "steam-community-bbcode"],

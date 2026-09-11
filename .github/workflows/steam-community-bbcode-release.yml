@@ -30,6 +30,8 @@ concurrency:
 jobs:
   qualification:
     uses: ./.github/workflows/steam-community-bbcode.yml
+    with:
+      run-mutation: true
   controls:
     uses: ./.github/workflows/sdlc-control-tests.yml
   security:
