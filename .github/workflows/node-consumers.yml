@@ -1,0 +1,70 @@
+name: Node consumer compatibility
+on:
+  workflow_call:
+    inputs:
+      artifact:
+        description: Artifact containing the single archive to qualify
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  consumer:
+    name: Consumer / ${{ matrix.os }} / Node ${{ matrix.node }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22.11.0, 24.11.0, 26.0.0, 22.x, 24.x, 26.x]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+          package-manager-cache: false
+      - name: Retain the consumer executable path
+        id: runtime
+        run: node --input-type=module -e "import {appendFileSync} from 'node:fs'; appendFileSync(process.env.GITHUB_OUTPUT, 'path=' + process.execPath + '\nmajor=' + process.versions.node.split('.')[0] + '\n');"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Install locked qualification tools on the development runtime
+        env:
+          NODE_TYPES_MAJOR: ${{ steps.runtime.outputs.major }}
+        run: |
+          npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
+          npm exec --yes --package=npm@12.0.2 -- npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ inputs.artifact }}
+          path: artifacts/consumer-candidate
+          digest-mismatch: error
+      - name: Check the retained package on the consumer runtime
+        env:
+          CONSUMER_NODE: ${{ steps.runtime.outputs.path }}
+          NODE_TYPES_MAJOR: ${{ steps.runtime.outputs.major }}
+        run: |
+          archives=(artifacts/consumer-candidate/steam-community-bbcode-*.tgz)
+          test "${#archives[@]}" -eq 1
+          test -f "${archives[0]}"
+          npm exec --yes --package=npm@12.0.2 -- npm run test:package -- --archive "${archives[0]}" --runtime "$CONSUMER_NODE" --node-types "$NODE_TYPES_MAJOR" --output artifacts/consumer-qualification 2>&1 | tee consumer-qualification.log
+      - name: Retain exact environment, archive identity and consumer results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.artifact }}-${{ matrix.os }}-${{ matrix.node }}-consumer
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            artifacts/consumer-qualification/
+            consumer-qualification.log

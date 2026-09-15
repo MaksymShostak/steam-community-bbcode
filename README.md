@@ -8,7 +8,9 @@ This release candidate is under qualification; registry publication and stable r
 
 ## Install and use
 
-Requires Node.js 22 or later.
+Targets Node.js 22.11.0+, 24.11.0+ and 26.0.0+ within those respective majors.
+Node 26 is supported during its Current phase; it has not yet entered LTS.
+The release workflow must qualify the minimum and latest releases before publication.
 For pre-publication testing, install the exact qualified tarball:
 
 ```sh

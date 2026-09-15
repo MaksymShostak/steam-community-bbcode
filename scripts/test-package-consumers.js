@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   mkdtemp,
   mkdir,
@@ -32,6 +33,7 @@ const { values } = parseArgs({
     audit: { type: "boolean", default: false },
     archive: { type: "string" },
     "node-types": { type: "string" },
+    runtime: { type: "string" },
   },
 });
 const artifacts = values.output
@@ -40,8 +42,8 @@ const artifacts = values.output
 await mkdir(artifacts, { recursive: true });
 
 /** @param {string[]} args @param {string} cwd @param {string} [input] */
-function run(args, cwd, input = "") {
-  const result = spawnSync(process.execPath, args, {
+function run(args, cwd, input = "", executable = process.execPath) {
+  const result = spawnSync(executable, args, {
     cwd,
     input,
     encoding: "utf8",
@@ -55,6 +57,9 @@ function run(args, cwd, input = "") {
   );
   return result.stdout;
 }
+
+const runtime = values.runtime ? resolve(values.runtime) : process.execPath;
+const runtimeVersion = run(["--version"], root, "", runtime).trim();
 
 /** @type {unknown} */
 let entry;
@@ -117,6 +122,11 @@ if (values.archive) {
     );
   }
 }
+const archiveSha256 = values.coordinate
+  ? undefined
+  : createHash("sha256")
+      .update(await readFile(subject))
+      .digest("hex");
 const consumer = await mkdtemp(join(tmpdir(), "steam-bbcode-consumer-"));
 try {
   await writeFile(
@@ -145,6 +155,10 @@ try {
     consumer,
   );
   const installed = join(consumer, "node_modules", "steam-community-bbcode");
+  await writeFile(
+    join(artifacts, "consumer-package-lock.json"),
+    await readFile(join(consumer, "package-lock.json")),
+  );
   /** @type {{name: string, version: string, private?: boolean, license: string, scripts?: Record<string, string>, bin?: Record<string, string>}} */
   const manifest = JSON.parse(
     await readFile(join(installed, "package.json"), "utf8"),
@@ -231,7 +245,7 @@ try {
       ),
     ),
   );
-  run(["consumer.js"], consumer);
+  run(["consumer.js"], consumer, "", runtime);
   assert.equal(manifest.bin?.["steam-community-bbcode"], "src/cli.js");
   assert.ok(
     (await readFile(join(installed, "src", "cli.js"), "utf8")).startsWith(
@@ -243,54 +257,37 @@ try {
     consumer,
   );
   assert.match(installedHelp, /to-steam.*partial/iu);
+  // npm checks the installed command registration above. Execute the shipped CLI
+  // with the selected consumer runtime, independently of the publisher's tools.
+  const cli = join(installed, "src", "cli.js");
+  assert.match(
+    run([cli, "--help"], consumer, "", runtime),
+    /to-steam.*partial/iu,
+  );
   const installedConversion = run(
-    [npmCli, "exec", "--offline", "--", "steam-community-bbcode", "to-gfm"],
+    [cli, "to-gfm"],
     consumer,
     "[b]B[/b]",
+    runtime,
   );
   assert.equal(installedConversion, "**B**\n");
   const installedFormatting = run(
-    [
-      npmCli,
-      "exec",
-      "--offline",
-      "--",
-      "steam-community-bbcode",
-      "to-gfm",
-      "--fail-on=approximate",
-    ],
+    [cli, "to-gfm", "--fail-on=approximate"],
     consumer,
     "[b]a[b]b[/b][/b]\n\n[strike] D [/strike]",
+    runtime,
   );
   assert.equal(installedFormatting, "**ab**\n\n~~&#x20;D&#x20;~~\n");
   const installedAdjacent = run(
-    [
-      npmCli,
-      "exec",
-      "--offline",
-      "--",
-      "steam-community-bbcode",
-      "to-gfm",
-      "--fail-on=approximate",
-    ],
+    [cli, "to-gfm", "--fail-on=approximate"],
     consumer,
     "a[i][b]b[/b][/i][i]c[/i]",
+    runtime,
   );
   assert.equal(installedAdjacent, "&#x61;**_b_**_c_\n");
   /** @type {{registryConstructCount: number}} */
   const installedCoverage = JSON.parse(
-    run(
-      [
-        npmCli,
-        "exec",
-        "--offline",
-        "--",
-        "steam-community-bbcode",
-        "coverage",
-        "--format=json",
-      ],
-      consumer,
-    ),
+    run([cli, "coverage", "--format=json"], consumer, "", runtime),
   );
   assert.equal(installedCoverage.registryConstructCount, 39);
   const contractRoot = new URL("../test/type-contracts/", import.meta.url);
@@ -396,11 +393,32 @@ try {
       ),
     );
   }
+  if (archiveSha256)
+    assert.equal(
+      createHash("sha256")
+        .update(await readFile(subject))
+        .digest("hex"),
+      archiveSha256,
+      "Consumer qualification must preserve the retained archive.",
+    );
+  /** @type {{version: string}} */
+  const compiler = JSON.parse(
+    await readFile(join(root, "node_modules/typescript/package.json"), "utf8"),
+  );
   await writeFile(
     join(artifacts, "consumer-report.json"),
     JSON.stringify(
       {
         result: "PASS",
+        runtime: runtimeVersion,
+        toolingRuntime: process.version,
+        npm: run([npmCli, "--version"], root).trim(),
+        platform: process.platform,
+        architecture: process.arch,
+        runnerImage: process.env["ImageOS"],
+        runnerImageVersion: process.env["ImageVersion"],
+        archiveSha256,
+        nodeDeclarations: environment?.version,
         package: {
           name: manifest.name,
           version: manifest.version,
@@ -410,7 +428,7 @@ try {
         javascript: "PASS",
         cli: "PASS",
         declarations: "PASS",
-        compiler: "TypeScript 7.0.2",
+        compiler: `TypeScript ${compiler.version}`,
         productionAudit: values.audit ? "PASS" : "NOT_RUN",
         signatureAudit: values.coordinate ? "PASS" : "NOT_RUN",
       },

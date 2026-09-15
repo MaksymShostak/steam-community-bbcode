@@ -35,16 +35,13 @@ export function setupDevelopment({
   npmCli = process.env["npm_execpath"],
   execute = executeCommand,
 } = {}) {
-  const nodeVersion = readFileSync(join(root, ".node-version"), "utf8").trim();
+  // npm validates devEngines before invoking this entry point, including on a
+  // fresh clone with no node_modules. .node-version is a reference environment.
+  const nodeVersion = process.versions.node;
   const pythonVersion = readFileSync(
     join(root, ".python-version"),
     "utf8",
   ).trim();
-  assert.equal(
-    process.versions.node,
-    nodeVersion,
-    `Use Node ${nodeVersion}; found ${process.versions.node}.`,
-  );
   assert.ok(
     npmCli,
     "Run npm run setup:development with the pinned npm version.",

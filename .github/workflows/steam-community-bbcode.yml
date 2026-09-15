@@ -29,13 +29,19 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [22.23.2, 24.20.0, 26.8.1]
+        node: [22.22.2, 24.15.0, 26.0.0, 22.x, 24.x, 26.x]
         include:
-          - node: 22.23.2
+          - node: 22.22.2
             nodeTypes: "22"
-          - node: 24.20.0
+          - node: 24.15.0
             nodeTypes: "24"
-          - node: 26.8.1
+          - node: 26.0.0
+            nodeTypes: "26"
+          - node: 22.x
+            nodeTypes: "22"
+          - node: 24.x
+            nodeTypes: "24"
+          - node: 26.x
             nodeTypes: "26"
     runs-on: ${{ matrix.os }}
     steps:
@@ -47,25 +53,13 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: ${{ matrix.node }}
+          check-latest: true
           package-manager-cache: false
-      - name: Install locked converter development dependencies
-        if: matrix.node != '24.20.0'
-        run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
-      - name: Install the approved isolated type-coverage tool
-        if: matrix.node != '24.20.0'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tooling/type-coverage ci --ignore-scripts
-      - name: Install the approved isolated API documentation tool
-        if: matrix.node != '24.20.0'
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix tooling/api-docs ci --ignore-scripts
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version-file: .python-version
       - name: Exercise standalone development setup
-        if: matrix.node == '24.20.0'
         run: npm exec --yes --package=npm@12.0.2 -- npm run setup:development
-      - name: Create the matrix prose environment
-        if: matrix.node != '24.20.0'
-        run: python -m venv .venv
       - name: Install and inventory the hash-locked native prose formatter
         run: |
           node scripts/runRepositoryPython.js -c "from pathlib import Path; Path('artifacts/supply-chain').mkdir(parents=True, exist_ok=True)"
@@ -79,11 +73,6 @@ jobs:
           npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
       - name: Check the converter and real packed consumer
         run: npm exec --yes --package=npm@12.0.2 -- npm run check
-      - name: Install the matching locked Node declarations
-        env:
-          NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
-        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
-        shell: bash
       - name: Qualify matching Node declarations and the retained archive
         env:
           NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
@@ -103,6 +92,33 @@ jobs:
             artifacts/api-documentation-fixture/
             artifacts/prose/
             artifacts/node-declarations/
+  consumer-archive:
+    name: Build consumer qualification archive
+    needs: dependency-review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
+      - run: npm exec --yes --package=npm@12.0.2 -- npm run test:package
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bbcode-consumer-archive
+          path: artifacts/steam-community-bbcode-*.tgz
+          if-no-files-found: error
+          retention-days: 30
+  consumers:
+    needs: consumer-archive
+    uses: ./.github/workflows/node-consumers.yml
+    with:
+      artifact: bbcode-consumer-archive
   mutation:
     name: BBCode / Mutation / ${{ matrix.profile }}
     if: ${{ inputs.run-mutation == true }}
@@ -139,7 +155,7 @@ jobs:
           path: artifacts/mutation-${{ matrix.profile }}/
   qualification:
     name: BBCode / Qualification
-    needs: [dependency-review, converter, mutation]
+    needs: [dependency-review, converter, mutation, consumers]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}
@@ -149,10 +165,12 @@ jobs:
           MUTATION_REQUIRED: ${{ inputs.run-mutation == true }}
           DEPENDENCY_REVIEW_RESULT: ${{ needs.dependency-review.result }}
           CHECK_RESULT: ${{ needs.converter.result }}
+          CONSUMER_RESULT: ${{ needs.consumers.result }}
           MUTATION_RESULT: ${{ needs.mutation.result }}
         run: |
           test "$DEPENDENCY_REVIEW_RESULT" = success
           test "$CHECK_RESULT" = success
+          test "$CONSUMER_RESULT" = success
           case "$MUTATION_REQUIRED" in
             true) test "$MUTATION_RESULT" = success ;;
             false) test "$MUTATION_RESULT" = skipped ;;

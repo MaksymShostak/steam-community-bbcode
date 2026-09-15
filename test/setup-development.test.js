@@ -1,10 +1,53 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import {
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setupDevelopment } from "../scripts/setup-development.js";
+
+test("npm enforces the development range before running a fresh-clone script", (t) => {
+  const f = fixture(t);
+  const npmCli = process.env["npm_execpath"];
+  assert.ok(npmCli, "Run this test through npm test.");
+  /** @type {{devEngines: {runtime: {name: string, version: string, onFail: string}}}} */
+  const { devEngines } = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  );
+  assert.ok(devEngines?.runtime);
+  /** @type {[typeof devEngines.runtime, number][]} */
+  const cases = [
+    [devEngines.runtime, 0],
+    [{ ...devEngines.runtime, version: "99.0.0" }, 1],
+  ];
+  for (const [runtime, expectedStatus] of cases) {
+    writeFileSync(
+      join(f.root, "package.json"),
+      JSON.stringify({
+        devEngines: { runtime },
+        scripts: { probe: 'node -e "console.log(123456789)"' },
+      }),
+    );
+    /** @type {import('node:child_process').SpawnSyncReturns<string>} */
+    const result = spawnSync(process.execPath, [npmCli, "run", "probe"], {
+      cwd: f.root,
+      encoding: "utf8",
+      windowsHide: true,
+    });
+    assert.equal(result.status, expectedStatus, result.stdout + result.stderr);
+    if (expectedStatus === 1) {
+      assert.match(result.stderr, /EBADDEVENGINES/);
+      assert.doesNotMatch(result.stdout, /123456789/);
+    } else assert.match(result.stdout, /123456789/);
+  }
+});
 
 /** @param {import('node:test').TestContext} t */
 function fixture(t) {
@@ -81,11 +124,12 @@ test("standalone setup installs exactly the locked graphs and isolated prose too
   ]);
 });
 
-test("a mismatched Node pin is rejected before any subprocess", (t) => {
+test("a compatible installed Node need not equal the reference pin", (t) => {
   const f = fixture(t);
-  writeFileSync(join(f.root, ".node-version"), "99.0.0\n");
-  assert.throws(() => setupDevelopment(f), /Node 99\.0\.0/);
-  assert.equal(f.calls.length, 0);
+  writeFileSync(join(f.root, ".node-version"), "24.20.0\n");
+  const versions = setupDevelopment(f);
+  assert.equal(versions.node, process.versions.node);
+  assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 6);
 });
 
 test("mismatched npm and Python versions stop before installations", (t) => {
