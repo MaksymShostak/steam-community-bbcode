@@ -1,5 +1,20 @@
 # JavaScript and checked contracts
 
+## Node declaration compatibility
+
+Runtime qualification covers Node 22, 24 and 26.
+Each runtime lane also selects its matching locked `@types/node` environment under `tooling/node-types/`.
+`npm run setup:development` installs those three environments; Dependabot updates each within its own major.
+
+Run `npm run check` to produce the canonical package archive, then `npm run qualify:node-types` to check all three declaration targets against that same archive.
+Use `npm run qualify:node-types -- --major 22` to select one target.
+The compatibility checks run TS7 source checking, TS6 compiler-API checking, TypeDoc, 100% type coverage and installed declaration consumers without changing canonical dependency locks or rebuilding the archive.
+Native compiler file lists and TypeDoc's actual programs must resolve every Node declaration from the selected environment.
+Logs and the exact declaration version are retained under `artifacts/node-declarations/<major>/`.
+These are declaration compatibility results; only a run on the corresponding Node executable establishes runtime evidence for that major.
+
+## Source and generated declarations
+
 Executable source, CLI code, tests and maintenance scripts use JavaScript ES modules and JSDoc.
 TypeScript 7.0.2 checks authored JavaScript and generates the public declaration files; consumers execute the shipped JavaScript directly.
 

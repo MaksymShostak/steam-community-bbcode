@@ -30,6 +30,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "qualify:node-types": "node scripts/qualify-node-declarations.js",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
     "cli": "node src/cli.js",

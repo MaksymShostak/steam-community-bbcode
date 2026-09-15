@@ -96,7 +96,13 @@ export function setupDevelopment({
     );
   }
   checked(process.execPath, [npmCli, "ci", "--ignore-scripts"]);
-  for (const directory of ["tooling/type-coverage", "tooling/api-docs"]) {
+  for (const directory of [
+    "tooling/type-coverage",
+    "tooling/api-docs",
+    "tooling/node-types/22",
+    "tooling/node-types/24",
+    "tooling/node-types/26",
+  ]) {
     checked(process.execPath, [
       npmCli,
       "--prefix",

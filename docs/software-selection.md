@@ -1,5 +1,14 @@
 # Software selection and qualification
 
+## Dependency refresh (15 September 2026)
+
+The current root declaration dependency is `@types/node` 26.5.1, with separately locked compatibility environments for 22.20.2, 24.13.4 and 26.5.1.
+All three environments qualify source, compiler API tooling and the retained package archive; the earlier selection records below remain historical evidence.
+The refresh also selects fast-check 4.10.0, yaml 2.9.1 and Snapper 0.11.4.
+Type coverage uses the supported `type-coverage-core` 2.30.1 API with TypeScript's native configuration parser for these environments, and verifies the returned program's declaration paths.
+
+## Original selection
+
 Checked 2026-09-08.
 Reuses the complete research and alternatives in the [v2 plan](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-08-steam-community-bbcode-implementation-plan-v2.md).
 This refresh changes package/tooling facts; it does not rewrite the source dialect or declare future conformance and release gates passed.
@@ -316,7 +325,9 @@ Sources: [TypeDoc JSDoc support](https://typedoc.org/documents/Doc_Comments.JSDo
 
 ## Authored documentation formatting (9 September 2026)
 
-Select unmodified Snapper (`snapper-fmt` 0.11.0, MIT) for semantic line breaks.
+The original selection was unmodified Snapper (`snapper-fmt` 0.11.0, MIT) for semantic line breaks.
+PR #8 updates it to 0.11.4 and explicitly selects its supported `--native` backend so installing Pandoc cannot change qualification output.
+The existing sentence, table, code-block and hard-break expectations remain unchanged.
 The exact published wheel licence was inspected; the hash-locked wheel is installed only as a development tool in the checkout `.venv`, outside the npm distribution.
 Its bundled CycloneDX inventory lists 268 Rust components, including permissive licences, Unicode-3.0 and MPL-2.0.
 Preserve the native inventory and installed notices; the formatter is neither modified nor redistributed in this package.

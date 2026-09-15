@@ -1,5 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": { "noEmit": true, "lib": ["ES2022", "DOM"] },
-  "include": ["generate.js"]
+  "include": ["generate.js", "../type-coverage/qualify-node-declarations.js"]
 }

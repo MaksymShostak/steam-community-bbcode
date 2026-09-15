@@ -25,6 +25,27 @@ updates:
     multi-ecosystem-group: repository-version-updates
     cooldown:
       default-days: 0
+  - package-ecosystem: npm
+    directory: /tooling/node-types/22
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    ignore:
+      - dependency-name: "@types/node"
+        versions: ["<22.0.0", ">=23.0.0"]
+  - package-ecosystem: npm
+    directory: /tooling/node-types/24
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    ignore:
+      - dependency-name: "@types/node"
+        versions: ["<24.0.0", ">=25.0.0"]
+  - package-ecosystem: npm
+    directory: /tooling/node-types/26
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    ignore:
+      - dependency-name: "@types/node"
+        versions: ["<26.0.0", ">=27.0.0"]
   - package-ecosystem: pip
     directories:
       - /tooling/prose

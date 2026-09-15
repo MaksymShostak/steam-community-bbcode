@@ -159,6 +159,16 @@ for (const scenario of cases) {
 }
 
 test("qualification preserves the supported runtime matrix and unprivileged actions", () => {
+  const declarationLanes = workflow.getIn(
+    ["jobs", "converter", "strategy", "matrix", "include"],
+    true,
+  );
+  assert.ok(isSeq(declarationLanes));
+  assert.deepEqual(declarationLanes.toJSON(), [
+    { node: "22.23.2", nodeTypes: "22" },
+    { node: "24.20.0", nodeTypes: "24" },
+    { node: "26.8.1", nodeTypes: "26" },
+  ]);
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "os"]),
     ["ubuntu-latest", "windows-latest"],

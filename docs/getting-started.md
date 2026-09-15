@@ -13,7 +13,7 @@ npm run check
 npm run cli -- to-gfm path/to/description.bbcode
 ```
 
-Setup installs the locked root and both isolated tooling graphs, then the hash-locked prose formatter in `.venv`.
+Setup installs the locked root, both isolated compiler-API tooling graphs and all three Node declaration environments, then the hash-locked prose formatter in `.venv`.
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 The library executes ordinary JavaScript; checking and declaration generation are development steps.
 See [JavaScript and types](javascript-and-types.md).

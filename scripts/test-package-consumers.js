@@ -16,6 +16,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 import { checkDocumentationLinks } from "./check-documentation-links.js";
 import { registry } from "./release-artifacts.js";
+import {
+  nodeDeclarationEnvironment,
+  verifyNodeDeclarationResolution,
+} from "./node-declaration-environment.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCli = process.env["npm_execpath"];
@@ -26,6 +30,8 @@ const { values } = parseArgs({
     coordinate: { type: "string" },
     integrity: { type: "string" },
     audit: { type: "boolean", default: false },
+    archive: { type: "string" },
+    "node-types": { type: "string" },
   },
 });
 const artifacts = values.output
@@ -53,7 +59,18 @@ function run(args, cwd, input = "") {
 /** @type {unknown} */
 let entry;
 let subject = values.coordinate;
-if (subject === undefined) {
+const environment = values["node-types"]
+  ? nodeDeclarationEnvironment(values["node-types"])
+  : undefined;
+if (values.archive) {
+  assert.equal(
+    subject,
+    undefined,
+    "Archive and registry coordinate are exclusive.",
+  );
+  assert.equal(values.integrity, undefined);
+  subject = resolve(values.archive);
+} else if (subject === undefined) {
   assert.equal(
     values.integrity,
     undefined,
@@ -296,13 +313,27 @@ try {
         noEmit: true,
         module: "NodeNext",
         moduleResolution: "NodeNext",
-        types: [],
+        types: environment ? ["node"] : [],
+        ...(environment ? { typeRoots: environment.typeRoots } : {}),
       },
       include: ["*.mts"],
     }),
   );
   // The publisher provides the compiler; type resolution occurs in the isolated
   // consumer, where only tarball dependencies exist. There is no workspace hoist.
+  if (environment) {
+    const files = run(
+      [
+        join(root, "node_modules", "typescript", "bin", "tsc"),
+        "--project",
+        join(consumer, "tsconfig.json"),
+        "--listFilesOnly",
+      ],
+      consumer,
+    );
+    verifyNodeDeclarationResolution(files.split(/\r?\n/), environment.nodeRoot);
+    await writeFile(join(artifacts, "consumer-declaration-files.log"), files);
+  }
   run(
     [
       join(root, "node_modules", "typescript", "bin", "tsc"),
