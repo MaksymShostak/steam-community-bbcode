@@ -8,9 +8,19 @@ updates:
   - package-ecosystem: npm
     directories:
       - /
+      - /comparison/bbob
+    patterns: ["*"]
+    multi-ecosystem-group: repository-version-updates
+    cooldown:
+      default-days: 0
+  - package-ecosystem: npm
+    directories:
       - /tooling/type-coverage
       - /tooling/api-docs
-      - /comparison/bbob
+    # These API-consuming tools retain the approved TypeScript 6 boundary.
+    ignore:
+      - dependency-name: typescript
+        versions: [">=7.0.0"]
     patterns: ["*"]
     multi-ecosystem-group: repository-version-updates
     cooldown:
