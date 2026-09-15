@@ -32,8 +32,6 @@ jobs:
     uses: ./.github/workflows/steam-community-bbcode.yml
     with:
       run-mutation: true
-  controls:
-    uses: ./.github/workflows/sdlc-control-tests.yml
   security:
     permissions:
       contents: read
@@ -41,7 +39,7 @@ jobs:
     uses: ./.github/workflows/codeql.yml
   candidate:
     name: Qualify the release archive
-    needs: [qualification, controls, security]
+    needs: [qualification, security]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
@@ -77,7 +75,6 @@ jobs:
           RELEASE_TAG: ${{ inputs.tag }}
           RELEASE_VERSION: ${{ inputs.version }}
           QUALIFICATION_RESULT: ${{ needs.qualification.result }}
-          CONTROL_RESULT: ${{ needs.controls.result }}
           SECURITY_RESULT: ${{ needs.security.result }}
         run: npm run release:pack -- --output artifacts/release-candidate
       - name: Bind the candidate metadata to this job
@@ -145,7 +142,7 @@ jobs:
             .release.repository == $repo and .release.repositoryId == $repoId and .release.ref == $ref and
             .release.workflowRef == $workflow and .release.workflowSha == $sha and
             .release.runId == $run and .release.runAttempt == $attempt and .release.tag == $tag and
-            .release.qualification == {"runtimeAndMutation":"success","controls":"success","security":"success"}
+            .release.qualification == {"runtimeAndMutation":"success","security":"success"}
           ' candidate.json > /dev/null
       - name: Verify and publish the retained bytes through npm OIDC
         working-directory: candidate

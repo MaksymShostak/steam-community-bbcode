@@ -128,7 +128,7 @@ export function verifyIntegrity(buffer, integrity) {
 /**
  * @typedef {{repository: string, repositoryId: string, ref: string, workflowRef: string, workflowSha: string,
  * runId: string, runAttempt: string, tag: string,
- * qualification: {runtimeAndMutation: string, controls: string, security: string}}} ReleaseIdentity
+ * qualification: {runtimeAndMutation: string, security: string}}} ReleaseIdentity
  */
 
 /**

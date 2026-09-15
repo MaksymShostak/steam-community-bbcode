@@ -27,7 +27,6 @@ updates:
       default-days: 0
   - package-ecosystem: pip
     directories:
-      - /
       - /tooling/prose
     patterns: ["*"]
     multi-ecosystem-group: repository-version-updates

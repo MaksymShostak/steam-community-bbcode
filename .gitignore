@@ -6,7 +6,7 @@ node_modules/
 /.venv/
 __pycache__/
 
-# Generated SDLC activation and local evidence
+# Local agent configuration and retained workflow evidence
 /.agents/
 /.codex/
 /.agent-tools/
