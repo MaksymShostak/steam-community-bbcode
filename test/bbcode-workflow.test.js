@@ -13,6 +13,81 @@ const source = readFileSync(
 );
 const workflow = parseDocument(source);
 assert.deepEqual(workflow.errors, []);
+const consumers = parseDocument(
+  readFileSync(
+    new URL("../.github/workflows/node-consumers.yml", import.meta.url),
+    "utf8",
+  ),
+);
+const release = parseDocument(
+  readFileSync(
+    new URL(
+      "../.github/workflows/steam-community-bbcode-release.yml",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+);
+assert.deepEqual(consumers.errors, []);
+assert.deepEqual(release.errors, []);
+
+test("consumer minimums and latest releases gate publication of the same candidate", () => {
+  const matrix = consumers.getIn(
+    ["jobs", "consumer", "strategy", "matrix", "node"],
+    true,
+  );
+  assert.ok(isSeq(matrix));
+  assert.deepEqual(matrix.toJSON(), [
+    "22.11.0",
+    "24.11.0",
+    "26.0.0",
+    "22.x",
+    "24.x",
+    "26.x",
+  ]);
+  assert.equal(
+    workflow.getIn(["jobs", "consumers", "needs"]),
+    "consumer-archive",
+  );
+  assert.equal(
+    workflow.getIn(["jobs", "consumers", "with", "artifact"]),
+    "bbcode-consumer-archive",
+  );
+  assert.equal(release.getIn(["jobs", "consumers", "needs"]), "candidate");
+  assert.equal(
+    release.getIn(["jobs", "consumers", "uses"]),
+    "./.github/workflows/node-consumers.yml",
+  );
+  assert.equal(
+    release.getIn(["jobs", "consumers", "with", "artifact"]),
+    "steam-community-bbcode-candidate",
+  );
+  const gates = release.getIn(["jobs", "publish", "needs"], true);
+  assert.ok(isSeq(gates));
+  assert.deepEqual(gates.toJSON(), ["candidate", "consumers"]);
+  const steps = consumers.getIn(["jobs", "consumer", "steps"], true);
+  assert.ok(isSeq(steps));
+  const download = steps.items.find(
+    (step) =>
+      isMap(step) &&
+      String(step.get("uses")).startsWith("actions/download-artifact@"),
+  );
+  assert.ok(isMap(download));
+  assert.equal(download.getIn(["with", "name"]), "${{ inputs.artifact }}");
+  assert.equal(download.getIn(["with", "digest-mismatch"]), "error");
+  const check = steps.items.find(
+    (step) =>
+      isMap(step) &&
+      step.get("name") === "Check the retained package on the consumer runtime",
+  );
+  assert.ok(isMap(check));
+  assert.match(
+    String(check.get("run")),
+    /--archive .*--runtime .*--node-types /,
+  );
+  assert.equal(check.get("if"), undefined);
+  assert.equal(check.get("continue-on-error"), undefined);
+});
 const bash =
   process.platform === "win32"
     ? resolve(
@@ -79,6 +154,7 @@ test("aggregate observes every prerequisite even after failure", () => {
     "dependency-review",
     "converter",
     "mutation",
+    "consumers",
   ]);
   assert.equal(workflow.getIn(["jobs", "qualification", "if"]), "always()");
   assert.equal(
@@ -92,6 +168,7 @@ test("aggregate observes every prerequisite even after failure", () => {
   for (const [key, job] of [
     ["DEPENDENCY_REVIEW_RESULT", "dependency-review"],
     ["CHECK_RESULT", "converter"],
+    ["CONSUMER_RESULT", "consumers"],
     ["MUTATION_RESULT", "mutation"],
   ]) {
     assert.equal(
@@ -106,17 +183,22 @@ const success = {
   MUTATION_REQUIRED: "true",
   DEPENDENCY_REVIEW_RESULT: "success",
   CHECK_RESULT: "success",
+  CONSUMER_RESULT: "success",
   MUTATION_RESULT: "success",
 };
 const cases = [
   { name: "all succeed", env: success, status: 0 },
-  ...["DEPENDENCY_REVIEW_RESULT", "CHECK_RESULT", "MUTATION_RESULT"].flatMap(
-    (stage) =>
-      ["failure", "cancelled", "skipped", ""].map((result) => ({
-        name: `${stage} ${result || "absent"}`,
-        env: { ...success, [stage]: result },
-        status: 1,
-      })),
+  ...[
+    "DEPENDENCY_REVIEW_RESULT",
+    "CHECK_RESULT",
+    "MUTATION_RESULT",
+    "CONSUMER_RESULT",
+  ].flatMap((stage) =>
+    ["failure", "cancelled", "skipped", ""].map((result) => ({
+      name: `${stage} ${result || "absent"}`,
+      env: { ...success, [stage]: result },
+      status: 1,
+    })),
   ),
   {
     name: "iteration permits only an unrequested skip",
@@ -165,9 +247,12 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   );
   assert.ok(isSeq(declarationLanes));
   assert.deepEqual(declarationLanes.toJSON(), [
-    { node: "22.23.2", nodeTypes: "22" },
-    { node: "24.20.0", nodeTypes: "24" },
-    { node: "26.8.1", nodeTypes: "26" },
+    { node: "22.22.2", nodeTypes: "22" },
+    { node: "24.15.0", nodeTypes: "24" },
+    { node: "26.0.0", nodeTypes: "26" },
+    { node: "22.x", nodeTypes: "22" },
+    { node: "24.x", nodeTypes: "24" },
+    { node: "26.x", nodeTypes: "26" },
   ]);
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "os"]),
@@ -175,7 +260,7 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   );
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "node"]),
-    ["22.23.2", "24.20.0", "26.8.1"],
+    ["22.22.2", "24.15.0", "26.0.0", "22.x", "24.x", "26.x"],
   );
   assert.equal(workflow.getIn(["permissions", "contents"]), "read");
   assert.doesNotMatch(
@@ -186,6 +271,11 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   assert.ok(isMap(jobs));
   for (const pair of jobs.items) {
     assert.ok(isMap(pair.value));
+    const reusable = pair.value.get("uses");
+    if (reusable !== undefined) {
+      assert.equal(reusable, "./.github/workflows/node-consumers.yml");
+      continue;
+    }
     const steps = pair.value.get("steps", true);
     assert.ok(isSeq(steps));
     for (const step of steps.items) {
@@ -200,7 +290,7 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   }
 });
 
-test("standalone qualification runs root checks and native Node24 bootstrap without ONI routing", () => {
+test("standalone qualification runs root checks and native bootstrap for every development lane without ONI routing", () => {
   assert.doesNotMatch(
     source,
     /tools\/steam-community-bbcode|selectPullRequestChecks|steps\.scope|check:converter/u,
@@ -224,7 +314,7 @@ test("standalone qualification runs root checks and native Node24 bootstrap with
       step.get("name") === "Exercise standalone development setup",
   );
   assert.ok(isMap(bootstrap));
-  assert.equal(bootstrap.get("if"), "matrix.node == '24.20.0'");
+  assert.equal(bootstrap.get("if"), undefined);
   assert.equal(
     bootstrap.get("run"),
     "npm exec --yes --package=npm@12.0.2 -- npm run setup:development",

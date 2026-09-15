@@ -2,10 +2,11 @@
 
 This package is private and under qualification.
 Use a source checkout; there is no published release to install.
-Node 22, 24 and 26 are the declared CI lines.
-Local evidence currently comes from Node 24.20.0 and npm 12.0.2 on Windows x64; the configured matrix is not itself proof that every combination passes.
+Development supports Node 22.22.2+, 24.15.0+ and 26.0.0+ within those respective majors.
+Use a recent patched LTS release for development; compatible newer versions such as 24.21.0 do not require a downgrade to the reference version in `.node-version`.
+The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
-From the root of this standalone checkout with Node 24.20.0, npm 12.0.2 and Python 3.14.7 installed:
+From the root of this standalone checkout with a supported development Node version, npm 12.0.2 and Python 3.14.7 installed:
 
 ```text
 npm run setup:development

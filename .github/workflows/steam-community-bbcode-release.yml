@@ -91,9 +91,16 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  consumers:
+    name: Qualify candidate consumer minimums and latest releases
+    needs: candidate
+    uses: ./.github/workflows/node-consumers.yml
+    with:
+      artifact: steam-community-bbcode-candidate
+
   publish:
     name: Publish the qualified archive
-    needs: candidate
+    needs: [candidate, consumers]
     if: inputs.publish && github.repository == 'MaksymShostak/steam-community-bbcode' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
     environment: npm-release
     runs-on: ubuntu-24.04

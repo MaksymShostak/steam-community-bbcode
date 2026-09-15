@@ -58,7 +58,7 @@ Confirm every registered construct has an executed policy, source evidence and d
 Complete independent R2 verification and applicable security review against the actual candidate.
 The accepted plan and execution record retain the complete gates.
 
-Require current Node 22/24/26 checks on Windows and Linux, CodeQL and dependency review, meaningful property/resource checks and review of generated HTML paths. Run `npm run test:mutation` for the configured library and CLI profiles, each requiring at least 90%, or retain equivalent results for unchanged source and tests. Preserve failures, survivors and native timeout/error counts; the numerical score does not establish semantic correctness or security approval.
+Require [minimum and latest Node 22/24/26 qualification](node-support.md) on Windows and Linux, including consumer checks of the actual retained candidate before publication, CodeQL and dependency review, meaningful property/resource checks and review of generated HTML paths. Run `npm run test:mutation` for the configured library and CLI profiles, each requiring at least 90%, or retain equivalent results for unchanged source and tests. Preserve failures, survivors and native timeout/error counts; the numerical score does not establish semantic correctness or security approval.
 Local package checks cannot substitute for remote CI or independent review.
 
 Review the native archive allowlist and actual installed files, declaration maps pointing to shipped source, exact full dependency licence terms and retained notices.
