@@ -68,16 +68,18 @@ for (const [source, expectedText] of literalLabels) {
 }
 
 test("literal-bracket controls retain structural diagnostics for known and malformed source", () => {
-  for (const [source, code] of [
+  /** @type {ReadonlyArray<readonly [source: string, code: string]>} */
+  const diagnosticCases = [
     ["[b]unfinished", "STEAM_UNCLOSED_TAG"],
     ["[code]unfinished", "STEAM_UNCLOSED_TAG"],
     ["[noparse]unfinished", "STEAM_UNCLOSED_TAG"],
     ["[b]text[/i]", "STEAM_MISMATCHED_CLOSING_TAG"],
     ["[future unfinished", "STEAM_UNCLOSED_TAG_HEADER"],
     ["[/future]tail", "STEAM_UNMATCHED_CLOSING_TAG"],
-  ]) {
+  ];
+  for (const [source, code] of diagnosticCases) {
     assert.ok(
-      parseSteamCommunityBbcode(source ?? "").diagnostics.some(
+      parseSteamCommunityBbcode(source).diagnostics.some(
         (diagnostic) => diagnostic.code === code,
       ),
       source,

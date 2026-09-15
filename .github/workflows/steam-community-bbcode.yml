@@ -30,6 +30,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [22.23.2, 24.20.0, 26.8.1]
+        include:
+          - node: 22.23.2
+            nodeTypes: "22"
+          - node: 24.20.0
+            nodeTypes: "24"
+          - node: 26.8.1
+            nodeTypes: "26"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -72,6 +79,16 @@ jobs:
           npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
       - name: Check the converter and real packed consumer
         run: npm exec --yes --package=npm@12.0.2 -- npm run check
+      - name: Install the matching locked Node declarations
+        env:
+          NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
+        run: npm exec --yes --package=npm@12.0.2 -- npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
+        shell: bash
+      - name: Qualify matching Node declarations and the retained archive
+        env:
+          NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
+        run: npm exec --yes --package=npm@12.0.2 -- npm run qualify:node-types -- --major "$NODE_TYPES_MAJOR"
+        shell: bash
       - name: Retain qualification reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -85,6 +102,7 @@ jobs:
             artifacts/api-reference/
             artifacts/api-documentation-fixture/
             artifacts/prose/
+            artifacts/node-declarations/
   mutation:
     name: BBCode / Mutation / ${{ matrix.profile }}
     if: ${{ inputs.run-mutation == true }}

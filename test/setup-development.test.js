@@ -43,6 +43,9 @@ test("standalone setup installs exactly the locked graphs and isolated prose too
       [f.npmCli, "ci", "--ignore-scripts"],
       [f.npmCli, "--prefix", "tooling/type-coverage", "ci", "--ignore-scripts"],
       [f.npmCli, "--prefix", "tooling/api-docs", "ci", "--ignore-scripts"],
+      [f.npmCli, "--prefix", "tooling/node-types/22", "ci", "--ignore-scripts"],
+      [f.npmCli, "--prefix", "tooling/node-types/24", "ci", "--ignore-scripts"],
+      [f.npmCli, "--prefix", "tooling/node-types/26", "ci", "--ignore-scripts"],
     ],
   );
   assert.ok(

@@ -3,20 +3,46 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { Application, ReferenceType, ReflectionType } from "typedoc";
+import { parseArgs } from "node:util";
+import { Application, Converter, ReferenceType, ReflectionType } from "typedoc";
+import {
+  nodeDeclarationEnvironment,
+  verifyNodeDeclarationResolution,
+} from "../../scripts/node-declaration-environment.js";
 
 const packageRoot = new URL("../../", import.meta.url);
 const options = fileURLToPath(new URL("typedoc.json", import.meta.url));
-const update = process.argv.slice(2);
-assert.ok(
-  update.length === 0 || (update.length === 1 && update[0] === "--check"),
-);
+const { values } = parseArgs({
+  options: { check: { type: "boolean" }, "node-types": { type: "string" } },
+});
+const environment = values["node-types"]
+  ? nodeDeclarationEnvironment(values["node-types"])
+  : undefined;
 
 /** Generate with the supported native application and preserve its diagnostics.
  * @param {import('typedoc').TypeDocOptions} overrides
  */
 async function generate(overrides) {
-  const app = await Application.bootstrapWithPlugins({ options, ...overrides });
+  const app = await Application.bootstrapWithPlugins({
+    options,
+    ...overrides,
+    ...(environment
+      ? { compilerOptions: { typeRoots: environment.typeRoots } }
+      : {}),
+  });
+  if (environment) {
+    app.converter.on(Converter.EVENT_BEGIN, (context) => {
+      const count = verifyNodeDeclarationResolution(
+        context.programs.flatMap((program) =>
+          program.getSourceFiles().map((source) => source.fileName),
+        ),
+        environment.nodeRoot,
+      );
+      console.log(
+        `TypeDoc resolved ${count} files from Node declarations ${environment.version}: ${environment.nodeRoot}`,
+      );
+    });
+  }
   const project = await app.convert();
   assert.ok(project, "TypeDoc must produce a native project.");
   app.validate(project);
@@ -115,7 +141,7 @@ async function files(root) {
 
 const names = await files(generatedRoot);
 assert.ok(names.length > 1 && names.every((name) => name.endsWith(".md")));
-if (update[0] === "--check") {
+if (values.check) {
   assert.deepEqual(
     await files(referenceRoot),
     names,

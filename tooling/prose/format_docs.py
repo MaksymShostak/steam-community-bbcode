@@ -49,6 +49,7 @@ def main() -> int:
     result = subprocess.run(
         [
             str(EXECUTABLE),
+            "--native",
             "--config", str(CONFIG),
             "--in-place",
             *map(str, authored_document_paths(PACKAGE_ROOT)),
@@ -62,7 +63,7 @@ def main() -> int:
 def check_documents(paths: list[Path], report: Path | None = None) -> int:
     """Enforce native formatting findings even when its render backstop preserves input."""
     result = subprocess.run(
-        [str(EXECUTABLE), "--config", str(CONFIG), "--check", "--output-format", "json", *map(str, paths)],
+        [str(EXECUTABLE), "--native", "--config", str(CONFIG), "--check", "--output-format", "json", *map(str, paths)],
         cwd=PACKAGE_ROOT, capture_output=True, text=True, encoding="utf8", check=False,
     )
     if report is not None:

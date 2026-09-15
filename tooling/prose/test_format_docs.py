@@ -12,7 +12,7 @@ from format_docs import CONFIG, EXECUTABLE, authored_document_paths, check_docum
 class NativeProseFormattingTests(unittest.TestCase):
     def format(self, source: str) -> str:
         result = subprocess.run(
-            [str(EXECUTABLE), "--config", str(CONFIG)],
+            [str(EXECUTABLE), "--native", "--config", str(CONFIG)],
             input=source, capture_output=True, text=True, encoding="utf8", timeout=10,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -56,7 +56,7 @@ class NativeProseFormattingTests(unittest.TestCase):
             document = Path(temporary) / "guide.md"
             original = b"First sentence. Second sentence.\n"
             document.write_bytes(original)
-            command = [str(EXECUTABLE), "--config", str(CONFIG)]
+            command = [str(EXECUTABLE), "--native", "--config", str(CONFIG)]
             failed = subprocess.run([*command, "--check", str(document)], capture_output=True, timeout=10)
             self.assertEqual(failed.returncode, 1)
             self.assertEqual(document.read_bytes(), original)

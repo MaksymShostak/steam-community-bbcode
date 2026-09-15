@@ -4,7 +4,7 @@
   "registryVersion": "2026-09-08",
   "evidenceScope": "Executed conversion policies; Steam rendering and release readiness are separate qualifications.",
   "targetContract": "GFM syntax; additional GitHub autolinking is checked separately and diagnosed per input.",
-  "canonicalLfInputsSha256": "fd0ccd695fb1fc3db5aed55fb844a14971ce2835da17e953bc5237e669e8524b",
+  "canonicalLfInputsSha256": "5361428a754f8a7f90b7252455bc8e047480f6080b6e682698eaf9c89faa28c4",
   "registryConstructCount": 39,
   "sourceConstructCount": 37,
   "contextOnlyConstructCount": 2,
