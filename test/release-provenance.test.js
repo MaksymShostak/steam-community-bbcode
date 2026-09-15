@@ -36,7 +36,6 @@ const candidate = {
     tag: "next",
     qualification: {
       runtimeAndMutation: "success",
-      controls: "success",
       security: "success",
     },
   },

@@ -85,11 +85,7 @@ if (process.env["GITHUB_ACTIONS"] === "true") {
     consumer.package.version,
     requiredEnvironment("RELEASE_VERSION"),
   );
-  for (const name of [
-    "QUALIFICATION_RESULT",
-    "CONTROL_RESULT",
-    "SECURITY_RESULT",
-  ]) {
+  for (const name of ["QUALIFICATION_RESULT", "SECURITY_RESULT"]) {
     assert.equal(
       requiredEnvironment(name),
       "success",
@@ -107,7 +103,6 @@ if (process.env["GITHUB_ACTIONS"] === "true") {
     tag: requiredEnvironment("RELEASE_TAG"),
     qualification: {
       runtimeAndMutation: "success",
-      controls: "success",
       security: "success",
     },
   };

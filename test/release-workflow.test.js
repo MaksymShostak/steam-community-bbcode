@@ -62,7 +62,6 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
       tag: "next",
       qualification: {
         runtimeAndMutation: "success",
-        controls: "success",
         security: "success",
       },
     },
@@ -162,7 +161,7 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
       {},
       false,
     );
-    for (const key of ["runtimeAndMutation", "controls", "security"]) {
+    for (const key of ["runtimeAndMutation", "security"]) {
       for (const result of ["failure", "skipped", "cancelled", ""]) {
         exercise(
           {
@@ -185,7 +184,7 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
   }
 });
 
-test("release qualification reuses all same-revision runtime, mutation, control and security workflows", () => {
+test("release qualification reuses all same-revision runtime, mutation and security workflows", () => {
   const { document } = readWorkflow("steam-community-bbcode-release");
   assert.equal(
     document.getIn(["jobs", "qualification", "with", "run-mutation"]),
@@ -194,7 +193,6 @@ test("release qualification reuses all same-revision runtime, mutation, control 
   /** @type {[string, string][]} */
   const required = [
     ["qualification", "steam-community-bbcode"],
-    ["controls", "sdlc-control-tests"],
     ["security", "codeql"],
   ];
   for (const [job, file] of required) {
@@ -207,7 +205,7 @@ test("release qualification reuses all same-revision runtime, mutation, control 
   }
   const needs = document.getIn(["jobs", "candidate", "needs"], true);
   assert.ok(isSeq(needs));
-  assert.deepEqual(needs.toJSON(), ["qualification", "controls", "security"]);
+  assert.deepEqual(needs.toJSON(), ["qualification", "security"]);
 });
 
 test("release uses root consumers and explicit immutable checkout without privileged project execution", () => {

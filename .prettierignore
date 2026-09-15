@@ -1,6 +1,5 @@
-# Native dependency locks and imported lifecycle provenance.
+# Native dependency locks and retained local workflow evidence.
 **/package-lock.json
-skills-lock.json
 .sdlc/
 # Immutable acceptance plans, migration evidence and comparison observations.
 docs/plans/

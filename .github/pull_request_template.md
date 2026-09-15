@@ -1,17 +1,6 @@
-<!-- These seven fields are the SDLC metadata contract. Use none where applicable. -->
-
-Change issue: none
-Accepted baseline: none
-Risk class: select R0/R1/R2/R3
-Acceptance IDs implemented: none
-Baseline-only: no
-New functionality: select yes/no
-Software selection: none
-
 ## Why
 
-Describe the accepted task or Issue, the package consumer/contributor problem, intended
-outcome and guardrails. R0/R1 can use this brief; R2/R3 use the prior accepted baseline.
+Describe the package consumer/contributor problem and intended outcome.
 
 ## What changed
 
@@ -20,20 +9,11 @@ Summarize the focused implementation.
 ## Verification
 
 - [ ] Relevant focused automated tests pass.
-- [ ] Package, SDLC and setup checks pass; commands and gaps are stated.
+- [ ] Relevant package checks pass; commands and gaps are stated.
 - [ ] Relevant installed-consumer, hosted matrix, mutation or renderer evidence is
       recorded, with missing evidence distinguished from passing local checks.
 
 Manual scenarios and evidence:
-
-## Principles, review and security
-
-Summarize naming correctness (including retained names with changed responsibility),
-native reuse and consumer validation, rights/current-version research, and outcome
-alignment. Record any specific prior shim override. Identify the exact reviewed
-revision and required independent review/security evidence or unresolved gap.
-Keep undisclosed security evidence in a restricted store. Remove spent task-owned
-scratch; retain tests, accepted baselines and failure evidence with their consumers.
 
 ## Impact review
 
@@ -46,5 +26,3 @@ scratch; retain tests, accepted baselines and failure evidence with their consum
 ## Known limitations
 
 State any known limitation, or write `None`.
-
-<!-- Declarations do not establish acceptance. Do not auto-close a lifecycle dossier. -->

@@ -72,15 +72,7 @@
     "validate:spec": "node scripts/validate-specification.js",
     "spec:generate": "node scripts/generate-registry-modules.js",
     "spec:check": "node scripts/generate-registry-modules.js --check",
-    "setup:development": "node scripts/setup-development.js",
-    "setup:sdlc:dependencies": "node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r requirements-sdlc.txt",
-    "setup:sdlc": "node scripts/runRepositoryPython.js scripts/set_up_sdlc.py",
-    "setup:skills": "node scripts/runRepositoryPython.js scripts/set_up_agent_skills.py --agent codex --local-only",
-    "setup:sdlc:github": "node scripts/runRepositoryPython.js scripts/bootstrap_github_sdlc.py",
-    "sdlc": "node scripts/runRepositoryPython.js scripts/sdlc.py",
-    "check:sdlc": "node scripts/runRepositoryPython.js scripts/set_up_sdlc.py --check",
-    "test:sdlc": "node scripts/runRepositoryPython.js -m unittest discover -s tests/sdlc -v",
-    "test:setup": "node scripts/runRepositoryPython.js -m unittest discover -s tests -p test_set_up_*.py"
+    "setup:development": "node scripts/setup-development.js"
   },
   "dependencies": {
     "@types/mdast": "4.0.4",

@@ -73,7 +73,7 @@ Keep the original comparison and qualification evidence with the approved releas
 The repository workflow **Steam Community BBCode release** has a manual `publish` input, defaulting to false.
 Its default run qualifies and retains a candidate without publishing.
 Supply the exact expected `version` and intended `tag` for both qualification and publication.
-The release run calls the same-revision runtime/mutation, SDLC and CodeQL workflows before creating the candidate.
+The release run calls the same-revision runtime/mutation and CodeQL workflows before creating the candidate.
 PR dependency review remains a reviewed-change gate; CodeQL analysis success does not itself mean zero findings.
 After destination workflow qualification, approve and commit the actual public package version and complete the release obligations.
 Configure npm's trusted publisher for that destination's reviewed workflow and environment; the current reusable names are `steam-community-bbcode-release.yml` and `npm-release`.

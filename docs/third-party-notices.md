@@ -1,8 +1,5 @@
 # Third-party notices
 
-The repository's source-only Python lifecycle and setup controls retain the frozen source's MIT notice in `scripts/SDLC-LICENSE` and `tests/SDLC-LICENSE`.
-Their upstream provenance and separately retained skill notices are recorded under `.sdlc/`; these development controls are excluded from the npm payload.
-
 ## Imported repository helper and historical fixture
 
 `scripts/runRepositoryPython.js` was copied from the ONI repository at source commit `fe75c5d8e29f68e43812439fbc6ec73df2f43b05` and remains MIT-licensed.

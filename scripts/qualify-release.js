@@ -87,7 +87,6 @@ try {
   );
   assert.deepEqual(identity.qualification, {
     runtimeAndMutation: "success",
-    controls: "success",
     security: "success",
   });
   const git = /** @param {string[]} args */ (args) =>
