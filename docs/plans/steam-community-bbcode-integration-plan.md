@@ -17,6 +17,21 @@ Record discovered scope and recovery preimages before implementation writes.
 Remote-main pushes, bootstrap/cutover merges, exact trusted-run acceptance, source retirement outside this migration and publication retain their separate approval boundaries.
 The proposal history below describes the earlier planning state; this acceptance governs execution.
 
+### Owner amendments during execution, 2026-10-07
+
+The owner instructed: do not run full tests in this repository for this migration.
+The change is confined to documentation, developer tooling and CI; it must not alter distributed converter behavior, public APIs, runtime dependencies or supported consumer runtimes.
+Use focused Markdown integration, staging, report and observer checks, changed-file formatting and byte/manifest/package-inventory evidence for local corrections.
+Do not repeat the already-completed product suite or invoke full converter, package-consumer, performance, coverage or mutation qualification for this work.
+Preserve any existing full-run evidence as historical evidence for its actual revision, not as a current receipt after later edits.
+Documentation/provenance checksum changes are separate from functionality and may be accounted for through their existing owner tools.
+These instructions supersede the local full-suite invocations proposed below; they do not authorize weakening hosted required controls or changing product thresholds.
+
+The owner also selected **Keep the bootstrap local**.
+Local signed plan, bootstrap and focused-correction commits are authorized; source-branch pushes, PR creation and merges are not.
+SLICE-002 hosted/bootstrap integration and the dependent cutover remain pending, because the accepted trust design requires an integrated trusted bootstrap before final candidate qualification.
+Do not bypass that dependency or claim the whole migration complete from a local shadow implementation.
+
 The owner requested a proposal based on successful integrations in other repositories.
 This document proposes requirements, decisions and a bounded R2 migration of developer tooling and CI enforcement.
 It does not authorize registration, installations, environment changes, source reformatting, independent scans, commits, pushes, merges or publication in Steam.
