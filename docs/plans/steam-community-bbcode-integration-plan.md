@@ -32,6 +32,16 @@ Local signed plan, bootstrap and focused-correction commits are authorized; sour
 SLICE-002 hosted/bootstrap integration and the dependent cutover remain pending, because the accepted trust design requires an integrated trusted bootstrap before final candidate qualification.
 Do not bypass that dependency or claim the whole migration complete from a local shadow implementation.
 
+The owner subsequently instructed continuation through the remaining plan work, revoking the execution pause.
+Prepare the remaining cutover candidate locally while preserving the frozen bootstrap branch; neither continuation nor local preparation grants publication, merge or exact hosted-run acceptance.
+The owner also explicitly authorized renaming action-oriented first-party development entry points from `setup` to `set-up`: `scripts/set-up-development.js`, `test/set-up-development.test.js`, `setUpDevelopment` and `set-up:development`.
+Update all active callers and documentation without aliases; preserve legitimate noun uses, upstream Action identifiers and frozen historical references.
+The owner's subsequent `spec:generate` example extends that convention to first-party npm entry points: verbs precede their objects, such as `generate:spec`, `check:format`, `run:comparison` and `pack:release`.
+Rename active callers and diagnostic guidance, retain npm lifecycle names and third-party command identifiers, and regenerate any changed provenance through its owner.
+This naming-only amendment does not authorize converter behavior changes or product-suite execution.
+The personal HISEW verification profiles for this change select documentation tooling, native integration/staging, the standard-library observer, authored Markdown, generic non-Markdown formatting and conformance provenance checks; the `full` profile denotes this relevant scope, not the prohibited full product suite.
+Future functional changes must reassess these task-specific profiles; hosted product qualification remains unchanged.
+
 The owner requested a proposal based on successful integrations in other repositories.
 This document proposes requirements, decisions and a bounded R2 migration of developer tooling and CI enforcement.
 It does not authorize registration, installations, environment changes, source reformatting, independent scans, commits, pushes, merges or publication in Steam.

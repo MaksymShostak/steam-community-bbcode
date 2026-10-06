@@ -4,7 +4,7 @@
 
 Runtime qualification covers Node 22, 24 and 26.
 Each runtime lane also selects its matching locked `@types/node` environment under `tooling/node-types/`.
-`npm run setup:development` installs those three environments; Dependabot updates each within its own major.
+`npm run set-up:development` installs those three environments; Dependabot updates each within its own major.
 
 Run `npm run check` to produce the canonical package archive, then `npm run qualify:node-types` to check all three declaration targets against that same archive.
 Use `npm run qualify:node-types -- --major 22` to select one target.
@@ -24,19 +24,19 @@ Edit the owning JavaScript contract, never the generated declaration.
 Declaration maps must resolve to the source included in the tarball.
 
 `npm run test:types` checks positive and negative consumer fixtures against freshly generated declarations.
-`npm run types:check` compares two clean declaration builds.
+`npm run check:types` compares two clean declaration builds.
 `npm run test:package` packs with npm 12, installs the actual archive into an isolated temporary consumer, and checks ESM loading and declaration resolution.
 The installed JavaScript smoke executes parsing, MDAST interpretation and GFM serialization and the partial reverse API, including diagnosed fallbacks.
 Declaration fixtures cover the public APIs and nested/media extension contracts.
 The consumer check also invokes the installed npm binary with offline resolution for help, stdin conversion and the shipped conformance report.
 CLI source has a native Node shebang and requires no compiler or loader at execution time.
 
-`npm run type-coverage` uses the approved isolated TypeScript 6.0.3 environment.
+`npm run check:type-coverage` uses the approved isolated TypeScript 6.0.3 environment.
 It measures the parent project's authored JavaScript at 100%, with no exclusions or suppressions beyond the declared generated/comparison-directory boundary.
 TypeScript 7 remains authoritative for primary checking and declaration emission.
 The extra typing metric does not establish Steam syntax or semantic coverage.
 
-`npm run docs:api` uses unmodified TypeDoc 0.28.20 and TypeScript 6.0.3 only in `tooling/api-docs`, under the separate approved docs qualification.
+`npm run generate:api-docs` uses unmodified TypeDoc 0.28.20 and TypeScript 6.0.3 only in `tooling/api-docs`, under the separate approved docs qualification.
 Native `typedoc-plugin-markdown` 4.13.0 renders the reference.
 A maintained imported generic fixture checks native type identities and rendered comments; the check compares generated Markdown bytes with the committed reference.
 

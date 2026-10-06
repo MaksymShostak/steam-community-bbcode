@@ -16,5 +16,6 @@ The isolated package retains its own `LICENSE` and `THIRD-PARTY-NOTICES.md`,
 including upstream native notices; no native asset is copied into Steam source.
 
 Shadow qualification does not format live documents or retire Snapper.
+The separately prepared local cutover replaces the prose-exclusive consumer files and canonical command references; it does not uninstall packages from an existing Python environment.
 The bootstrap must pass incumbent checks and be integrated before its trusted
 workflow can qualify a cutover candidate for exact owner acceptance.

@@ -92,4 +92,4 @@ The target is the qualified Workshop-item subset. Table alignment, task state, h
 | link-reference  | Link reference and definition preserved          | unsupported       | pass   |
 | image-reference | Image reference and definition preserved         | unsupported       | pass   |
 
-Machine-readable provenance, exact case identities, input fingerprint and independent reverse results are in [coverage.json](../coverage.json). Edit the registry or authored conformance fixtures, then run npm run conformance:generate. npm run conformance:check executes both directions again and rejects stale reports.
+Machine-readable provenance, exact case identities, input fingerprint and independent reverse results are in [coverage.json](../coverage.json). Edit the registry or authored conformance fixtures, then run npm run generate:conformance. npm run check:conformance executes both directions again and rejects stale reports.

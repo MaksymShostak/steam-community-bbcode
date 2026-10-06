@@ -59,20 +59,15 @@ jobs:
         with:
           python-version-file: .python-version
       - name: Exercise standalone development setup
-        run: npm exec --yes --package=npm@12.0.2 -- npm run setup:development
-      - name: Install and inventory the hash-locked native prose formatter
-        run: |
-          node scripts/runRepositoryPython.js -c "from pathlib import Path; Path('artifacts/supply-chain').mkdir(parents=True, exist_ok=True)"
-          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: --report artifacts/supply-chain/prose-install.json -r tooling/prose/requirements.txt
-          node scripts/runRepositoryPython.js -c "from importlib.metadata import distribution; from shutil import copyfile; d = distribution('snapper-fmt'); f = next(f for f in d.files if f.name == 'snapper-fmt.cyclonedx.json'); copyfile(d.locate_file(f), 'artifacts/supply-chain/prose.cdx.json')"
+        run: npm exec --yes --package=npm@12.0.2 -- npm run set-up:development -- --product-only
       - name: Generate locked dependency inventories
         run: |
           node --input-type=module -e "import {mkdirSync} from 'node:fs'; mkdirSync('artifacts/supply-chain', {recursive: true});"
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom > artifacts/supply-chain/package.cdx.json
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:type-coverage > artifacts/supply-chain/type-coverage.cdx.json
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
+          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom > artifacts/supply-chain/package.cdx.json
+          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom:type-coverage > artifacts/supply-chain/type-coverage.cdx.json
+          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
       - name: Check the converter and real packed consumer
-        run: npm exec --yes --package=npm@12.0.2 -- npm run check
+        run: npm exec --yes --package=npm@12.0.2 -- npm run check:product
       - name: Qualify matching Node declarations and the retained archive
         env:
           NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
@@ -90,8 +85,45 @@ jobs:
             artifacts/supply-chain/
             artifacts/api-reference/
             artifacts/api-documentation-fixture/
-            artifacts/prose/
             artifacts/node-declarations/
+  markdown:
+    name: BBCode / Markdown / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "24.21.0"
+          package-manager-cache: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: .python-version
+      - name: Install only the isolated Markdown graph and standard-library observer environment
+        run: |
+          npm exec --yes --package=npm@12.0.2 -- npm run install:markdown
+          python -m venv .venv
+      - name: Test the native integration and staging boundaries
+        run: npm exec --yes --package=npm@12.0.2 -- npm run test:markdown
+      - name: Test resource-observer boundaries
+        run: npm exec --yes --package=npm@12.0.2 -- npm run test:markdown:observer
+      - name: Check all authored Markdown, including target-only changes
+        run: npm exec --yes --package=npm@12.0.2 -- npm run check:markdown
+      - name: Retain the fresh native result and stderr
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bbcode-markdown-${{ matrix.os }}
+          path: artifacts/prose/
+          if-no-files-found: error
+          retention-days: 30
   consumer-archive:
     name: Build consumer qualification archive
     needs: dependency-review
@@ -155,7 +187,7 @@ jobs:
           path: artifacts/mutation-${{ matrix.profile }}/
   qualification:
     name: BBCode / Qualification
-    needs: [dependency-review, converter, mutation, consumers]
+    needs: [dependency-review, converter, mutation, consumers, markdown]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}
@@ -167,10 +199,12 @@ jobs:
           CHECK_RESULT: ${{ needs.converter.result }}
           CONSUMER_RESULT: ${{ needs.consumers.result }}
           MUTATION_RESULT: ${{ needs.mutation.result }}
+          MARKDOWN_RESULT: ${{ needs.markdown.result }}
         run: |
           test "$DEPENDENCY_REVIEW_RESULT" = success
           test "$CHECK_RESULT" = success
           test "$CONSUMER_RESULT" = success
+          test "$MARKDOWN_RESULT" = success
           case "$MUTATION_REQUIRED" in
             true) test "$MUTATION_RESULT" = success ;;
             false) test "$MUTATION_RESULT" = skipped ;;

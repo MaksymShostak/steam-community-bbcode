@@ -52,7 +52,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: 24.20.0
+          node-version: 24.21.0
           package-manager-cache: false
       - name: Select the qualified npm CLI
         run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
@@ -61,13 +61,13 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           npm --prefix tooling/type-coverage ci --ignore-scripts --no-audit --no-fund
           npm --prefix tooling/api-docs ci --ignore-scripts --no-audit --no-fund
+          npm run install:markdown
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version-file: .python-version
-      - name: Install the locked native prose formatter
+      - name: Retain Python for the standard-library observer and optional comparator
         run: |
           python -m venv .venv
-          node scripts/runRepositoryPython.js -m pip install --require-hashes --only-binary=:all: -r tooling/prose/requirements.txt
       - name: Run the existing converter qualification
         run: npm run check
       - name: Build and exercise the retained archive
@@ -76,7 +76,7 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
           QUALIFICATION_RESULT: ${{ needs.qualification.result }}
           SECURITY_RESULT: ${{ needs.security.result }}
-        run: npm run release:pack -- --output artifacts/release-candidate
+        run: npm run pack:release -- --output artifacts/release-candidate
       - name: Bind the candidate metadata to this job
         id: identity
         working-directory: artifacts/release-candidate
@@ -196,7 +196,7 @@ jobs:
       - name: Verify public bytes, signatures, provenance and consumers
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-        run: npm run release:verify-registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --output "$GITHUB_WORKSPACE/registry-verification"
+        run: npm run verify:registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --output "$GITHUB_WORKSPACE/registry-verification"
       - name: Retain registry verification evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

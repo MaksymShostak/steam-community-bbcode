@@ -23,7 +23,7 @@ import {
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCli = process.env["npm_execpath"];
-assert.ok(npmCli, "Run npm run release:pack.");
+assert.ok(npmCli, "Run npm run pack:release.");
 const { values } = parseArgs({ options: { output: { type: "string" } } });
 const candidates = join(root, "artifacts", "release-candidates");
 mkdirSync(candidates, { recursive: true });

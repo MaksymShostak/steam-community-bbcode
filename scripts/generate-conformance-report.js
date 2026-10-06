@@ -295,7 +295,7 @@ const document = {
         {
           type: "text",
           value:
-            ". Edit the registry or authored conformance fixtures, then run npm run conformance:generate. npm run conformance:check executes both directions again and rejects stale reports.",
+            ". Edit the registry or authored conformance fixtures, then run npm run generate:conformance. npm run check:conformance executes both directions again and rejects stale reports.",
         },
       ],
     },
@@ -419,7 +419,7 @@ for (const [path, content] of [
     assert.equal(
       await readFile(target, "utf8"),
       content,
-      `${path} is stale; run npm run conformance:generate.`,
+      `${path} is stale; run npm run generate:conformance.`,
     );
   else await writeFile(target, content, "utf8");
 }

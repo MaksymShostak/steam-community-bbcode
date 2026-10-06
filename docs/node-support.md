@@ -19,14 +19,20 @@ They are deliberately separate: consumers do not need the publisher's developmen
 These targets require passing qualification before a release can claim the tested compatibility.
 
 `package.json#engines.node` declares consumer compatibility.
-`package.json#devEngines.runtime` is enforced by npm before `install`, `ci` and `run`, including `npm run setup:development` on a fresh clone.
+`package.json#devEngines.runtime` is enforced by npm before `install`, `ci` and `run`, including `npm run set-up:development` on a fresh clone.
 Use that npm entry point for setup.
-The exact `.node-version` identifies a reference build environment; it does not constrain compatible contributor installations.
+The exact `.node-version` identifies the Node 24.21.0 reference build and Markdown environment; it does not change converter runtime compatibility.
 The existing npm and Python requirements remain unchanged.
+Markdown Quality 1.0.3 is isolated in `tooling/markdown` and is qualified here on exact Node 24.21.0, Windows x64 and Ubuntu 24.04 x64.
+Its dependency graph is never installed in the other converter lanes or shipped to consumers.
+Use `npm run set-up:development -- --product-only` and `npm run check:product` on another supported converter runtime; select Node 24.21.0 separately for `install:markdown`, `test:markdown` and `check:markdown`.
+The complete `npm run check` requires both product controls and the qualified Markdown environment.
 
 ## Qualification and reproducibility
 
-On Windows and Linux, the package checks workflow runs the public fresh-clone setup, full checks and matching Node declaration qualification at each development minimum and the latest release within each supported major.
+On Windows and Linux, the package checks workflow runs the public product-only fresh-clone setup, unchanged product checks and matching Node declaration qualification at each development minimum and the latest release within each supported major.
+Dedicated Markdown jobs check the entire authored corpus on both qualified platforms, even when only a link target or code changes.
+`BBCode / Qualification` requires both product and Markdown results; failure, cancellation, skip or absence cannot satisfy either gate.
 The consumer workflow runs the installed package's authored JavaScript and CLI cases at each consumer minimum and latest release.
 It checks packed declarations against the matching isolated Node declaration environment using the publisher's compiler and development runtime.
 Thus declaration compatibility does not assert that the compiler itself runs on every consumer runtime.

@@ -1,7 +1,7 @@
 # Command line
 
 The installed executable is `steam-community-bbcode`.
-In the source checkout, use `npm run cli --` before the same arguments.
+In the source checkout, use `npm run run:cli --` before the same arguments.
 It calls the public library APIs.
 
 ```text

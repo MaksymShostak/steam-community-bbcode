@@ -3,19 +3,39 @@
 This package is private and under qualification.
 Use a source checkout; there is no published release to install.
 Development supports Node 22.22.2+, 24.15.0+ and 26.0.0+ within those respective majors.
-Use a recent patched LTS release for development; compatible newer versions such as 24.21.0 do not require a downgrade to the reference version in `.node-version`.
+The complete documentation-tooling environment uses exact Node 24.21.0, also recorded in `.node-version`.
+The converter's broader development and consumer runtime ranges are unchanged.
 The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
-From the root of this standalone checkout with a supported development Node version, npm 12.0.2 and Python 3.14.7 installed:
+From the root of this standalone checkout with Node 24.21.0, npm 12.0.2 and Python 3.14.7 installed:
 
 ```text
-npm run setup:development
+npm run set-up:development
 npm run check
-npm run cli -- to-gfm path/to/description.bbcode
+npm run run:cli -- to-gfm path/to/description.bbcode
 ```
 
-Setup installs the locked root, both isolated compiler-API tooling graphs and all three Node declaration environments, then the hash-locked prose formatter in `.venv`.
+Setup installs the locked root, both isolated compiler-API tooling graphs, all three Node declaration environments and the separate Markdown graph, and retains a Python `.venv`.
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
+No Python formatter is installed or removed; the optional comparator keeps its own unchanged requirements.
+
+On another supported converter development runtime:
+
+```sh
+npm run set-up:development -- --product-only
+npm run check:product
+```
+
+Then select Node 24.21.0 for the independent documentation controls:
+
+```sh
+npm run install:markdown
+npm run format:markdown
+npm run test:markdown
+npm run check:markdown
+```
+
+Unsupported Markdown runtimes fail explicitly; no installer runs automatically and no successful skip substitutes for checking.
 The library executes ordinary JavaScript; checking and declaration generation are development steps.
 See [JavaScript and types](javascript-and-types.md).
 

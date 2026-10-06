@@ -18,7 +18,8 @@ Do not publish through ONI or merge the package branch into ONI main.
 Preserve source, tests, isolated locks, licence notices, original plans and their execution lineage.
 The private recovery archive retains ignored qualification evidence, raw failures, original candidates and the unsent upstream report; none belongs in active destination lifecycle state or npm archives.
 The copied Workshop-description fixture retains its local MIT/Klei notice, and the reused Python launcher retains its MIT notice.
-The standalone prose commands use this repository's own launcher and `.venv`.
+The standard-library Markdown observer and optional comparator retain this repository's Python launcher and `.venv`; no prose-only Python dependency is required.
+Authored Markdown uses the isolated `tooling/markdown` graph on Node 24.21.0.
 The installable development archive is not a complete recovery bundle.
 The historical ONI trusted-base PR linkage failure remains recorded; destination lifecycle setup must support the accepted baseline.
 
@@ -34,8 +35,13 @@ From this package's source checkout with the locked development tools installed,
 
 ```sh
 npm run check
-npm run release:pack
+npm run pack:release
 ```
+
+The complete local aggregate requires Node 24.21.0 and `npm run install:markdown`.
+Other supported converter runtimes use `npm run check:product` and separate qualified Markdown checks; product-only success cannot replace the mandatory Markdown results.
+The release candidate job uses Node 24.21.0, installs the exact isolated graph and requires both-platform Markdown jobs through its existing qualification prerequisite.
+Consumer/declaration runtime floors and the credential-limited publication job remain unchanged.
 
 The second command prints a new directory under `artifacts/release-candidates/`.
 It builds declarations with TS 7, packs through native npm and installs that archive into a temporary consumer.
@@ -44,7 +50,7 @@ Native npm audits the actual installed production graph with the same low-severi
 The candidate retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`. Schema version 2 records the hosted repository ID, ref, workflow revision, run/attempt, tag and qualification results.
 Local candidates record `release: null` and cannot pass the hosted publication gate.
 
-Use `npm run release:pack -- --output artifacts/my-candidate` to choose an empty directory.
+Use `npm run pack:release -- --output artifacts/my-candidate` to choose an empty directory.
 The empty-directory requirement prevents mixing files from different attempts; it does not impose an immutable-release policy.
 Keep the printed archive with its evidence through publication and registry verification.
 The owner-approved performance disposition and completed selected-renderer qualification are recorded in [testing](testing.md).
@@ -89,8 +95,8 @@ Prepare and qualify the exact public candidate before requesting publication app
 Use the owner-approved bootstrap entry point from a clean checkout of the candidate's source commit:
 
 ```sh
-npm run release:preflight -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-preflight.json
-npm run release:publish-bootstrap -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-publication.json
+npm run qualify:release -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-preflight.json
+npm run publish:bootstrap-release -- --candidate artifacts/my-candidate --oni-repository ../oxygen-not-included-worktrees/bbcode-readme-consumer --output artifacts/bootstrap-publication.json
 ```
 
 Each command requires a new report path and re-runs the complete preflight.
@@ -108,7 +114,7 @@ An attempted publication is recorded as requiring registry verification even whe
 Publish its retained tarball with native npm, `--ignore-scripts`, the explicit public registry and `--tag next`; do not repack it during publication.
 This local bootstrap has no GitHub workflow provenance and must not be reported as an OIDC release.
 Verify its registry archive hashes, exact installed coordinate, API/CLI/declarations, registry signatures and production audit, retaining a separately labelled bootstrap report.
-The normal `release:verify-registry` command remains strict about expected CI provenance; it is not a bootstrap success oracle.
+The normal `verify:registry` command remains strict about expected CI provenance; it is not a bootstrap success oracle.
 
 Prepare a GitHub prerelease draft for the matching `v<version>` tag and exact qualified source commit.
 Include release notes, the identical npm tarball, checksums, production SBOM and public qualification evidence.
@@ -140,7 +146,7 @@ Other distribution tags may coexist.
 To repeat this read-only verification from a qualified source checkout:
 
 ```sh
-npm run release:verify-registry -- --candidate artifacts/my-candidate --tag next --output artifacts/registry-verification
+npm run verify:registry -- --candidate artifacts/my-candidate --tag next --output artifacts/registry-verification
 ```
 
 Retain the registry verification artifact with the candidate.

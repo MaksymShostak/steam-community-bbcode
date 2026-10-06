@@ -46,9 +46,9 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: ["<26.0.0", ">=27.0.0"]
-  - package-ecosystem: pip
+  - package-ecosystem: npm
     directories:
-      - /tooling/prose
+      - /tooling/markdown
     patterns: ["*"]
     multi-ecosystem-group: repository-version-updates
     cooldown:
