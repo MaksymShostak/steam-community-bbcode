@@ -1,0 +1,25 @@
+{
+  "name": "steam-community-bbcode-markdown-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=24.21.0 <25"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "error"
+    }
+  },
+  "devDependencies": {
+    "@hadden-industries/markdown-quality": "1.0.3"
+  },
+  "overrides": {
+    "micromark-extension-math": {
+      "katex": "0.18.2"
+    }
+  }
+}
