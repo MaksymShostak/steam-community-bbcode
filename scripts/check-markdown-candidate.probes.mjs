@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Adapted from Hadden-Industries/owlapi at 4f6adbd3a925ad2e0ccfc98550f216642957f870.
-// Explicit Node probes stay outside the application Jest discovery contract.
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -9,6 +8,7 @@ import {
   writeFileSync,
   existsSync,
   readFileSync,
+  rmSync,
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -39,8 +39,9 @@ const policy = {
   links: { localFiles: true, rootRelative: "reject" },
   layout: { endOfLine: "lf", tabWidth: 2 },
 };
-function fixture() {
+function fixture(t) {
   const root = mkdtempSync(join(artifacts, "candidate-staging-test-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
   const sourceRoot = join(root, "candidate"),
     trustedRoot = join(root, "trusted"),
     outputRoot = join(root, "staged");
@@ -54,8 +55,8 @@ function fixture() {
   writeFileSync(join(trustedRoot, ".prettierignore"), "");
   return { sourceRoot, trustedRoot, outputRoot };
 }
-test("metadata executable requires an absolute host path outside both checkouts", () => {
-  const paths = fixture();
+test("metadata executable requires an absolute host path outside both checkouts", (t) => {
+  const paths = fixture(t);
   assert.throws(() =>
     metadataGit(undefined, paths.sourceRoot, paths.trustedRoot),
   );
@@ -68,8 +69,8 @@ test("metadata executable requires an absolute host path outside both checkouts"
     );
   }
 });
-test("repository metadata and dependency environments are excluded from derived data", () => {
-  const paths = fixture();
+test("repository metadata and dependency environments are excluded from derived data", (t) => {
+  const paths = fixture(t);
   writeFileSync(
     join(paths.sourceRoot, "README.md"),
     "# Candidate\n\nSafe prose.\n",
@@ -101,8 +102,8 @@ test("repository metadata and dependency environments are excluded from derived 
     "# Candidate\n\nSafe prose.\n",
   );
 });
-test("malicious candidate policy cannot hide a broken authored target; exit and independent native report survive", async () => {
-  const paths = fixture();
+test("malicious candidate policy cannot hide a broken authored target; exit and independent native report survive", async (t) => {
+  const paths = fixture(t);
   const original = "# Candidate\n\n[Missing target](missing.md).\n";
   writeFileSync(join(paths.sourceRoot, "README.md"), original);
   writeFileSync(
@@ -156,19 +157,59 @@ test("malicious candidate policy cannot hide a broken authored target; exit and 
     original,
   );
 });
-test("fresh output boundary rejects ancestor, reuse and reserved policy collisions", () => {
-  const paths = fixture();
+
+test("nested candidate ignores and data-only formatter configs have no checking authority", async (t) => {
+  const paths = fixture(t);
+  mkdirSync(join(paths.sourceRoot, "docs"));
+  writeFileSync(
+    join(paths.sourceRoot, "docs/guide.md"),
+    "# Guide\n\n[Missing](absent.txt).\n",
+  );
+  for (const name of [".gitignore", ".prettierignore"])
+    writeFileSync(join(paths.sourceRoot, "docs", name), "*.md\n");
+  writeFileSync(
+    join(paths.sourceRoot, ".editorconfig"),
+    "root = true\n\n[*]\nindent_style = tab\nindent_size = 8\n",
+  );
+  writeFileSync(
+    join(paths.sourceRoot, ".prettierrc.json"),
+    JSON.stringify({ parser: "json", tabWidth: 8 }),
+  );
+  writeFileSync(
+    join(paths.sourceRoot, "docs/.prettierrc.json"),
+    JSON.stringify({ parser: "json", endOfLine: "crlf" }),
+  );
+  const staging = stageCandidate(paths);
+  const result = await checkCandidate({
+    outputRoot: paths.outputRoot,
+    cli,
+    staging,
+  });
+  assert.equal(result.exitCode, 1);
+  assert.deepEqual(result.report.selection.files, ["docs/guide.md"]);
+  assert.ok(
+    result.report.diagnostics.some(
+      (item) =>
+        item.path === "docs/guide.md" &&
+        item.source === "links" &&
+        item.rule === "local-target",
+    ),
+  );
+});
+
+test("fresh output boundary rejects ancestor, reuse and reserved policy collisions", (t) => {
+  const paths = fixture(t);
   assert.throws(() =>
     stageCandidate({ ...paths, outputRoot: resolve(paths.sourceRoot, "..") }),
   );
   mkdirSync(paths.outputRoot);
   assert.throws(() => stageCandidate(paths));
-  const collision = fixture();
+  const collision = fixture(t);
   mkdirSync(join(collision.sourceRoot, ".markdown-quality-trusted-inputs"));
   assert.throws(() => stageCandidate(collision));
 });
-test("corpus identity detects same-length edits and renamed local targets", async () => {
-  const paths = fixture();
+test("corpus identity detects same-length edits and renamed local targets", async (t) => {
+  const paths = fixture(t);
   writeFileSync(
     join(paths.sourceRoot, "README.md"),
     "# Candidate\n\nSafe prose.\n",
@@ -184,8 +225,8 @@ test("corpus identity detects same-length edits and renamed local targets", asyn
     checkCandidate({ outputRoot: paths.outputRoot, cli, staging }),
     /Staged inputs changed/,
   );
-  const first = fixture();
-  const second = fixture();
+  const first = fixture(t);
+  const second = fixture(t);
   writeFileSync(join(first.sourceRoot, "first.txt"), "same");
   writeFileSync(join(second.sourceRoot, "other.txt"), "same");
   assert.notEqual(

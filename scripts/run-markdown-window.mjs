@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Adapted from Hadden-Industries/owlapi at 4f6adbd3a925ad2e0ccfc98550f216642957f870.
-// SPDX-License-Identifier: AGPL-3.0-only
 import { spawnSync } from "node:child_process";
 import { isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
