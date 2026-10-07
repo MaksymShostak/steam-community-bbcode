@@ -108,6 +108,7 @@ test("generated API pages retain every qualified link target beside fenced type 
     );
     /** @type {import('mdast').Nodes[]} */
     const pending = [tree];
+    /** @type {Set<string>} */
     const links = new Set();
     while (pending.length) {
       const node = pending.pop();
