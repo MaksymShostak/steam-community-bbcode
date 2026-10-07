@@ -1,6 +1,6 @@
 [**steam-community-bbcode**](../index.md)
 
-***
+---
 
 [steam-community-bbcode](../index.md) / steam/steam-bbcode-syntax
 
@@ -8,17 +8,29 @@
 
 ## Type Aliases
 
+<a id="readonlysourcespan"></a>
+
 ### ReadonlySourceSpan
 
-> **ReadonlySourceSpan** = [`ReadonlySyntaxValue`](#readonlysyntaxvalue)\<[`SourceSpan`](../index-1.md#sourcespan)\>
+```ts
+type ReadonlySourceSpan = ReadonlySyntaxValue<SourceSpan>;
+```
+
+Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue), [`SourceSpan`](../index-1.md#sourcespan).
 
 #### Type Parameters
 
-***
+---
+
+<a id="readonlysyntaxvalue"></a>
 
 ### ReadonlySyntaxValue
 
-> **ReadonlySyntaxValue**\<`T`\> = `T` *extends* `object` ? `{ readonly [K in keyof T]: ReadonlySyntaxValue<T[K]> }` : `T`
+```ts
+type ReadonlySyntaxValue<T> = T extends object ? { readonly [K in keyof T]: ReadonlySyntaxValue<T[K]> } : T;
+```
+
+Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue).
 
 #### Type Parameters
 
@@ -26,63 +38,130 @@
 
 `T`
 
-***
+---
+
+<a id="steamlistitemboundarysyntax"></a>
 
 ### SteamListItemBoundarySyntax
 
-> **SteamListItemBoundarySyntax** = [`SteamSyntaxSource`](#steamsyntaxsource) & `Readonly`\<\{ `type`: `"steamListItemBoundary"`; \}\>
+```ts
+type SteamListItemBoundarySyntax = SteamSyntaxSource & Readonly<{
+  type: "steamListItemBoundary";
+}>;
+```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamopaquetagsyntax"></a>
 
 ### SteamOpaqueTagSyntax
 
-> **SteamOpaqueTagSyntax** = [`SteamTagSource`](#steamtagsource) & `Readonly`\<\{ `tagName`: `"code"` \| `"noparse"`; `type`: `"steamOpaqueTag"`; `value`: `string`; \}\>
+```ts
+type SteamOpaqueTagSyntax = SteamTagSource & Readonly<{
+  tagName: "code" | "noparse";
+  type: "steamOpaqueTag";
+  value: string;
+}>;
+```
+
+Type references: [`SteamTagSource`](#steamtagsource).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamsyntaxsource"></a>
 
 ### SteamSyntaxSource
 
-> **SteamSyntaxSource** = `Readonly`\<\{ `rawSource`: `string`; `sourceSpan`: [`ReadonlySourceSpan`](#readonlysourcespan); \}\>
+```ts
+type SteamSyntaxSource = Readonly<{
+  rawSource: string;
+  sourceSpan: ReadonlySourceSpan;
+}>;
+```
+
+Type references: [`ReadonlySourceSpan`](#readonlysourcespan).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtagsource"></a>
 
 ### SteamTagSource
 
-> **SteamTagSource** = [`SteamSyntaxSource`](#steamsyntaxsource) & `Readonly`\<\{ `closingTagName?`: `string`; `headerClosed`: `boolean`; `rawAttributes`: `string`; `tagName`: `string`; \}\>
+```ts
+type SteamTagSource = SteamSyntaxSource & Readonly<{
+  closingTagName?: string;
+  headerClosed: boolean;
+  rawAttributes: string;
+  tagName: string;
+}>;
+```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtagsyntax"></a>
 
 ### SteamTagSyntax
 
-> **SteamTagSyntax** = [`SteamTagSource`](#steamtagsource) & `Readonly`\<\{ `children`: readonly [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode)[]; `type`: `"steamTag"`; \}\>
+```ts
+type SteamTagSyntax = SteamTagSource & Readonly<{
+  children: readonly SteamBbcodeSyntaxNode[];
+  type: "steamTag";
+}>;
+```
+
+Type references: [`SteamTagSource`](#steamtagsource), [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtextsyntax"></a>
 
 ### SteamTextSyntax
 
-> **SteamTextSyntax** = [`SteamSyntaxSource`](#steamsyntaxsource) & `Readonly`\<\{ `type`: `"steamText"`; `value`: `string`; \}\>
+```ts
+type SteamTextSyntax = SteamSyntaxSource & Readonly<{
+  type: "steamText";
+  value: string;
+}>;
+```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamunmatchedclosingtagsyntax"></a>
 
 ### SteamUnmatchedClosingTagSyntax
 
-> **SteamUnmatchedClosingTagSyntax** = [`SteamSyntaxSource`](#steamsyntaxsource) & `Readonly`\<\{ `tagName`: `string`; `type`: `"steamUnmatchedClosingTag"`; \}\>
+```ts
+type SteamUnmatchedClosingTagSyntax = SteamSyntaxSource & Readonly<{
+  tagName: string;
+  type: "steamUnmatchedClosingTag";
+}>;
+```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
 ## References
+
+<a id="steambbcodesyntaxnode"></a>
 
 ### SteamBbcodeSyntaxNode
 

@@ -2,15 +2,22 @@
 
 # Conversion semantics by construct
 
-These examples use the already qualified canonical corpus and the default Workshop profile. Each output is actual serialized GFM whose semantics were independently checked by that corpus. Fidelity describes the selected example, not every attribute variant or live Steam rendering. Some examples contain several constructs so their required context remains visible.
+These examples use the already qualified canonical corpus and the default Workshop profile.
+Each output is actual serialized GFM whose semantics were independently checked by that corpus.
+Fidelity describes the selected example, not every attribute variant or live Steam rendering.
+Some examples contain several constructs so their required context remains visible.
 
-Ordinary source punctuation is literal. Unknown syntax and unsupported source regions retain text with diagnostics. Layout whitespace adjoining converted blocks and list boundaries is normalized; opaque code/noparse and meaningful inline padding remain protected. The native serializer owns escaping and fence lengths.
+Ordinary source punctuation is literal.
+Unknown syntax and unsupported source regions retain text with diagnostics.
+Layout whitespace adjoining converted blocks and list boundaries is normalized; opaque code/noparse and meaningful inline padding remain protected.
+The native serializer owns escaping and fence lengths.
 
 See the [generated support matrix](steam-support-matrix.md) for profile provenance, executed contexts and partial reverse policies.
 
 ## steam.bbcode.h1
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [h1]A *literal* <tag>[/h1]
@@ -27,7 +34,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.h2
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [h2]A *literal* <tag>[/h2]
@@ -44,7 +52,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.h3
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [h3]A *literal* <tag>[/h3]
@@ -61,7 +70,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.b
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [b]A *literal* <tag>[/b]
@@ -78,7 +88,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.u
 
-Example policy: lossy. Steam source:
+Example policy: lossy.
+Steam source:
 
 ```bbcode
 [u]A *literal* <tag>[/u]
@@ -95,7 +106,8 @@ Diagnostics: STEAM\_UNDERLINE\_LOWERED\_TO\_TEXT: Underline presentation is omit
 
 ## steam.bbcode.i
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [i]A *literal* <tag>[/i]
@@ -112,7 +124,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.strike
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [strike]A *literal* <tag>[/strike]
@@ -129,7 +142,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.spoiler
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 [spoiler]A *literal* <tag>[/spoiler]
@@ -151,7 +165,8 @@ Diagnostics: STEAM\_SPOILER\_LOWERED\_TO\_DETAILS: Steam spoiler presentation be
 
 ## steam.bbcode.noparse
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [noparse][b]*literal*[/b][/noparse]
@@ -168,7 +183,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.hr
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [hr][/hr]
@@ -185,7 +201,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.url
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [url=https://example.org/a?x=1&y=2]A *literal* <tag>[/url]
@@ -202,7 +219,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.list
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [list][*]A *literal* <tag>[/list]
@@ -219,7 +237,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.olist
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [olist][*]A *literal* <tag>[/olist]
@@ -236,7 +255,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.list-item
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [list][*]A *literal* <tag>[/list]
@@ -253,7 +273,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.quote
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [quote]A *literal* <tag>[/quote]
@@ -270,7 +291,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.code
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ````bbcode
 [code]a`b
@@ -291,7 +313,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.table
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [table][tr][th]H[/th][/tr][tr][td]A *literal* <tag>[/td][/tr][/table]
@@ -310,7 +333,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.tr
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [table][tr][th]H[/th][/tr][tr][td]A *literal* <tag>[/td][/tr][/table]
@@ -329,7 +353,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.th
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [table][tr][th]H[/th][/tr][tr][td]A *literal* <tag>[/td][/tr][/table]
@@ -348,7 +373,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.td
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [table][tr][th]H[/th][/tr][tr][td]A *literal* <tag>[/td][/tr][/table]
@@ -367,7 +393,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.p
 
-Example policy: exact. Steam source:
+Example policy: exact.
+Steam source:
 
 ```bbcode
 [p]A *literal* <tag>[/p]
@@ -384,7 +411,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.pullquote
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 [pullquote]A *literal* <tag>[/pullquote]
@@ -401,7 +429,8 @@ Diagnostics: STEAM\_PULLQUOTE\_LOWERED\_TO\_BLOCKQUOTE: Pull-quote presentation 
 
 ## steam.bbcode.img
 
-Example policy: equivalent. Steam source:
+Example policy: equivalent.
+Steam source:
 
 ```bbcode
 [img]https://example.org/image.png[/img]
@@ -418,7 +447,8 @@ No conversion diagnostic is emitted for this qualified example.
 
 ## steam.bbcode.previewyoutube
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 [previewyoutube=tax4e4hBBZc;leftthumb][/previewyoutube]
@@ -435,7 +465,8 @@ Diagnostics: STEAM\_MEDIA\_EMBED\_LOWERED\_TO\_LINK: Steam media-widget presenta
 
 ## steam.bbcode.video
 
-Example policy: lossy. Steam source:
+Example policy: lossy.
+Steam source:
 
 ```bbcode
 [video mp4=https://example.org/video.mp4 autoplay=0][/video]
@@ -452,7 +483,8 @@ Diagnostics: STEAM\_MEDIA\_EMBED\_LOWERED\_TO\_LINK: Steam media-widget presenta
 
 ## steam.bbcode.previewimg
 
-Example policy: unsupported. Steam source:
+Example policy: unsupported.
+Steam source:
 
 ```bbcode
 [previewimg=420;sizeFull,floatLeft;example.png]A *literal* <tag>[/previewimg]
@@ -469,7 +501,8 @@ Diagnostics: STEAM\_GUIDE\_IMAGE\_UNRESOLVED: The guide image identifier has no 
 
 ## steam.bbcode.previewicon
 
-Example policy: unsupported. Steam source:
+Example policy: unsupported.
+Steam source:
 
 ```bbcode
 [previewicon=420;sizeThumb,inline;example.png]A *literal* <tag>[/previewicon]
@@ -486,7 +519,8 @@ Diagnostics: STEAM\_CONSTRUCT\_PRESERVED: This construct is preserved literally 
 
 ## steam.bbcode.screenshot
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 [screenshot=420;https://example.org/image.png]A *literal* <tag>[/screenshot]
@@ -503,7 +537,8 @@ Diagnostics: STEAM\_PREVIEW\_IMAGE\_PRESENTATION\_OMITTED: The image and alterna
 
 ## steam.bbcode.color
 
-Example policy: lossy. Steam source:
+Example policy: lossy.
+Steam source:
 
 ```bbcode
 [color]A *literal* <tag>[/color]
@@ -520,7 +555,8 @@ Diagnostics: STEAM\_COLOR\_LOWERED\_TO\_TEXT: Historical color presentation is o
 
 ## steam.renderer.youtube-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://www.youtube.com/watch?v=tax4e4hBBZc
@@ -537,7 +573,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.store-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://store.steampowered.com/app/457140/
@@ -554,7 +591,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.ugc-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://steamcommunity.com/sharedfiles/filedetails/?id=123
@@ -571,7 +609,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.inventory-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://steamcommunity.com/id/example/inventory/#440_2_123
@@ -588,7 +627,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.vimeo-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://vimeo.com/123
@@ -605,7 +645,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.sketchfab-widget
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 https://sketchfab.com/3d-models/example
@@ -622,7 +663,8 @@ Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentatio
 
 ## steam.renderer.emoticon-expansion
 
-Example policy: approximate. Steam source:
+Example policy: approximate.
+Steam source:
 
 ```bbcode
 :steamthumbsup:
@@ -639,15 +681,22 @@ Diagnostics: STEAM\_EMOTICON\_PRESERVED\_AS\_TEXT: The Steam emoticon token is r
 
 ## steam.renderer.bracket-expansion
 
-Context-only policy: The source catalogue names bracket expansion separately from parsing-space inconsistencies but supplies no qualified source-to-rendering rule. Source is retained; no occurrence or expansion is inferred. No source occurrence or syntax example can be inferred. The result carries an unsupported preserve-source policy without inventing occurrences.
+Context-only policy: The source catalogue names bracket expansion separately from parsing-space inconsistencies but supplies no qualified source-to-rendering rule.
+Source is retained; no occurrence or expansion is inferred.
+No source occurrence or syntax example can be inferred.
+The result carries an unsupported preserve-source policy without inventing occurrences.
 
 ## steam.renderer.word-filter
 
-Context-only policy: Remote word filtering depends on viewer preferences and context not supplied to this converter. Source text is preserved without inferring that any word was filtered. No source occurrence or syntax example can be inferred. The result carries an unsupported preserve-source policy without inventing occurrences.
+Context-only policy: Remote word filtering depends on viewer preferences and context not supplied to this converter.
+Source text is preserved without inferring that any word was filtered.
+No source occurrence or syntax example can be inferred.
+The result carries an unsupported preserve-source policy without inventing occurrences.
 
 ## steam.renderer.clan-image-placeholder
 
-Example policy: unsupported. Steam source:
+Example policy: unsupported.
+Steam source:
 
 ```bbcode
 {STEAM_CLAN_IMAGE}/image.png

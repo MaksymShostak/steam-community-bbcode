@@ -1,17 +1,26 @@
 # Testing and qualification
 
-`npm run format` applies Prettier using the owlapi EditorConfig convention.
-`npm run format:check` rejects formatting drift without writing and runs before qualification and local package creation.
-Markdown preserves semantic line wrapping and literal code blocks; the existing `docs:format:check` remains independently required.
-Native locks, immutable plans/evidence, fixtures and generated projections stay under their owning tools, as listed in `.prettierignore`.
+`npm run format` applies Prettier to non-Markdown source using the owlapi EditorConfig convention.
+`npm run check:format` rejects formatting drift without writing and runs before qualification and local package creation.
+`npm run format:markdown` owns all repository Markdown layout, semantic line wrapping and literal code preservation.
+`npm run check:markdown` independently requires the native `authored-gfm@1` policy and physical local-file links.
+The Markdown selector includes `**/*.md`, has no path exclusions, and consumes only `.gitignore` to omit installed dependencies and ignored runtime output.
+Plans, fixtures, tooling documentation, comparison documentation and generated references are checked too; `.prettierignore` cannot exempt them.
+The generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
+Generated documentation must converge through its owning generator, and its freshness check remains required.
 Repository-authored Markdown does not support two-space hard breaks; trailing-whitespace removal remains enabled.
 
-`npm run docs:api:check` qualifies imported generic JSDoc through the isolated native TypeDoc model and Markdown renderer, then checks all ten generated reference files for freshness.
-`npm run docs:api` explicitly regenerates them.
+`npm run check:api-docs` qualifies imported generic JSDoc through the isolated native TypeDoc model and Markdown renderer, then checks all ten generated reference files for freshness.
+`npm run generate:api-docs` explicitly regenerates them.
 Primary TS 7 checking and the strict 100% metric cover its orchestration script as well as the runtime, tests and other maintenance scripts.
 
 Run commands from this package's source checkout with the locked dependencies installed.
-`npm run check` combines specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers. The standalone repository entry point is `npm run check`, after `npm run setup:development`. It includes the standalone workflow regression under `test/bbcode-workflow.test.js`, using native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results. The qualification workflow runs for every pull request and main push, with `BBCode / Qualification` as its aggregate name. Every Windows/Linux development lane exercises the actual fresh-clone bootstrap at its minimum or latest supported release.
+`npm run check:product` retains specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers.
+`npm run check` adds the full authored Markdown check and native integration/observer probes on Node 24.21.0.
+The converter CI matrix uses explicit product-only setup and `check:product`; dedicated Windows/Linux Markdown jobs are mandatory prerequisites of `BBCode / Qualification`.
+The standalone workflow regression under `test/bbcode-workflow.test.js` uses native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results, including Markdown.
+The qualification workflow runs for every pull request and main push, without changed-path filtering.
+Every Windows/Linux development lane retains the actual product fresh-clone bootstrap at its minimum or latest supported release.
 Separate consumer lanes exercise one retained package at the lower consumer minimums and latest releases; see [Node support and qualification](node-support.md).
 These local workflow checks do not establish hosted execution or branch-protection enforcement; those require destination run and settings evidence.
 Native ESLint recommended rules also run without inline configuration or warning allowances.
@@ -21,23 +30,34 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command                       | Contract                                                                                               |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `npm test`                    | Focused runtime examples and seeded properties                                                         |
-| `npm run qualify:parser`      | Native grammar foundation and resource contracts                                                       |
-| `npm run qualify:performance` | Bounded subprocess regression for opaque text and adjacent formatting                                  |
-| `npm run qualify:github`      | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                              |
-| `npm run test:coverage`       | Both suites under c8/V8, including unloaded runtime source                                             |
-| `npm run conformance:check`   | Generated forward/reverse policy report matches executed cases                                         |
-| `npm run docs:check`          | Construct examples and package-local documentation links                                               |
-| `npm run docs:format:check`   | Native semantic line formatting of authored package guides, without writing                            |
-| `npm run qualify:prose`       | Sentence boundaries, literal content, idempotence, native check behavior and generated-file exclusions |
-| `npm run test:mutation`       | Sequential Stryker library and real-process CLI qualification                                          |
-| `npm run test:package`        | Packed source, declarations, maps, executable and fresh consumers                                      |
+| Command                              | Contract                                                                                    |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `npm test`                           | Focused runtime examples and seeded properties                                              |
+| `npm run qualify:parser`             | Native grammar foundation and resource contracts                                            |
+| `npm run qualify:performance`        | Bounded subprocess regression for opaque text and adjacent formatting                       |
+| `npm run qualify:github`             | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                   |
+| `npm run test:coverage`              | Both suites under c8/V8, including unloaded runtime source                                  |
+| `npm run check:conformance`          | Generated forward/reverse policy report matches executed cases                              |
+| `npm run check:docs`                 | Construct examples and package-local documentation links                                    |
+| `npm run check:markdown`             | Full native authored layout, lint and physical local-file links, without writing            |
+| `npm run test:markdown`              | Native tuple, scope, literals, convergence, exits, report freshness and candidate isolation |
+| `npm run test:markdown:observer`     | Process identity, resource accounting and observer cleanup boundaries                       |
+| `npm run test:documentation-tooling` | Focused setup, workflow aggregation and broader documentation-link regressions              |
+| `npm run test:mutation`              | Sequential Stryker library and real-process CLI qualification                               |
+| `npm run test:package`               | Packed source, declarations, maps, executable and fresh consumers                           |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.
 Their contracts remain subject to primary type/declaration checks.
+
+The existing evidence locator `artifacts/prose/check.json` now contains the installed capability's versioned native result, not the old Snapper array.
+Its shipped JSON Schema validates the report; operation findings exit 1, operational failures exit 2 and success exits 0.
+Each check clears stale output first and records stderr separately at `artifacts/prose/check.stderr.txt`; absent or malformed output cannot qualify.
+The generated/reference document link checker remains part of the product documentation tests and is not narrowed to the formatter's authored selection.
+
+For this documentation-tooling migration, the owner excluded local full product suites.
+Use focused native, setup, workflow and documentation checks and byte/manifest evidence; unchanged converter behavior does not require rerunning unrelated package, coverage, performance or mutation qualification.
+Hosted required controls and release thresholds remain unchanged acceptance boundaries.
 Executable diagnostic arrays are counted even when unloaded.
 See `.c8rc.json` for the exact scope.
 
@@ -80,7 +100,7 @@ The shipped `coverage.json` is a separate **conformance** report, not runtime co
 Current numerical results and retained logs belong to the [execution record](https://github.com/MaksymShostak/oxygen-not-included/blob/fe75c5d8e29f68e43812439fbc6ec73df2f43b05/docs/plans/2026-09-08-steam-community-bbcode-execution.md).
 
 The [release workflow](releasing.md) reuses the same installed API, CLI and TS 7 declaration consumers for both retained archives and exact public coordinates.
-`npm run release:pack` also retains native production audit, CycloneDX inventory and archive integrity.
+`npm run pack:release` also retains native production audit, CycloneDX inventory and archive integrity.
 Registry acceptance checks cover coexistence of release channels and rejection of wrong coordinates, tag targets, archive bytes, origins and SHA-512 integrity.
 The independent public installation and native signature/provenance audit require an actual authorized publication; local fixture checks do not attest those remote operations.
 

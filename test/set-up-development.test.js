@@ -11,7 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { setupDevelopment } from "../scripts/setup-development.js";
+import { setUpDevelopment } from "../scripts/set-up-development.js";
 
 test("npm enforces the development range before running a fresh-clone script", (t) => {
   const f = fixture(t);
@@ -63,7 +63,7 @@ function fixture(t) {
   const python = join(root, "python path with spaces", "python");
   /** @type {{command: string, args: string[], root: string}[]} */
   const calls = [];
-  /** @type {import('../scripts/setup-development.js').CommandExecutor} */
+  /** @type {import('../scripts/set-up-development.js').CommandExecutor} */
   const execute = (command, args, cwd) => {
     calls.push({ command, args, root: cwd });
     const stdout = args.includes("--version")
@@ -73,12 +73,12 @@ function fixture(t) {
         : "";
     return { status: 0, stdout, stderr: "" };
   };
-  return { root, npmCli, python, execute, calls };
+  return { root, npmCli, python, execute, calls, productOnly: true };
 }
 
-test("standalone setup installs exactly the locked graphs and isolated prose tools in a path with spaces", (t) => {
+test("product setup installs exactly the locked graphs and retains Python without prose installation", (t) => {
   const f = fixture(t);
-  setupDevelopment(f);
+  setUpDevelopment(f);
   const installs = f.calls.filter((call) => call.args.includes("ci"));
   assert.deepEqual(
     installs.map((call) => call.args),
@@ -102,32 +102,41 @@ test("standalone setup installs exactly the locked graphs and isolated prose too
         call.command === f.python && call.args.join(" ") === "-I -m venv .venv",
     ),
   );
-  const pip = f.calls.find((call) => call.args.includes("pip"));
-  assert.ok(pip);
-  assert.equal(
-    pip.command,
-    join(
-      f.root,
-      ".venv",
-      process.platform === "win32" ? "Scripts/python.exe" : "bin/python",
+  assert.ok(
+    f.calls.every(
+      (call) =>
+        !call.args.includes("pip") && !call.args.includes("install:markdown"),
     ),
   );
-  assert.deepEqual(pip.args, [
-    "-B",
-    "-m",
-    "pip",
-    "install",
-    "--require-hashes",
-    "--only-binary=:all:",
-    "-r",
-    "tooling/prose/requirements.txt",
-  ]);
+});
+
+test("Markdown installation is explicit and requires the qualified runtime before any installation", (t) => {
+  const f = fixture(t);
+  f.productOnly = false;
+  if (process.versions.node !== "24.21.0") {
+    assert.throws(
+      () => setUpDevelopment(f),
+      /Markdown setup requires Node 24\.21\.0/,
+    );
+    assert.equal(f.calls.length, 0);
+  } else {
+    const versions = setUpDevelopment(f);
+    assert.equal(versions.markdown, true);
+    assert.ok(
+      f.calls.some(
+        (call) =>
+          call.command === process.execPath &&
+          call.args.join("\0") ===
+            [f.npmCli, "run", "install:markdown"].join("\0"),
+      ),
+    );
+  }
 });
 
 test("a compatible installed Node need not equal the reference pin", (t) => {
   const f = fixture(t);
   writeFileSync(join(f.root, ".node-version"), "24.20.0\n");
-  const versions = setupDevelopment(f);
+  const versions = setUpDevelopment(f);
   assert.equal(versions.node, process.versions.node);
   assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 6);
 });
@@ -142,7 +151,7 @@ test("mismatched npm and Python versions stop before installations", (t) => {
         ? { ...result, stdout: "0.0.0\n" }
         : result;
     };
-    assert.throws(() => setupDevelopment(f), new RegExp(prerequisite));
+    assert.throws(() => setUpDevelopment(f), new RegExp(prerequisite));
     assert.ok(
       f.calls.every(
         (call) => !call.args.includes("ci") && !call.args.includes("venv"),
@@ -166,7 +175,7 @@ test("missing Python and interrupted probes retain the actual failure and do not
     f.execute = (command, args, root) =>
       command === f.python ? result : execute(command, args, root);
     assert.throws(
-      () => setupDevelopment(f),
+      () => setUpDevelopment(f),
       /missing Python executable|SIGTERM/,
     );
     assert.ok(f.calls.every((call) => !call.args.includes("ci")));
@@ -182,7 +191,7 @@ test("a failed install stops the sequence and preserves its exit status in the d
       ? { ...result, status: 7, stderr: "fixture install failed" }
       : result;
   };
-  assert.throws(() => setupDevelopment(f), /7.*fixture install failed/s);
+  assert.throws(() => setUpDevelopment(f), /7.*fixture install failed/s);
   assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 1);
   assert.ok(
     f.calls.every(
@@ -201,7 +210,7 @@ test("an existing environment is validated rather than overwritten", (t) => {
       ? { ...result, stdout: "3.13.0\n" }
       : result;
   };
-  assert.throws(() => setupDevelopment(f), /Python 3\.14\.7/);
+  assert.throws(() => setUpDevelopment(f), /Python 3\.14\.7/);
   assert.ok(
     f.calls.every(
       (call) => !call.args.includes("ci") && !call.args.includes("venv"),

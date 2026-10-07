@@ -17,6 +17,12 @@
   "treatWarningsAsErrors": true,
   "router": "module",
   "entryFileName": "index",
+  "formatWithPrettier": true,
+  "prettierConfigFile": "../../.prettierrc.json",
+  "useCodeBlocks": true,
+  "expandObjects": true,
+  "parametersFormat": "list",
+  "useHTMLAnchors": true,
   "out": "../../artifacts/api-reference/markdown",
   "json": "../../artifacts/api-reference/model.json"
 }

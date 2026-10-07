@@ -1,0 +1,1262 @@
+{
+  "docs/reference/diagnostics/conversion-result.md": [
+    {
+      "depth": 1,
+      "text": "diagnostics/conversion-result"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "ConstructConversionOutcome"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ContextOnlyRendererPolicy"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionCoverage"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionDiagnosticDetail"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "DiagnosticConstructId"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "GfmNodeConversionOutcome"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionDiagnostic"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionFidelity"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionResult"
+    },
+    {
+      "depth": 3,
+      "text": "PartialConversionResult"
+    },
+    {
+      "depth": 3,
+      "text": "UnsupportedGfmFeatureDiagnostic"
+    }
+  ],
+  "docs/reference/diagnostics/diagnostic-codes.md": [
+    {
+      "depth": 1,
+      "text": "diagnostics/diagnostic-codes"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "SteamParseDiagnosticCode"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "Variables"
+    },
+    {
+      "depth": 3,
+      "text": "conversionDiagnosticCodes"
+    },
+    {
+      "depth": 3,
+      "text": "steamParseDiagnosticCodes"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "DiagnosticCode"
+    }
+  ],
+  "docs/reference/index-1.md": [
+    {
+      "depth": 1,
+      "text": "index"
+    },
+    {
+      "depth": 2,
+      "text": "Interfaces"
+    },
+    {
+      "depth": 3,
+      "text": "GfmConversionResourceLimits"
+    },
+    {
+      "depth": 4,
+      "text": "Properties"
+    },
+    {
+      "depth": 5,
+      "text": "maxInputBytes"
+    },
+    {
+      "depth": 5,
+      "text": "maxNestingDepth"
+    },
+    {
+      "depth": 5,
+      "text": "maxNodeCount"
+    },
+    {
+      "depth": 5,
+      "text": "maxOutputBytes"
+    },
+    {
+      "depth": 3,
+      "text": "SourceSpan"
+    },
+    {
+      "depth": 4,
+      "text": "Properties"
+    },
+    {
+      "depth": 5,
+      "text": "end"
+    },
+    {
+      "depth": 5,
+      "text": "start"
+    },
+    {
+      "depth": 3,
+      "text": "SteamParseResourceLimits"
+    },
+    {
+      "depth": 4,
+      "text": "Properties"
+    },
+    {
+      "depth": 5,
+      "text": "maxAttributeBytes"
+    },
+    {
+      "depth": 5,
+      "text": "maxInputBytes"
+    },
+    {
+      "depth": 5,
+      "text": "maxNestingDepth"
+    },
+    {
+      "depth": 5,
+      "text": "maxNodeCount"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "ConstructId"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionDiagnostic"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionFidelity"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ConversionResult"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "T"
+    },
+    {
+      "depth": 3,
+      "text": "DiagnosticCode"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "GfmToSteamBbcodeOptions"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ParseSteamCommunityBbcodeOptions"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "PartialConversionResult"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "T"
+    },
+    {
+      "depth": 3,
+      "text": "SteamAttributedBlockquote"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "author"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "steamCommentId?"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeParseResult"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeSyntaxNode"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBlockSpoiler"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamColor"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "color?"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamDialectProfileId"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamEmbeddedMedia"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "constructId"
+    },
+    {
+      "depth": 5,
+      "text": "source"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamMdastRoot"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamNoParse"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 5,
+      "text": "value"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamPreviewImage"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "alignment?"
+    },
+    {
+      "depth": 5,
+      "text": "alt"
+    },
+    {
+      "depth": 5,
+      "text": "constructId"
+    },
+    {
+      "depth": 5,
+      "text": "image"
+    },
+    {
+      "depth": 5,
+      "text": "rawSource"
+    },
+    {
+      "depth": 5,
+      "text": "size?"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamPullQuote"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamSpoiler"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamUnderline"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "type"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "UnsupportedGfmFeatureDiagnostic"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "Functions"
+    },
+    {
+      "depth": 3,
+      "text": "gfmToSteamCommunityBbcode()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "source"
+    },
+    {
+      "depth": 5,
+      "text": "options?"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    },
+    {
+      "depth": 3,
+      "text": "steamCommunityBbcodeToGfm()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "source"
+    },
+    {
+      "depth": 5,
+      "text": "options?"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    },
+    {
+      "depth": 3,
+      "text": "steamCommunityBbcodeToMdast()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "source"
+    },
+    {
+      "depth": 5,
+      "text": "options?"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "parseSteamCommunityBbcode"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeToGfmOptions"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeToMdastOptions"
+    }
+  ],
+  "docs/reference/index.md": [
+    {
+      "depth": 1,
+      "text": "steam-community-bbcode"
+    },
+    {
+      "depth": 2,
+      "text": "Modules"
+    }
+  ],
+  "docs/reference/mdast/steam-mdast-nodes.md": [
+    {
+      "depth": 1,
+      "text": "mdast/steam-mdast-nodes"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBlockquote"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamDelete"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamEmphasis"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamFlowContent"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamFootnoteDefinition"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamHeading"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamLink"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "data?"
+    },
+    {
+      "depth": 6,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 6,
+      "text": "steamUrlWidget?"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamLinkReference"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamList"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamListItem"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamParagraph"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamPhrasingContent"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamStrong"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTable"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 5,
+      "text": "data?"
+    },
+    {
+      "depth": 6,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 6,
+      "text": "steamTableLayout?"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTableCell"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTableRow"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "children"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "SteamAttributedBlockquote"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBlockSpoiler"
+    },
+    {
+      "depth": 3,
+      "text": "SteamColor"
+    },
+    {
+      "depth": 3,
+      "text": "SteamEmbeddedMedia"
+    },
+    {
+      "depth": 3,
+      "text": "SteamMdastRoot"
+    },
+    {
+      "depth": 3,
+      "text": "SteamNoParse"
+    },
+    {
+      "depth": 3,
+      "text": "SteamPreviewImage"
+    },
+    {
+      "depth": 3,
+      "text": "SteamPullQuote"
+    },
+    {
+      "depth": 3,
+      "text": "SteamSpoiler"
+    },
+    {
+      "depth": 3,
+      "text": "SteamUnderline"
+    }
+  ],
+  "docs/reference/mdast/steam-table-layout.md": [
+    {
+      "depth": 1,
+      "text": "mdast/steam-table-layout"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTableLayout"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "equalcells?"
+    },
+    {
+      "depth": 5,
+      "text": "noborder?"
+    },
+    {
+      "depth": 2,
+      "text": "Functions"
+    },
+    {
+      "depth": 3,
+      "text": "steamTableLayout()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "rawAttributes"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    }
+  ],
+  "docs/reference/mdast/steam-url-widgets.md": [
+    {
+      "depth": 1,
+      "text": "mdast/steam-url-widgets"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "SteamUrlWidget"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
+      "text": "Type Declaration"
+    },
+    {
+      "depth": 5,
+      "text": "constructId"
+    },
+    {
+      "depth": 5,
+      "text": "kind"
+    },
+    {
+      "depth": 3,
+      "text": "SteamUrlWidgetKind"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "Functions"
+    },
+    {
+      "depth": 3,
+      "text": "steamTextWithUrlWidgets()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "node"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    }
+  ],
+  "docs/reference/steam/parse-steam-bbcode.md": [
+    {
+      "depth": 1,
+      "text": "steam/parse-steam-bbcode"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeParseDiagnostic"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "Functions"
+    },
+    {
+      "depth": 3,
+      "text": "isIssuedSteamBbcodeParseResult()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "value"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    },
+    {
+      "depth": 3,
+      "text": "parseSteamCommunityBbcode()"
+    },
+    {
+      "depth": 4,
+      "text": "Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "source"
+    },
+    {
+      "depth": 5,
+      "text": "options?"
+    },
+    {
+      "depth": 4,
+      "text": "Returns"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "ParseSteamCommunityBbcodeOptions"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeParseResult"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeSyntaxNode"
+    },
+    {
+      "depth": 3,
+      "text": "SteamDialectProfileId"
+    }
+  ],
+  "docs/reference/steam/registry-identifiers.md": [
+    {
+      "depth": 1,
+      "text": "steam/registry-identifiers"
+    },
+    {
+      "depth": 2,
+      "text": "Variables"
+    },
+    {
+      "depth": 3,
+      "text": "defaultSteamDialectProfile"
+    },
+    {
+      "depth": 3,
+      "text": "steamConstructIds"
+    },
+    {
+      "depth": 3,
+      "text": "steamDialectProfileIds"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "ConstructId"
+    },
+    {
+      "depth": 3,
+      "text": "SteamDialectProfileId"
+    }
+  ],
+  "docs/reference/steam/steam-bbcode-syntax.md": [
+    {
+      "depth": 1,
+      "text": "steam/steam-bbcode-syntax"
+    },
+    {
+      "depth": 2,
+      "text": "Type Aliases"
+    },
+    {
+      "depth": 3,
+      "text": "ReadonlySourceSpan"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "ReadonlySyntaxValue"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 5,
+      "text": "T"
+    },
+    {
+      "depth": 3,
+      "text": "SteamListItemBoundarySyntax"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamOpaqueTagSyntax"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamSyntaxSource"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTagSource"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTagSyntax"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamTextSyntax"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 3,
+      "text": "SteamUnmatchedClosingTagSyntax"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 2,
+      "text": "References"
+    },
+    {
+      "depth": 3,
+      "text": "SteamBbcodeSyntaxNode"
+    }
+  ]
+}

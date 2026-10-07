@@ -30,10 +30,7 @@ import {
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCli = process.env["npm_execpath"];
-assert.ok(
-  npmCli,
-  "Run npm run release:preflight or release:publish-bootstrap.",
-);
+assert.ok(npmCli, "Run npm run qualify:release or publish:bootstrap-release.");
 const { values } = parseArgs({
   options: {
     candidate: { type: "string" },
@@ -166,7 +163,7 @@ try {
   assert.equal(dryRun.integrity, candidate.tarball.integrity);
   const publint = runReleaseCommand(
     process.execPath,
-    [npmCli, "run", "release:lint-package", "--", tarballPath],
+    [npmCli, "run", "lint:package", "--", tarballPath],
     root,
   );
   const oniRepository = resolve(values["oni-repository"]);

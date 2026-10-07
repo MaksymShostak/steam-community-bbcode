@@ -81,7 +81,7 @@ if (values.archive) {
     undefined,
     "--integrity belongs to exact public-coordinate verification.",
   );
-  run([npmCli, "run", "format:check"], root);
+  run([npmCli, "run", "check:format"], root);
   run([npmCli, "run", "build"], root);
   /** @type {unknown} */
   const packed = JSON.parse(

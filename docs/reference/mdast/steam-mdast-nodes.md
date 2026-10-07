@@ -1,6 +1,6 @@
 [**steam-community-bbcode**](../index.md)
 
-***
+---
 
 [steam-community-bbcode](../index.md) / mdast/steam-mdast-nodes
 
@@ -8,291 +8,543 @@
 
 ## Type Aliases
 
+<a id="steamblockquote"></a>
+
 ### SteamBlockquote
 
-> **SteamBlockquote** = `Omit`\<`Blockquote`, `"children"`\> & `object`
+```ts
+type SteamBlockquote = Omit<Blockquote, "children"> & {
+  children: SteamFlowContent[];
+};
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamFlowContent`](#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamdelete"></a>
 
 ### SteamDelete
 
-> **SteamDelete** = `Omit`\<`Delete`, `"children"`\> & `object`
+```ts
+type SteamDelete = Omit<Delete, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamemphasis"></a>
 
 ### SteamEmphasis
 
-> **SteamEmphasis** = `Omit`\<`Emphasis`, `"children"`\> & `object`
+```ts
+type SteamEmphasis = Omit<Emphasis, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamflowcontent"></a>
 
 ### SteamFlowContent
 
-> **SteamFlowContent** = `Exclude`\<`BlockContent` \| `DefinitionContent`, \{ `children`: `unknown`[]; \}\> \| [`SteamParagraph`](#steamparagraph) \| [`SteamHeading`](#steamheading) \| [`SteamBlockquote`](#steamblockquote) \| [`SteamFootnoteDefinition`](#steamfootnotedefinition) \| [`SteamList`](#steamlist) \| [`SteamTable`](#steamtable) \| [`SteamBlockSpoiler`](../index-1.md#steamblockspoiler) \| [`SteamAttributedBlockquote`](../index-1.md#steamattributedblockquote) \| [`SteamPullQuote`](../index-1.md#steampullquote) \| [`SteamEmbeddedMedia`](../index-1.md#steamembeddedmedia)
+```ts
+type SteamFlowContent =
+  | Exclude<BlockContent | DefinitionContent, {
+  children: unknown[];
+}>
+  | SteamParagraph
+  | SteamHeading
+  | SteamBlockquote
+  | SteamFootnoteDefinition
+  | SteamList
+  | SteamTable
+  | SteamBlockSpoiler
+  | SteamAttributedBlockquote
+  | SteamPullQuote
+  | SteamEmbeddedMedia;
+```
+
+Type references: [`SteamParagraph`](#steamparagraph), [`SteamHeading`](#steamheading), [`SteamBlockquote`](#steamblockquote), [`SteamFootnoteDefinition`](#steamfootnotedefinition), [`SteamList`](#steamlist), [`SteamTable`](#steamtable), [`SteamBlockSpoiler`](../index-1.md#steamblockspoiler), [`SteamAttributedBlockquote`](../index-1.md#steamattributedblockquote), [`SteamPullQuote`](../index-1.md#steampullquote), [`SteamEmbeddedMedia`](../index-1.md#steamembeddedmedia).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamfootnotedefinition"></a>
 
 ### SteamFootnoteDefinition
 
-> **SteamFootnoteDefinition** = `Omit`\<`FootnoteDefinition`, `"children"`\> & `object`
+```ts
+type SteamFootnoteDefinition = Omit<FootnoteDefinition, "children"> & {
+  children: SteamFlowContent[];
+};
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamFlowContent`](#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamheading"></a>
 
 ### SteamHeading
 
-> **SteamHeading** = `Omit`\<`Heading`, `"children"`\> & `object`
+```ts
+type SteamHeading = Omit<Heading, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamlink"></a>
 
 ### SteamLink
 
-> **SteamLink** = `Omit`\<`Link`, `"children"` \| `"data"`\> & `object`
+```ts
+type SteamLink = Omit<Link, "children" | "data"> & {
+  children: SteamPhrasingContent[];
+  data?: LinkData & {
+     steamUrlWidget?: SteamUrlWidget;
+  };
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent), [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 ##### data?
 
-> `optional` **data?**: `LinkData` & `object`
+```ts
+optional data?: LinkData & {
+  steamUrlWidget?: SteamUrlWidget;
+};
+```
+
+Type references: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
 
 ###### Type Declaration
 
 ###### steamUrlWidget?
 
-> `optional` **steamUrlWidget?**: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget)
+```ts
+optional steamUrlWidget?: SteamUrlWidget;
+```
+
+Type references: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamlinkreference"></a>
 
 ### SteamLinkReference
 
-> **SteamLinkReference** = `Omit`\<`LinkReference`, `"children"`\> & `object`
+```ts
+type SteamLinkReference = Omit<LinkReference, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamlist"></a>
 
 ### SteamList
 
-> **SteamList** = `Omit`\<`List`, `"children"`\> & `object`
+```ts
+type SteamList = Omit<List, "children"> & {
+  children: SteamListItem[];
+};
+```
+
+Type references: [`SteamListItem`](#steamlistitem).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamListItem`](#steamlistitem)[]
+```ts
+children: SteamListItem[];
+```
+
+Type references: [`SteamListItem`](#steamlistitem).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamlistitem"></a>
 
 ### SteamListItem
 
-> **SteamListItem** = `Omit`\<`ListItem`, `"children"`\> & `object`
+```ts
+type SteamListItem = Omit<ListItem, "children"> & {
+  children: SteamFlowContent[];
+};
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamFlowContent`](#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamparagraph"></a>
 
 ### SteamParagraph
 
-> **SteamParagraph** = `Omit`\<`Paragraph`, `"children"`\> & `object`
+```ts
+type SteamParagraph = Omit<Paragraph, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamphrasingcontent"></a>
 
 ### SteamPhrasingContent
 
-> **SteamPhrasingContent** = `Exclude`\<`PhrasingContent`, \{ `children`: `unknown`[]; \}\> \| [`SteamStrong`](#steamstrong) \| [`SteamEmphasis`](#steamemphasis) \| [`SteamDelete`](#steamdelete) \| [`SteamLink`](#steamlink) \| [`SteamLinkReference`](#steamlinkreference) \| [`SteamNoParse`](../index-1.md#steamnoparse) \| [`SteamUnderline`](../index-1.md#steamunderline) \| [`SteamSpoiler`](../index-1.md#steamspoiler) \| [`SteamColor`](../index-1.md#steamcolor) \| [`SteamPreviewImage`](../index-1.md#steampreviewimage)
+```ts
+type SteamPhrasingContent =
+  | Exclude<PhrasingContent, {
+  children: unknown[];
+}>
+  | SteamStrong
+  | SteamEmphasis
+  | SteamDelete
+  | SteamLink
+  | SteamLinkReference
+  | SteamNoParse
+  | SteamUnderline
+  | SteamSpoiler
+  | SteamColor
+  | SteamPreviewImage;
+```
+
+Type references: [`SteamStrong`](#steamstrong), [`SteamEmphasis`](#steamemphasis), [`SteamDelete`](#steamdelete), [`SteamLink`](#steamlink), [`SteamLinkReference`](#steamlinkreference), [`SteamNoParse`](../index-1.md#steamnoparse), [`SteamUnderline`](../index-1.md#steamunderline), [`SteamSpoiler`](../index-1.md#steamspoiler), [`SteamColor`](../index-1.md#steamcolor), [`SteamPreviewImage`](../index-1.md#steampreviewimage).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamstrong"></a>
 
 ### SteamStrong
 
-> **SteamStrong** = `Omit`\<`Strong`, `"children"`\> & `object`
+```ts
+type SteamStrong = Omit<Strong, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtable"></a>
 
 ### SteamTable
 
-> **SteamTable** = `Omit`\<`Table`, `"children"` \| `"data"`\> & `object`
+```ts
+type SteamTable = Omit<Table, "children" | "data"> & {
+  children: SteamTableRow[];
+  data?: TableData & {
+     steamTableLayout?: SteamTableLayout;
+  };
+};
+```
+
+Type references: [`SteamTableRow`](#steamtablerow), [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamTableRow`](#steamtablerow)[]
+```ts
+children: SteamTableRow[];
+```
+
+Type references: [`SteamTableRow`](#steamtablerow).
 
 ##### data?
 
-> `optional` **data?**: `TableData` & `object`
+```ts
+optional data?: TableData & {
+  steamTableLayout?: SteamTableLayout;
+};
+```
+
+Type references: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
 
 ###### Type Declaration
 
 ###### steamTableLayout?
 
-> `optional` **steamTableLayout?**: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout)
+```ts
+optional steamTableLayout?: SteamTableLayout;
+```
+
+Type references: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtablecell"></a>
 
 ### SteamTableCell
 
-> **SteamTableCell** = `Omit`\<`TableCell`, `"children"`\> & `object`
+```ts
+type SteamTableCell = Omit<TableCell, "children"> & {
+  children: SteamPhrasingContent[];
+};
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-***
+---
+
+<a id="steamtablerow"></a>
 
 ### SteamTableRow
 
-> **SteamTableRow** = `Omit`\<`TableRow`, `"children"`\> & `object`
+```ts
+type SteamTableRow = Omit<TableRow, "children"> & {
+  children: SteamTableCell[];
+};
+```
+
+Type references: [`SteamTableCell`](#steamtablecell).
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamTableCell`](#steamtablecell)[]
+```ts
+children: SteamTableCell[];
+```
+
+Type references: [`SteamTableCell`](#steamtablecell).
 
 #### Type Parameters
 
 ## References
 
+<a id="steamattributedblockquote"></a>
+
 ### SteamAttributedBlockquote
 
 Re-exports [SteamAttributedBlockquote](../index-1.md#steamattributedblockquote)
 
-***
+---
+
+<a id="steamblockspoiler"></a>
 
 ### SteamBlockSpoiler
 
 Re-exports [SteamBlockSpoiler](../index-1.md#steamblockspoiler)
 
-***
+---
+
+<a id="steamcolor"></a>
 
 ### SteamColor
 
 Re-exports [SteamColor](../index-1.md#steamcolor)
 
-***
+---
+
+<a id="steamembeddedmedia"></a>
 
 ### SteamEmbeddedMedia
 
 Re-exports [SteamEmbeddedMedia](../index-1.md#steamembeddedmedia)
 
-***
+---
+
+<a id="steammdastroot"></a>
 
 ### SteamMdastRoot
 
 Re-exports [SteamMdastRoot](../index-1.md#steammdastroot)
 
-***
+---
+
+<a id="steamnoparse"></a>
 
 ### SteamNoParse
 
 Re-exports [SteamNoParse](../index-1.md#steamnoparse)
 
-***
+---
+
+<a id="steampreviewimage"></a>
 
 ### SteamPreviewImage
 
 Re-exports [SteamPreviewImage](../index-1.md#steampreviewimage)
 
-***
+---
+
+<a id="steampullquote"></a>
 
 ### SteamPullQuote
 
 Re-exports [SteamPullQuote](../index-1.md#steampullquote)
 
-***
+---
+
+<a id="steamspoiler"></a>
 
 ### SteamSpoiler
 
 Re-exports [SteamSpoiler](../index-1.md#steamspoiler)
 
-***
+---
+
+<a id="steamunderline"></a>
 
 ### SteamUnderline
 

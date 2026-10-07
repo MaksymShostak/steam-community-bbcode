@@ -21,7 +21,7 @@ import {
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCli = process.env["npm_execpath"];
-assert.ok(npmCli, "Run npm run release:verify-registry.");
+assert.ok(npmCli, "Run npm run verify:registry.");
 const { values } = parseArgs({
   options: {
     candidate: { type: "string" },

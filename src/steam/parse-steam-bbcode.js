@@ -16,8 +16,8 @@ const issuedParseResults = new WeakSet();
 
 /**
  * Parse source into readonly Steam syntax with structured diagnostics.
- * The default profile is the registry's Workshop-item profile. This is a syntax
- * operation; it does not serialize GFM or claim target representability.
+ * The default profile is the registry's Workshop-item profile.
+ * This is a syntax operation; it does not serialize GFM or claim target representability.
  *
  * @param {string} source
  * @param {ParseSteamCommunityBbcodeOptions} [options]
@@ -61,8 +61,8 @@ export function parseSteamCommunityBbcode(source, options = {}) {
 }
 
 /**
- * Conversion reuses immutable results issued by this parser. A deserialized or
- * fabricated tree has not passed the parser's runtime limits and validation.
+ * Conversion reuses immutable results issued by this parser.
+ * A deserialized or fabricated tree has not passed the parser's runtime limits and validation.
  *
  * @param {unknown} value
  * @returns {value is SteamBbcodeParseResult}

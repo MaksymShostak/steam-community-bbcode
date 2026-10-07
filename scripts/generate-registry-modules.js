@@ -41,7 +41,7 @@ for (const [name, content] of [
   const target = new URL(`../src/steam/${name}`, import.meta.url);
   if (values.check) {
     if ((await readFile(target, "utf8")) !== content)
-      throw new Error(`${name} is stale. Run npm run spec:generate.`);
+      throw new Error(`${name} is stale. Run npm run generate:spec.`);
   } else {
     await writeFile(target, content);
   }

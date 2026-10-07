@@ -16,7 +16,7 @@ function fixture(t) {
 test("Python launcher explains the missing local environment", (t) => {
   assert.throws(
     () => runRepositoryPython(["-m", "unittest"], { root: fixture(t) }),
-    /npm run setup:development/,
+    /npm run set-up:development/,
   );
 });
 

@@ -28,7 +28,7 @@ export function runRepositoryPython(
   );
   if (!existsSync(executable)) {
     throw new Error(
-      "Repository .venv is missing; run npm run setup:development.",
+      "Repository .venv is missing; run npm run set-up:development.",
     );
   }
   if (!args.length) {

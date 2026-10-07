@@ -32,6 +32,31 @@ Local signed plan, bootstrap and focused-correction commits are authorized; sour
 SLICE-002 hosted/bootstrap integration and the dependent cutover remain pending, because the accepted trust design requires an integrated trusted bootstrap before final candidate qualification.
 Do not bypass that dependency or claim the whole migration complete from a local shadow implementation.
 
+The owner subsequently instructed continuation through the remaining plan work, revoking the execution pause.
+Prepare the remaining cutover candidate locally while preserving the frozen bootstrap branch; neither continuation nor local preparation grants publication, merge or exact hosted-run acceptance.
+The owner also explicitly authorized renaming action-oriented first-party development entry points from `setup` to `set-up`: `scripts/set-up-development.js`, `test/set-up-development.test.js`, `setUpDevelopment` and `set-up:development`.
+Update all active callers and documentation without aliases; preserve legitimate noun uses, upstream Action identifiers and frozen historical references.
+The owner's subsequent `spec:generate` example extends that convention to first-party npm entry points: verbs precede their objects, such as `generate:spec`, `check:format`, `run:comparison` and `pack:release`.
+Rename active callers and diagnostic guidance, retain npm lifecycle names and third-party command identifiers, and regenerate any changed provenance through its owner.
+This naming-only amendment does not authorize converter behavior changes or product-suite execution.
+The personal HISEW verification profiles for this change select documentation tooling, native integration/staging, the standard-library observer, authored Markdown, generic non-Markdown formatting and conformance provenance checks; the `full` profile denotes this relevant scope, not the prohibited full product suite.
+Future functional changes must reassess these task-specific profiles; hosted product qualification remains unchanged.
+
+The owner subsequently rejected every repository Markdown exemption and explicitly authorized checking and formatting all repository `.md` files, including plans, migration records, fixtures, tooling guides and generated references.
+This amendment supersedes the 23-path selection and Markdown-byte preservation exclusions below; package functionality, literal examples and non-Markdown fixtures remain protected.
+Use `**/*.md` with no policy exclusions and only repository Git ignores for dependency/runtime artifacts, not `.prettierignore`'s source-document exemptions.
+Correct generated Markdown through its owning generators and verify regeneration and complete selection; do not weaken lint or link rules to accommodate previously omitted files.
+The no-full-product-tests and local-only delivery decisions remain unchanged.
+
+### Remote delivery authorization, 2026-10-07
+
+The owner subsequently authorized publication to origin through pull requests and normal merges once all applicable checks pass.
+This supersedes the earlier local-only delivery restriction; the prohibition on full local product tests remains effective, and hosted required controls remain unchanged.
+Before bootstrap integration, apply the already-reviewed all-repository Markdown policy and selection tests so trusted candidate qualification cannot retain the obsolete 23-path exemptions.
+Land the shadow bootstrap first, qualify the exact cutover candidate using that integrated trusted source on both platforms, then merge the cutover through normal protected controls.
+The owner also authorized notification to Codex thread `01a10942-8e9b-7b62-ae73-e6977b59718d` after the complete integration is verified on remote main, followed by deletion of local spent integration branches.
+No direct push to main, protection bypass, remote-branch deletion, npm publication or historical source retirement is authorized by this delivery instruction.
+
 The owner requested a proposal based on successful integrations in other repositories.
 This document proposes requirements, decisions and a bounded R2 migration of developer tooling and CI enforcement.
 It does not authorize registration, installations, environment changes, source reformatting, independent scans, commits, pushes, merges or publication in Steam.
@@ -93,7 +118,7 @@ Use effective ruleset inspection rather than treating that 404 as absence of pro
 
 | ID               | Requirement                                       | Acceptance criterion                                                                                                                                                                                                                                             |
 | ---------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-001 / AC-001 | Preserve scope and ownership.                     | Native full selection equals the frozen incumbent 23-path set at baseline; future authored additions follow the approved policy. Generated/history/fixture bytes and unrelated sentinels stay unchanged.                                                         |
+| REQ-001 / AC-001 | Preserve scope and ownership.                     | Native full selection includes every Git-owned repository Markdown file without path exemptions, including future additions. Generators produce conforming documents; literal examples, package behavior and unrelated sentinels remain unchanged.               |
 | REQ-002 / AC-002 | Adopt the exact maintained capability.            | Core and both native lock records match accepted release versions/integrities; anonymous `npm ci --ignore-scripts` and real CLI checks pass on Windows x64 and Ubuntu 24.04 x64.                                                                                 |
 | REQ-003 / AC-003 | Preserve converter runtime and package contracts. | Existing consumer/development ranges, matching declaration lanes, exports, shipped dependencies, AGPL and MIT notices remain valid; no Markdown dependency enters the converter's shipped runtime graph.                                                         |
 | REQ-004 / AC-004 | Enforce the existing `authored-gfm@1` policy.     | Full authored checks reject broken local links, non-code trailing whitespace and two-space hard breaks; safe formatting uses explicit breaks, preserves literal code, converges and refuses unsafe writes. No new preset or blanket exception.                   |
@@ -121,12 +146,12 @@ No compatibility aliases or format-rule shims are proposed.
 Prettier continues to own non-Markdown layout; exclude `**/*.md` from its active generic format/check invocation so two tools do not compete.
 Native Markdown checking remains full-scope, even for a code-only or link-target-only change.
 
-DEC-004: root `.markdown-quality.json` uses `authored-gfm@1`, includes `*.md` and `docs/**/*.md`, and explicitly excludes `docs/reference/**`, `docs/plans/**`, `docs/migration/**`, `docs/conversion-semantics.md` and `docs/steam-support-matrix.md`.
-Use existing `.gitignore` and `.prettierignore` with native semantics, `links.localFiles = true`, `links.rootRelative = reject`, and LF/tab width 2.
-Prove selected-path parity: the old Python selector does not read ignore files, so the proposed ignore composition must not silently drop any incumbent authored document.
-Retain `scripts/check-documentation-links.js` and its real-file assertion in `test/documentation.test.js` because its scope includes generated/reference Markdown that the formatter excludes.
+DEC-004, owner-amended: root `.markdown-quality.json` uses `authored-gfm@1`, includes `**/*.md`, and has no path exclusions.
+Use only `.gitignore` with native semantics, `links.localFiles = true`, `links.rootRelative = reject`, and LF/tab width 2; `.prettierignore` cannot exempt repository Markdown.
+Prove native selection equals the complete Git-owned Markdown inventory, including future nonignored additions, hidden directories, tooling, comparison, fixtures, plans, migration records and generated documents.
+Retain `scripts/check-documentation-links.js` and its real-file assertion in `test/documentation.test.js` for independent installed-package coverage, in addition to the native all-repository check.
 Narrowing or retiring that checker is separate work requiring equivalent broader coverage; this migration does not weaken it.
-Semantic and literal fixture exclusions do not relax physical existence of local links in selected authored documents.
+Generator freshness, literal examples and package behavior remain protected; generator-owned formatting must converge under the same Markdown policy.
 
 DEC-005: retain `artifacts/prose/check.json` as the consumer evidence locator but store the shared CLI's versioned JSON result, not a simulated Snapper array.
 The source search found active documentation and artifact upload references, with no observed machine reader of that old array; repeat this search before changing its schema.
@@ -155,18 +180,18 @@ If Steam needs different operating targets, submit measured evidence and an expl
 
 ## Quality scenarios and oracles
 
-| ID     | Scenario and observable oracle                                                                                                                                                                                                |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| QA-001 | Excluded generated/reference/fixture/history documents and any unrelated sentinels frozen at execution remain byte-identical after checking and formatting; authored inventory matches the incumbent selector.                |
-| QA-002 | A real missing relative target fails, including when only its target changes; a generated-doc missing target still fails the retained product checker. Fragment-only/external links follow documented native semantics.       |
-| QA-003 | Two-space hard breaks are findings and format to explicit backslashes without changing meaning; fenced BBCode/Markdown literals retain exact body bytes; unsafe inline/HTML cases remain findings without destructive writes. |
-| QA-004 | Check changes no candidate document; format is convergent, preserves permissions within the package contract and writes nothing when preservation/convergence/operational validation fails.                                   |
-| QA-005 | Candidate policy/ignore edits cannot hide a defect, candidate script markers never execute, malformed staging fails, and no checking subprocess inherits registry/repository-write/OIDC credentials.                          |
-| QA-006 | A clean document, findings case and missing/native/report failure yield schema-valid reports with exact 0/1/2 behavior; stale/absent report cannot satisfy qualification.                                                     |
-| QA-007 | All existing converter/declaration/installed-package matrix results, mutation obligations, CodeQL configurations and release prerequisites remain effective; Markdown failure blocks the aggregate.                           |
-| QA-008 | Both measured windows meet DEC-008; task-owned restoration restores tool/config/document preimages and sentinels within 60 minutes, followed by relevant product and full Markdown checks.                                    |
+| ID     | Scenario and observable oracle                                                                                                                                                                                                               |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| QA-001 | Every repository Markdown path, including hidden, tooling, comparison, generated, fixture and historical documents, is selected, checked and convergently formatted. Literal examples and unrelated non-Markdown sentinels remain unchanged. |
+| QA-002 | A real missing relative target fails, including when only its target changes; a generated-doc missing target still fails the retained product checker. Fragment-only/external links follow documented native semantics.                      |
+| QA-003 | Two-space hard breaks are findings and format to explicit backslashes without changing meaning; fenced BBCode/Markdown literals retain exact body bytes; unsafe inline/HTML cases remain findings without destructive writes.                |
+| QA-004 | Check changes no candidate document; format is convergent, preserves permissions within the package contract and writes nothing when preservation/convergence/operational validation fails.                                                  |
+| QA-005 | Candidate policy/ignore edits cannot hide a defect, candidate script markers never execute, malformed staging fails, and no checking subprocess inherits registry/repository-write/OIDC credentials.                                         |
+| QA-006 | A clean document, findings case and missing/native/report failure yield schema-valid reports with exact 0/1/2 behavior; stale/absent report cannot satisfy qualification.                                                                    |
+| QA-007 | All existing converter/declaration/installed-package matrix results, mutation obligations, CodeQL configurations and release prerequisites remain effective; Markdown failure blocks the aggregate.                                          |
+| QA-008 | Both measured windows meet DEC-008; task-owned restoration restores tool/config/document preimages and sentinels within 60 minutes, followed by relevant product and full Markdown checks.                                                   |
 
-The old selector and frozen selected paths own the scope oracle; product generators and executed example/conformance fixtures own converter behavior; the maintained package's parser, result schema and documented guards own Markdown contracts.
+The complete Git-owned Markdown inventory owns the amended scope oracle; product generators and executed example/conformance fixtures own converter behavior; the maintained package's parser, result schema and documented guards own Markdown contracts.
 Use real temporary directories and real installed CLI/native execution for integration fixtures.
 Mock only genuine external setup/acquisition failures, as existing setup tests do; do not mock Markdown output and call it parity.
 Consumer tests should cover integration boundaries and representative product literals, not duplicate the producer's entire formatter suite or preserve obsolete two-space-break expectations.

@@ -4,7 +4,7 @@
 
 The current root declaration dependency is `@types/node` 26.5.1, with separately locked compatibility environments for 22.20.2, 24.13.4 and 26.5.1.
 All three environments qualify source, compiler API tooling and the retained package archive; the earlier selection records below remain historical evidence.
-The refresh also selects fast-check 4.10.0, yaml 2.9.1 and Snapper 0.11.4.
+The refresh also selects fast-check 4.10.0 and yaml 2.9.1; the later documentation-tooling migration supersedes the historical Snapper 0.11.4 selection below.
 Type coverage uses the supported `type-coverage-core` 2.30.1 API with TypeScript's native configuration parser for these environments, and verifies the returned program's declaration paths.
 
 ## Original selection
@@ -138,7 +138,7 @@ This is the evidenced owner exception required by VER-01.
 Reassess when a stable TypeScript API and a maintained coverage tool support the primary compiler directly, or before dependency refresh/ release.
 Execution results belong in the execution record; the exception itself does not turn a failed check into a pass.
 
-# Plain URL recognition qualification (9 September 2026)
+## Plain URL recognition qualification (9 September 2026)
 
 The registry resolved `linkify-it` **6.1.0** as the current stable release.
 Its published archive contains an ESM build and native declarations; the actual MIT licence grants reuse subject to retaining its notice.
@@ -325,6 +325,9 @@ Sources: [TypeDoc JSDoc support](https://typedoc.org/documents/Doc_Comments.JSDo
 
 ## Authored documentation formatting (9 September 2026)
 
+This subsection preserves the historical selection evidence; its Python formatter and configuration are retired by the current isolated Markdown Quality integration.
+It is not a current setup or checking instruction.
+
 The original selection was unmodified Snapper (`snapper-fmt` 0.11.0, MIT) for semantic line breaks.
 PR #8 updates it to 0.11.4 and explicitly selects its supported `--native` backend so installing Pandoc cannot change qualification output.
 The existing sentence, table, code-block and hard-break expectations remain unchanged.
@@ -334,7 +337,7 @@ Preserve the native inventory and installed notices; the formatter is neither mo
 The subsequent [licence compatibility assessment](licensing-review.md) records this separate, unmodified development-tool boundary.
 
 Use its native Markdown parser and deterministic sentence segmentation, with unlimited source width and no clause, code, neural or Pandoc formatting options.
-The package's explicit `.snapperrc.toml` prevents ancestor configuration from changing these settings.
+The historical package's explicit `.snapperrc.toml` prevented ancestor configuration from changing those settings.
 No Prettier plugin, custom sentence parser or vendor patch is necessary.
 The local Python script only selects authored package guides and invokes the installed CLI; existing repository tooling selects the interpreter.
 
@@ -359,6 +362,20 @@ Native `Intl.Segmenter` splits the `e.g. Node` fixture.
 None of these rejected qualification tools enter the adopted dependency graphs.
 
 Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0), [PyPI distribution](https://pypi.org/project/snapper-fmt/0.11.0/), [Prettier prose wrapping](https://prettier.io/docs/options#prose-wrap), [semantic line breaks](https://sembr.org/), [mdformat-slw](https://github.com/KyleKing/mdformat-slw), and [Flowmark](https://github.com/jlevy/flowmark).
+
+## Current authored Markdown tooling (7 October 2026)
+
+The private `tooling/markdown` project pins the immutable Markdown Quality 1.0.3 core and both native platform archives recorded in `release.json`.
+It runs only on exact Node 24.21.0 here, separately from the unchanged converter runtime and shipped dependency graphs.
+The `authored-gfm@1` policy includes every repository `**/*.md` file without path exemptions and checks real local targets even on target-only changes.
+Only `.gitignore` omits dependencies and ignored runtime output; `.prettierignore` cannot hide source documents.
+Historical plans, fixtures, comparison/tooling guides and generated references follow the same policy.
+TypeDoc and conformance generators emit conforming Markdown, with their independent model and freshness checks retained.
+Native parsing, layout guards and the shipped result schema own the Markdown contract; the consumer launcher only enforces runtime, fresh evidence and exact exit propagation.
+Use `install:markdown`, `format:markdown`, `check:markdown` and `test:markdown`; generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
+The old prose-exclusive Python files and pip-update entry are retired; Python, comparator requirements and the MIT launcher notice remain.
+The scoped `micromark-extension-math` override selects KaTeX 0.18.2 to address [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7), with real ordinary-rendering and inherited-trust regressions.
+Trusted candidate-as-data qualification uses reviewed bootstrap policy/ignore/dependency bytes, bounded staging and credential-free checking; exact hosted-source/run acceptance and merge approval remain separate from local success.
 
 ## Release tooling reuse (9 September 2026)
 

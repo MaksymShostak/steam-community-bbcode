@@ -2,11 +2,18 @@
 
 # Steam conversion policy matrices
 
-39 registry entries have an executed policy: 37 observable source constructs and 2 context-only renderer rules. 198 case/profile executions check canonical, nested, escaping and malformed contexts. These checks do not prove current Steam rendering, support for every parameter variant, or release readiness.
+39 registry entries have an executed policy: 37 observable source constructs and 2 context-only renderer rules.
+198 case/profile executions check canonical, nested, escaping and malformed contexts.
+These checks do not prove current Steam rendering, support for every parameter variant, or release readiness.
 
-A profile status records source evidence about Steam. An absent profile is unclassified. Conversion recognizes the complete registry in each selected profile; passing conversion tests is not evidence that Steam accepts that syntax on that surface. Unsupported fidelity below denotes an explained fallback.
+A profile status records source evidence about Steam.
+An absent profile is unclassified.
+Conversion recognizes the complete registry in each selected profile; passing conversion tests is not evidence that Steam accepts that syntax on that surface.
+Unsupported fidelity below denotes an explained fallback.
 
-Target trees are checked against GFM syntax. Some GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM\_RENDERER\_AUTOLINK\_POSSIBLE. The live Markdown REST endpoint is a separate retained check.
+Target trees are checked against GFM syntax.
+Some GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM\_RENDERER\_AUTOLINK\_POSSIBLE.
+The live Markdown REST endpoint is a separate retained check.
 
 | Construct                             | Policy tests                                        | Observed target fidelity | Steam profile evidence                                                                                                                                                              |
 | ------------------------------------- | --------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -52,9 +59,18 @@ Target trees are checked against GFM syntax. Some GitHub surfaces additionally a
 
 ## Partial GFM-to-Steam
 
-33 independently authored reverse cases exercise 23 native MDAST node kinds. Equivalent mappings have exact Steam syntax and semantic expectations. Unsupported cases retain literal source, emit explicit diagnostics and verify that no active Steam markup is injected. Every source node is accounted for independently against the native GFM tree. Forward registry results do not contribute to these reverse classifications.
+33 independently authored reverse cases exercise 23 native MDAST node kinds.
+Equivalent mappings have exact Steam syntax and semantic expectations.
+Unsupported cases retain literal source, emit explicit diagnostics and verify that no active Steam markup is injected.
+Every source node is accounted for independently against the native GFM tree.
+Forward registry results do not contribute to these reverse classifications.
 
-The target is the qualified Workshop-item subset. Table alignment, task state, heading levels 4-6, raw HTML, inline code, metadata and relative resources are preserved where no equivalent mapping is qualified. GFM reference definitions/references and hard-break source also remain literal. Code without metadata is supported only when its payload cannot close the Steam code region. Conventional list spacing is normalized; structure and paragraph separation are retained. These executions do not establish live Steam rendering or complete GFM reversibility.
+The target is the qualified Workshop-item subset.
+Table alignment, task state, heading levels 4-6, raw HTML, inline code, metadata and relative resources are preserved where no equivalent mapping is qualified.
+GFM reference definitions/references and hard-break source also remain literal.
+Code without metadata is supported only when its payload cannot close the Steam code region.
+Conventional list spacing is normalized; structure and paragraph separation are retained.
+These executions do not establish live Steam rendering or complete GFM reversibility.
 
 | Case            | Policy                                           | Observed fidelity | Result |
 | --------------- | ------------------------------------------------ | ----------------- | ------ |
@@ -92,4 +108,6 @@ The target is the qualified Workshop-item subset. Table alignment, task state, h
 | link-reference  | Link reference and definition preserved          | unsupported       | pass   |
 | image-reference | Image reference and definition preserved         | unsupported       | pass   |
 
-Machine-readable provenance, exact case identities, input fingerprint and independent reverse results are in [coverage.json](../coverage.json). Edit the registry or authored conformance fixtures, then run npm run conformance:generate. npm run conformance:check executes both directions again and rejects stale reports.
+Machine-readable provenance, exact case identities, input fingerprint and independent reverse results are in [coverage.json](../coverage.json).
+Edit the registry or authored conformance fixtures, then run npm run generate:conformance.
+npm run check:conformance executes both directions again and rejects stale reports.

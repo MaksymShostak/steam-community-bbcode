@@ -155,6 +155,7 @@ test("aggregate observes every prerequisite even after failure", () => {
     "converter",
     "mutation",
     "consumers",
+    "markdown",
   ]);
   assert.equal(workflow.getIn(["jobs", "qualification", "if"]), "always()");
   assert.equal(
@@ -170,6 +171,7 @@ test("aggregate observes every prerequisite even after failure", () => {
     ["CHECK_RESULT", "converter"],
     ["CONSUMER_RESULT", "consumers"],
     ["MUTATION_RESULT", "mutation"],
+    ["MARKDOWN_RESULT", "markdown"],
   ]) {
     assert.equal(
       workflow.getIn(["jobs", "qualification", "steps", 0, "env", key]),
@@ -185,6 +187,7 @@ const success = {
   CHECK_RESULT: "success",
   CONSUMER_RESULT: "success",
   MUTATION_RESULT: "success",
+  MARKDOWN_RESULT: "success",
 };
 const cases = [
   { name: "all succeed", env: success, status: 0 },
@@ -193,6 +196,7 @@ const cases = [
     "CHECK_RESULT",
     "MUTATION_RESULT",
     "CONSUMER_RESULT",
+    "MARKDOWN_RESULT",
   ].flatMap((stage) =>
     ["failure", "cancelled", "skipped", ""].map((result) => ({
       name: `${stage} ${result || "absent"}`,
@@ -317,7 +321,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   assert.equal(bootstrap.get("if"), undefined);
   assert.equal(
     bootstrap.get("run"),
-    "npm exec --yes --package=npm@12.0.2 -- npm run setup:development",
+    "npm exec --yes --package=npm@12.0.2 -- npm run set-up:development -- --product-only",
   );
   const check = steps.items.find(
     (step) =>
@@ -328,7 +332,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   assert.equal(check.get("if"), undefined);
   assert.equal(
     check.get("run"),
-    "npm exec --yes --package=npm@12.0.2 -- npm run check",
+    "npm exec --yes --package=npm@12.0.2 -- npm run check:product",
   );
 });
 
@@ -358,5 +362,57 @@ test("dependency review is PR-only while the job remains an unconditional prereq
   assert.equal(
     check.getIn(["with", "fail-on-scopes"]),
     "runtime, development, unknown",
+  );
+});
+
+test("dedicated full Markdown controls gate qualification and the compatible release candidate", () => {
+  assert.deepEqual(
+    sequenceValues(["jobs", "markdown", "strategy", "matrix", "os"]),
+    ["ubuntu-24.04", "windows-2025"],
+  );
+  const steps = workflow.getIn(["jobs", "markdown", "steps"], true);
+  assert.ok(isSeq(steps));
+  const runs = steps.items.map((step) => {
+    assert.ok(isMap(step));
+    return String(step.get("run") ?? "");
+  });
+  for (const script of [
+    "install:markdown",
+    "test:markdown",
+    "test:markdown:observer",
+    "check:markdown",
+  ])
+    assert.ok(
+      runs.some(
+        (run) =>
+          run.endsWith(`npm run ${script}`) ||
+          run.includes(`npm run ${script}\n`),
+      ),
+      script,
+    );
+  const node = steps.items.find(
+    (step) =>
+      isMap(step) && String(step.get("uses")).startsWith("actions/setup-node@"),
+  );
+  assert.ok(isMap(node));
+  assert.equal(node.getIn(["with", "node-version"]), "24.21.0");
+  const releaseSteps = release.getIn(["jobs", "candidate", "steps"], true);
+  assert.ok(isSeq(releaseSteps));
+  const releaseNode = releaseSteps.items.find(
+    (step) =>
+      isMap(step) && String(step.get("uses")).startsWith("actions/setup-node@"),
+  );
+  assert.ok(isMap(releaseNode));
+  assert.equal(String(releaseNode.getIn(["with", "node-version"])), "24.21.0");
+  assert.ok(
+    releaseSteps.items.some(
+      (step) =>
+        isMap(step) &&
+        String(step.get("run")).includes("npm run install:markdown"),
+    ),
+  );
+  assert.doesNotMatch(
+    source + String(release),
+    /tooling\/prose|qualify:prose|docs:format/u,
   );
 });
