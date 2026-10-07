@@ -1,6 +1,6 @@
 [**steam-community-bbcode**](index.md)
 
-***
+---
 
 [steam-community-bbcode](index.md) / index
 
@@ -8,35 +8,55 @@
 
 ## Interfaces
 
+<a id="gfmconversionresourcelimits"></a>
+
 ### GfmConversionResourceLimits
 
 #### Properties
 
+<a id="maxinputbytes"></a>
+
 ##### maxInputBytes
 
-> **maxInputBytes**: `number`
+```ts
+maxInputBytes: number;
+```
 
 Maximum UTF-8 source size.
 
+<a id="maxnestingdepth"></a>
+
 ##### maxNestingDepth
 
-> **maxNestingDepth**: `number`
+```ts
+maxNestingDepth: number;
+```
 
 Maximum native MDAST depth.
 
+<a id="maxnodecount"></a>
+
 ##### maxNodeCount
 
-> **maxNodeCount**: `number`
+```ts
+maxNodeCount: number;
+```
 
 Maximum number of native MDAST nodes.
 
+<a id="maxoutputbytes"></a>
+
 ##### maxOutputBytes
 
-> **maxOutputBytes**: `number`
+```ts
+maxOutputBytes: number;
+```
 
 Maximum UTF-8 target size.
 
-***
+---
+
+<a id="sourcespan"></a>
 
 ### SourceSpan
 
@@ -46,373 +66,727 @@ A position is a range between two points.
 
 #### Properties
 
+<a id="end"></a>
+
 ##### end
 
-> **end**: `Point`
+```ts
+end: Point;
+```
 
 Place of the first character after the parsed source region.
 
+<a id="start"></a>
+
 ##### start
 
-> **start**: `Point`
+```ts
+start: Point;
+```
 
 Place of the first character of the parsed source region.
 
-***
+---
+
+<a id="steamparseresourcelimits"></a>
 
 ### SteamParseResourceLimits
 
 #### Properties
 
+<a id="maxattributebytes"></a>
+
 ##### maxAttributeBytes
 
-> **maxAttributeBytes**: `number`
+```ts
+maxAttributeBytes: number;
+```
 
 Maximum UTF-8 attribute size per construct.
 
+<a id="maxinputbytes-1"></a>
+
 ##### maxInputBytes
 
-> **maxInputBytes**: `number`
+```ts
+maxInputBytes: number;
+```
 
 Maximum UTF-8 input size.
 
+<a id="maxnestingdepth-1"></a>
+
 ##### maxNestingDepth
 
-> **maxNestingDepth**: `number`
+```ts
+maxNestingDepth: number;
+```
 
 Maximum nested Steam construct depth.
 
+<a id="maxnodecount-1"></a>
+
 ##### maxNodeCount
 
-> **maxNodeCount**: `number`
+```ts
+maxNodeCount: number;
+```
 
 Maximum number of syntax nodes.
 
 ## Type Aliases
 
+<a id="constructid"></a>
+
 ### ConstructId
 
-> **ConstructId** = *typeof* [`steamConstructIds`](steam/registry-identifiers.md#steamconstructids)\[`number`\]
+```ts
+type ConstructId = typeof steamConstructIds[number];
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="conversiondiagnostic"></a>
 
 ### ConversionDiagnostic
 
-> **ConversionDiagnostic** = [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail) & `Readonly`\<\{ `constructId`: [`DiagnosticConstructId`](diagnostics/conversion-result.md#diagnosticconstructid); `scope`: `"construct"`; \}\> \| `Readonly`\<\{ `scope`: `"input"`; \}\> \| `Readonly`\<\{ `nodeType`: `Nodes`\[`"type"`\]; `scope`: `"gfm-node"`; \}\>
+```ts
+type ConversionDiagnostic = ConversionDiagnosticDetail &
+  | Readonly<{
+  constructId: DiagnosticConstructId;
+  scope: "construct";
+}>
+  | Readonly<{
+  scope: "input";
+}>
+  | Readonly<{
+  nodeType: Nodes["type"];
+  scope: "gfm-node";
+}>;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="conversionfidelity"></a>
 
 ### ConversionFidelity
 
-> **ConversionFidelity** = `"exact"` \| `"equivalent"` \| `"approximate"` \| `"lossy"` \| `"unsupported"`
+```ts
+type ConversionFidelity = "exact" | "equivalent" | "approximate" | "lossy" | "unsupported";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="conversionresult"></a>
 
 ### ConversionResult
 
-> **ConversionResult**\<`T`\> = `Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage); `diagnostics`: readonly [`ConversionDiagnostic`](#conversiondiagnostic)[]; `value`: `T`; \}\>
+```ts
+type ConversionResult<T> = Readonly<{
+  coverage: ConversionCoverage;
+  diagnostics: readonly ConversionDiagnostic[];
+  value: T;
+}>;
+```
 
 #### Type Parameters
 
-##### T
+| Type Parameter | Description |
+| -------------- | ----------- |
+| `T`            |             |
 
-`T`
+---
 
-***
+<a id="diagnosticcode"></a>
 
 ### DiagnosticCode
 
-> **DiagnosticCode** = *typeof* [`conversionDiagnosticCodes`](diagnostics/diagnostic-codes.md#conversiondiagnosticcodes)\[`number`\]
+```ts
+type DiagnosticCode = typeof conversionDiagnosticCodes[number];
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="gfmtosteambbcodeoptions"></a>
 
 ### GfmToSteamBbcodeOptions
 
-> **GfmToSteamBbcodeOptions** = `Readonly`\<\{ `resourceLimits?`: `Partial`\<[`GfmConversionResourceLimits`](#gfmconversionresourcelimits)\>; \}\>
+```ts
+type GfmToSteamBbcodeOptions = Readonly<{
+  resourceLimits?: Partial<GfmConversionResourceLimits>;
+}>;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="parsesteamcommunitybbcodeoptions"></a>
 
 ### ParseSteamCommunityBbcodeOptions
 
-> **ParseSteamCommunityBbcodeOptions** = `Readonly`\<\{ `profile?`: [`SteamDialectProfileId`](steam/parse-steam-bbcode.md#steamdialectprofileid); `resourceLimits?`: `Partial`\<[`SteamParseResourceLimits`](#steamparseresourcelimits)\>; \}\>
+```ts
+type ParseSteamCommunityBbcodeOptions = Readonly<{
+  profile?: SteamDialectProfileId;
+  resourceLimits?: Partial<SteamParseResourceLimits>;
+}>;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="partialconversionresult"></a>
 
 ### PartialConversionResult
 
-> **PartialConversionResult**\<`T`\> = [`ConversionResult`](#conversionresult)\<`T`\> & `Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage) & `Readonly`\<\{ `direction`: `"gfm-to-steam"`; `sourceNodes`: readonly [`GfmNodeConversionOutcome`](diagnostics/conversion-result.md#gfmnodeconversionoutcome)[]; \}\>; `unsupportedSourceNodes`: readonly [`UnsupportedGfmFeatureDiagnostic`](#unsupportedgfmfeaturediagnostic)[]; \}\>
+```ts
+type PartialConversionResult<T> = ConversionResult<T> & Readonly<{
+  coverage: ConversionCoverage & Readonly<{
+     direction: "gfm-to-steam";
+     sourceNodes: readonly GfmNodeConversionOutcome[];
+  }>;
+  unsupportedSourceNodes: readonly UnsupportedGfmFeatureDiagnostic[];
+}>;
+```
 
 #### Type Parameters
 
-##### T
+| Type Parameter | Description |
+| -------------- | ----------- |
+| `T`            |             |
 
-`T`
+---
 
-***
+<a id="steamattributedblockquote"></a>
 
 ### SteamAttributedBlockquote
 
-> **SteamAttributedBlockquote** = `Node` & `object`
+```ts
+type SteamAttributedBlockquote = Node & {
+  author: string;
+  children: SteamFlowContent[];
+  steamCommentId?: string;
+  type: "steamAttributedBlockquote";
+};
+```
 
 #### Type Declaration
 
 ##### author
 
-> **author**: `string`
+```ts
+author: string;
+```
 
 ##### children
 
-> **children**: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
 
 ##### steamCommentId?
 
-> `optional` **steamCommentId?**: `string`
+```ts
+optional steamCommentId?: string;
+```
 
 ##### type
 
-> **type**: `"steamAttributedBlockquote"`
+```ts
+type: "steamAttributedBlockquote";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steambbcodeparseresult"></a>
 
 ### SteamBbcodeParseResult
 
-> **SteamBbcodeParseResult** = `Readonly`\<\{ `children`: readonly [`SteamBbcodeSyntaxNode`](steam/parse-steam-bbcode.md#steambbcodesyntaxnode)[]; `diagnostics`: readonly [`SteamBbcodeParseDiagnostic`](steam/parse-steam-bbcode.md#steambbcodeparsediagnostic)[]; `profile`: [`SteamDialectProfileId`](steam/parse-steam-bbcode.md#steamdialectprofileid); `source`: `string`; \}\>
+```ts
+type SteamBbcodeParseResult = Readonly<{
+  children: readonly SteamBbcodeSyntaxNode[];
+  diagnostics: readonly SteamBbcodeParseDiagnostic[];
+  profile: SteamDialectProfileId;
+  source: string;
+}>;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steambbcodesyntaxnode"></a>
 
 ### SteamBbcodeSyntaxNode
 
-> **SteamBbcodeSyntaxNode** = [`SteamTextSyntax`](steam/steam-bbcode-syntax.md#steamtextsyntax) \| [`SteamListItemBoundarySyntax`](steam/steam-bbcode-syntax.md#steamlistitemboundarysyntax) \| [`SteamUnmatchedClosingTagSyntax`](steam/steam-bbcode-syntax.md#steamunmatchedclosingtagsyntax) \| [`SteamTagSyntax`](steam/steam-bbcode-syntax.md#steamtagsyntax) \| [`SteamOpaqueTagSyntax`](steam/steam-bbcode-syntax.md#steamopaquetagsyntax)
+```ts
+type SteamBbcodeSyntaxNode =
+  | SteamTextSyntax
+  | SteamListItemBoundarySyntax
+  | SteamUnmatchedClosingTagSyntax
+  | SteamTagSyntax
+  | SteamOpaqueTagSyntax;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamblockspoiler"></a>
 
 ### SteamBlockSpoiler
 
-> **SteamBlockSpoiler** = `Node` & `object`
+```ts
+type SteamBlockSpoiler = Node & {
+  children: SteamFlowContent[];
+  type: "steamBlockSpoiler";
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
 
 ##### type
 
-> **type**: `"steamBlockSpoiler"`
+```ts
+type: "steamBlockSpoiler";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamcolor"></a>
 
 ### SteamColor
 
-> **SteamColor** = `Node` & `object`
+```ts
+type SteamColor = Node & {
+  children: SteamPhrasingContent[];
+  color?: string;
+  type: "steamColor";
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
 
 ##### color?
 
-> `optional` **color?**: `string`
+```ts
+optional color?: string;
+```
 
 ##### type
 
-> **type**: `"steamColor"`
+```ts
+type: "steamColor";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamdialectprofileid"></a>
 
 ### SteamDialectProfileId
 
-> **SteamDialectProfileId** = *typeof* [`steamDialectProfileIds`](steam/registry-identifiers.md#steamdialectprofileids)\[`number`\]
+```ts
+type SteamDialectProfileId = typeof steamDialectProfileIds[number];
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamembeddedmedia"></a>
 
 ### SteamEmbeddedMedia
 
-> **SteamEmbeddedMedia** = `Node` & `object` & \{ `layout?`: `"leftthumb"` \| `"rightthumb"` \| `"full"`; `mediaKind`: `"youtube"`; \} \| \{ `autoplay?`: `boolean`; `mediaKind`: `"video"`; `poster?`: `string`; \}
+```ts
+type SteamEmbeddedMedia = Node & {
+  children: SteamPhrasingContent[];
+  constructId: ConstructId;
+  source: string;
+  type: "steamEmbeddedMedia";
+} &
+  | {
+  layout?: "leftthumb" | "rightthumb" | "full";
+  mediaKind: "youtube";
+}
+  | {
+  autoplay?: boolean;
+  mediaKind: "video";
+  poster?: string;
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
 
 ##### constructId
 
-> **constructId**: [`ConstructId`](#constructid)
+```ts
+constructId: ConstructId;
+```
 
 ##### source
 
-> **source**: `string`
+```ts
+source: string;
+```
 
 ##### type
 
-> **type**: `"steamEmbeddedMedia"`
+```ts
+type: "steamEmbeddedMedia";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steammdastroot"></a>
 
 ### SteamMdastRoot
 
-> **SteamMdastRoot** = `Omit`\<`Root`, `"children"`\> & `object`
+```ts
+type SteamMdastRoot = Omit<Root, "children"> & {
+  children: (
+     | SteamFlowContent
+     | SteamPhrasingContent
+     | SteamListItem
+     | SteamTableRow
+     | SteamTableCell
+    | FrontmatterContent)[];
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: ([`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent) \| [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent) \| [`SteamListItem`](mdast/steam-mdast-nodes.md#steamlistitem) \| [`SteamTableRow`](mdast/steam-mdast-nodes.md#steamtablerow) \| [`SteamTableCell`](mdast/steam-mdast-nodes.md#steamtablecell) \| `FrontmatterContent`)[]
+```ts
+children: (
+  | SteamFlowContent
+  | SteamPhrasingContent
+  | SteamListItem
+  | SteamTableRow
+  | SteamTableCell
+  | FrontmatterContent)[];
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamnoparse"></a>
 
 ### SteamNoParse
 
-> **SteamNoParse** = `Literal` & `object`
+```ts
+type SteamNoParse = Literal & {
+  type: "steamNoParse";
+  value: string;
+};
+```
 
 #### Type Declaration
 
 ##### type
 
-> **type**: `"steamNoParse"`
+```ts
+type: "steamNoParse";
+```
 
 ##### value
 
-> **value**: `string`
+```ts
+value: string;
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steampreviewimage"></a>
 
 ### SteamPreviewImage
 
-> **SteamPreviewImage** = `Node` & `object`
+```ts
+type SteamPreviewImage = Node & {
+  alignment?: "left" | "right" | "inline";
+  alt: string;
+  constructId: ConstructId;
+  image:   | {
+     kind: "url";
+     steamImageId: string;
+     url: string;
+   }
+     | {
+     fileName: string;
+     kind: "guideImage";
+     steamImageId: string;
+   };
+  rawSource: string;
+  size?: "thumb" | "full" | "original";
+  type: "steamPreviewImage";
+};
+```
 
 #### Type Declaration
 
 ##### alignment?
 
-> `optional` **alignment?**: `"left"` \| `"right"` \| `"inline"`
+```ts
+optional alignment?: "left" | "right" | "inline";
+```
 
 ##### alt
 
-> **alt**: `string`
+```ts
+alt: string;
+```
 
 ##### constructId
 
-> **constructId**: [`ConstructId`](#constructid)
+```ts
+constructId: ConstructId;
+```
 
 ##### image
 
-> **image**: \{ `kind`: `"url"`; `steamImageId`: `string`; `url`: `string`; \} \| \{ `fileName`: `string`; `kind`: `"guideImage"`; `steamImageId`: `string`; \}
+```ts
+image:
+  | {
+  kind: "url";
+  steamImageId: string;
+  url: string;
+}
+  | {
+  fileName: string;
+  kind: "guideImage";
+  steamImageId: string;
+};
+```
 
 ##### rawSource
 
-> **rawSource**: `string`
+```ts
+rawSource: string;
+```
 
 ##### size?
 
-> `optional` **size?**: `"thumb"` \| `"full"` \| `"original"`
+```ts
+optional size?: "thumb" | "full" | "original";
+```
 
 ##### type
 
-> **type**: `"steamPreviewImage"`
+```ts
+type: "steamPreviewImage";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steampullquote"></a>
 
 ### SteamPullQuote
 
-> **SteamPullQuote** = `Node` & `object`
+```ts
+type SteamPullQuote = Node & {
+  children: SteamFlowContent[];
+  type: "steamPullQuote";
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent)[]
+```ts
+children: SteamFlowContent[];
+```
 
 ##### type
 
-> **type**: `"steamPullQuote"`
+```ts
+type: "steamPullQuote";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamspoiler"></a>
 
 ### SteamSpoiler
 
-> **SteamSpoiler** = `Node` & `object`
+```ts
+type SteamSpoiler = Node & {
+  children: SteamPhrasingContent[];
+  type: "steamSpoiler";
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
 
 ##### type
 
-> **type**: `"steamSpoiler"`
+```ts
+type: "steamSpoiler";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="steamunderline"></a>
 
 ### SteamUnderline
 
-> **SteamUnderline** = `Node` & `object`
+```ts
+type SteamUnderline = Node & {
+  children: SteamPhrasingContent[];
+  type: "steamUnderline";
+};
+```
 
 #### Type Declaration
 
 ##### children
 
-> **children**: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent)[]
+```ts
+children: SteamPhrasingContent[];
+```
 
 ##### type
 
-> **type**: `"steamUnderline"`
+```ts
+type: "steamUnderline";
+```
 
 #### Type Parameters
 
-***
+| Type Parameter |
+| -------------- |
+
+---
+
+<a id="unsupportedgfmfeaturediagnostic"></a>
 
 ### UnsupportedGfmFeatureDiagnostic
 
-> **UnsupportedGfmFeatureDiagnostic** = [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail) & `Readonly`\<\{ `nodeType`: `Nodes`\[`"type"`\]; `scope`: `"gfm-node"`; \}\>
+```ts
+type UnsupportedGfmFeatureDiagnostic = ConversionDiagnosticDetail & Readonly<{
+  nodeType: Nodes["type"];
+  scope: "gfm-node";
+}>;
+```
 
 #### Type Parameters
 
+| Type Parameter |
+| -------------- |
+
 ## Functions
+
+<a id="gfmtosteamcommunitybbcode"></a>
 
 ### gfmToSteamCommunityBbcode()
 
-> **gfmToSteamCommunityBbcode**(`source`, `options?`): [`PartialConversionResult`](#partialconversionresult)\<`string`\>
+```ts
+function gfmToSteamCommunityBbcode(source, options?): PartialConversionResult<string>;
+```
 
 Convert a documented subset of GFM into Steam Community BBCode.
 Unsupported source semantics are reported separately from forward coverage.
@@ -420,79 +794,98 @@ This pure function does not read files, fetch URLs or render arbitrary HTML.
 
 #### Parameters
 
-##### source
-
-`string`
-
-##### options?
-
-`Readonly`\<\{ `resourceLimits?`: `Partial`\<[`GfmConversionResourceLimits`](#gfmconversionresourcelimits)\>; \}\> = `{}`
+| Parameter  | Type                                                                                                         | Description |
+| ---------- | ------------------------------------------------------------------------------------------------------------ | ----------- |
+| `source`   | `string`                                                                                                     | -           |
+| `options?` | `Readonly`<{ `resourceLimits?`: `Partial`<[`GfmConversionResourceLimits`](#gfmconversionresourcelimits)>; }> | -           |
 
 #### Returns
 
-[`PartialConversionResult`](#partialconversionresult)\<`string`\>
+```ts
+PartialConversionResult<string>
+```
 
-***
+---
+
+<a id="steamcommunitybbcodetogfm"></a>
 
 ### steamCommunityBbcodeToGfm()
 
-> **steamCommunityBbcodeToGfm**(`source`, `options?`): `Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage); `diagnostics`: readonly [`ConversionDiagnostic`](#conversiondiagnostic)[]; `value`: `string`; \}\>
+```ts
+function steamCommunityBbcodeToGfm(source, options?): Readonly<{
+  coverage: ConversionCoverage;
+  diagnostics: readonly ConversionDiagnostic[];
+  value: string;
+}>;
+```
 
 Convert Steam source to GFM and retain per-input diagnostics and fidelity.
 Markdown syntax and escaping belong to the maintained native serializer.
 
 #### Parameters
 
-##### source
-
-`string`
-
-##### options?
-
-`Readonly`\<\{ `profile?`: `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`\<[`SteamParseResourceLimits`](#steamparseresourcelimits)\>; \}\> = `{}`
+| Parameter  | Type                                                                                                                                                                                                                                     | Description |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `source`   | `string`                                                                                                                                                                                                                                 | -           |
+| `options?` | `Readonly`<{ `profile?`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }> | -           |
 
 #### Returns
 
-`Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage); `diagnostics`: readonly [`ConversionDiagnostic`](#conversiondiagnostic)[]; `value`: `string`; \}\>
+```ts
+Readonly<{ coverage: ConversionCoverage; diagnostics: readonly ConversionDiagnostic[]; value: string }>
+```
 
-***
+---
+
+<a id="steamcommunitybbcodetomdast"></a>
 
 ### steamCommunityBbcodeToMdast()
 
-> **steamCommunityBbcodeToMdast**(`source`, `options?`): `Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage); `diagnostics`: readonly [`ConversionDiagnostic`](#conversiondiagnostic)[]; `value`: [`SteamMdastRoot`](#steammdastroot); \}\>
+```ts
+function steamCommunityBbcodeToMdast(source, options?): Readonly<{
+  coverage: ConversionCoverage;
+  diagnostics: readonly ConversionDiagnostic[];
+  value: SteamMdastRoot;
+}>;
+```
 
-Interpret Steam source as MDAST while retaining diagnostics and per-input
-outcomes. This layer does not serialize Markdown or perform external I/O.
+Interpret Steam source as MDAST while retaining diagnostics and per-input outcomes.
+This layer does not serialize Markdown or perform external I/O.
 Prepared inputs must be immutable results issued by this package's parser.
 Their profile cannot change, and resource limits belong to the initial parse.
 
 #### Parameters
 
-##### source
-
-`string` \| `Readonly`\<\{ `children`: readonly [`SteamBbcodeSyntaxNode`](#steambbcodesyntaxnode)[]; `diagnostics`: readonly `Readonly`\<\{ `code`: `"STEAM_MAX_INPUT_BYTES_EXCEEDED"` \| `"STEAM_MAX_ATTRIBUTE_BYTES_EXCEEDED"` \| `"STEAM_MAX_NESTING_DEPTH_EXCEEDED"` \| `"STEAM_MAX_NODE_COUNT_EXCEEDED"` \| `"STEAM_LEXICAL_ERROR"` \| `"STEAM_SYNTAX_ERROR"` \| `"STEAM_UNCLOSED_TAG_HEADER"` \| `"STEAM_UNCLOSED_ATTRIBUTE_QUOTE"` \| `"STEAM_UNCLOSED_TAG"` \| `"STEAM_MISMATCHED_CLOSING_TAG"` \| `"STEAM_UNMATCHED_CLOSING_TAG"`; `message`: `string`; `sourceSpan?`: \{ `end`: \{ `column`: `number`; `line`: `number`; `offset?`: `number`; \}; `start`: \{ `column`: `number`; `line`: `number`; `offset?`: `number`; \}; \}; \}\>[]; `profile`: `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `source`: `string`; \}\>
-
-##### options?
-
-`Readonly`\<\{ `profile?`: `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`\<[`SteamParseResourceLimits`](#steamparseresourcelimits)\>; \}\> = `{}`
+| Parameter  | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Description |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `source`   | \| `string` \| `Readonly`<{ `children`: readonly [`SteamBbcodeSyntaxNode`](#steambbcodesyntaxnode)\[]; `diagnostics`: readonly `Readonly`<{ `code`: \| `"STEAM_MAX_INPUT_BYTES_EXCEEDED"` \| `"STEAM_MAX_ATTRIBUTE_BYTES_EXCEEDED"` \| `"STEAM_MAX_NESTING_DEPTH_EXCEEDED"` \| `"STEAM_MAX_NODE_COUNT_EXCEEDED"` \| `"STEAM_LEXICAL_ERROR"` \| `"STEAM_SYNTAX_ERROR"` \| `"STEAM_UNCLOSED_TAG_HEADER"` \| `"STEAM_UNCLOSED_ATTRIBUTE_QUOTE"` \| `"STEAM_UNCLOSED_TAG"` \| `"STEAM_MISMATCHED_CLOSING_TAG"` \| `"STEAM_UNMATCHED_CLOSING_TAG"`; `message`: `string`; `sourceSpan?`: { `end`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; `start`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; }; }>\[]; `profile`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `source`: `string`; }> | -           |
+| `options?` | `Readonly`<{ `profile?`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | -           |
 
 #### Returns
 
-`Readonly`\<\{ `coverage`: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage); `diagnostics`: readonly [`ConversionDiagnostic`](#conversiondiagnostic)[]; `value`: [`SteamMdastRoot`](#steammdastroot); \}\>
+```ts
+Readonly<{ coverage: ConversionCoverage; diagnostics: readonly ConversionDiagnostic[]; value: SteamMdastRoot }>
+```
 
 ## References
+
+<a id="parsesteamcommunitybbcode"></a>
 
 ### parseSteamCommunityBbcode
 
 Re-exports [parseSteamCommunityBbcode](steam/parse-steam-bbcode.md#parsesteamcommunitybbcode)
 
-***
+---
+
+<a id="steambbcodetogfmoptions"></a>
 
 ### SteamBbcodeToGfmOptions
 
 Renames and re-exports [ParseSteamCommunityBbcodeOptions](#parsesteamcommunitybbcodeoptions)
 
-***
+---
+
+<a id="steambbcodetomdastoptions"></a>
 
 ### SteamBbcodeToMdastOptions
 

@@ -1,6 +1,6 @@
 [**steam-community-bbcode**](../index.md)
 
-***
+---
 
 [steam-community-bbcode](../index.md) / mdast/steam-table-layout
 
@@ -8,37 +8,61 @@
 
 ## Type Aliases
 
+<a id="steamtablelayout"></a>
+
 ### SteamTableLayout
 
-> **SteamTableLayout** = `object`
+```ts
+type SteamTableLayout = {
+  equalcells?: boolean;
+  noborder?: boolean;
+};
+```
 
 #### Type Parameters
 
+| Type Parameter |
+| -------------- |
+
 #### Type Declaration
+
+<a id="equalcells"></a>
 
 ##### equalcells?
 
-> `optional` **equalcells?**: `boolean`
+```ts
+optional equalcells?: boolean;
+```
+
+<a id="noborder"></a>
 
 ##### noborder?
 
-> `optional` **noborder?**: `boolean`
+```ts
+optional noborder?: boolean;
+```
 
 ## Functions
 
+<a id="steamtablelayout-1"></a>
+
 ### steamTableLayout()
 
-> **steamTableLayout**(`rawAttributes`): [`SteamTableLayout`](#steamtablelayout) \| `undefined`
+```ts
+function steamTableLayout(rawAttributes): SteamTableLayout | undefined;
+```
 
-Recognize only the two sourced Steam layout settings. Duplicate keys and
-unknown values remain ambiguous; silently choosing a winner would lose source.
+Recognize only the two sourced Steam layout settings.
+Duplicate keys and unknown values remain ambiguous; silently choosing a winner would lose source.
 
 #### Parameters
 
-##### rawAttributes
-
-`string`
+| Parameter       | Type     | Description |
+| --------------- | -------- | ----------- |
+| `rawAttributes` | `string` | -           |
 
 #### Returns
 
-[`SteamTableLayout`](#steamtablelayout) \| `undefined`
+```ts
+SteamTableLayout | undefined
+```

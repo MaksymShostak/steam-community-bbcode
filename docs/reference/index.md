@@ -1,6 +1,6 @@
 **steam-community-bbcode**
 
-***
+---
 
 # steam-community-bbcode
 

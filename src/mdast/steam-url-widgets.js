@@ -65,8 +65,8 @@ function steamUrlWidgetKind(value) {
 }
 
 /**
- * Split one literal source text node into native text/link nodes, retaining
- * UTF-16 source spans. Opaque regions and active link labels never call this.
+ * Split one literal source text node into native text/link nodes, retaining UTF-16 source spans.
+ * Opaque regions and active link labels never call this.
  * @param {import('../steam/steam-bbcode-syntax.js').SteamTextSyntax} node
  * @returns {(import('mdast').Text | import('./steam-mdast-nodes.js').SteamLink)[]}
  */

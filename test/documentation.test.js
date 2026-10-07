@@ -6,6 +6,7 @@ import { fromMarkdown } from "mdast-util-from-markdown";
 import { checkDocumentationLinks } from "../scripts/check-documentation-links.js";
 import { steamConstructDefinitions } from "../src/steam/construct-registry.js";
 import { constructCases } from "./conformance/construct-cases.js";
+import { steamCommunityBbcodeToGfm } from "../src/index.js";
 
 test("each construct has an executed example or an explicit context-only explanation", async () => {
   const source = await readFile(
@@ -48,7 +49,9 @@ test("each construct has an executed example or an explicit context-only explana
             node.children.some(
               (child) =>
                 child.type === "text" &&
-                child.value.includes(definition.contextReason),
+                child.value
+                  .replace(/\s+/gu, " ")
+                  .includes(definition.contextReason),
             ),
         ),
       );
@@ -71,7 +74,10 @@ test("each construct has an executed example or an explicit context-only explana
       );
       assert.ok(
         section.some(
-          (node) => node.type === "code" && node.lang === "markdown",
+          (node) =>
+            node.type === "code" &&
+            node.lang === "markdown" &&
+            node.value === steamCommunityBbcodeToGfm(fixture.source).value,
         ),
       );
     }

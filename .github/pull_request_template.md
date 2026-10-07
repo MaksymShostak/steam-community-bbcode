@@ -10,8 +10,7 @@ Summarize the focused implementation.
 
 - [ ] Relevant focused automated tests pass.
 - [ ] Relevant package checks pass; commands and gaps are stated.
-- [ ] Relevant installed-consumer, hosted matrix, mutation or renderer evidence is
-      recorded, with missing evidence distinguished from passing local checks.
+- [ ] Relevant installed-consumer, hosted matrix, mutation or renderer evidence is recorded, with missing evidence distinguished from passing local checks.
 
 Manual scenarios and evidence:
 

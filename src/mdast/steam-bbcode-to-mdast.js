@@ -30,8 +30,8 @@ import { steamRendererTextDiagnostics } from "./steam-renderer-text.js";
 /** @typedef {import('./steam-mdast-nodes.js').SteamPhrasingContent} PhrasingContent */
 /** @typedef {import('./steam-mdast-nodes.js').SteamFlowContent} RootContent */
 /**
- * Interpret Steam source as MDAST while retaining diagnostics and per-input
- * outcomes. This layer does not serialize Markdown or perform external I/O.
+ * Interpret Steam source as MDAST while retaining diagnostics and per-input outcomes.
+ * This layer does not serialize Markdown or perform external I/O.
  * Prepared inputs must be immutable results issued by this package's parser.
  * Their profile cannot change, and resource limits belong to the initial parse.
  *

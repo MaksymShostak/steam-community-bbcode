@@ -1,15 +1,9 @@
 {
   "schemaVersion": 1,
   "preset": "authored-gfm@1",
-  "include": ["*.md", "docs/**/*.md"],
-  "exclude": [
-    "docs/reference/**",
-    "docs/plans/**",
-    "docs/migration/**",
-    "docs/conversion-semantics.md",
-    "docs/steam-support-matrix.md"
-  ],
-  "ignoreFiles": [".gitignore", ".prettierignore"],
+  "include": ["**/*.md"],
+  "exclude": [],
+  "ignoreFiles": [".gitignore"],
   "lint": {},
   "links": { "localFiles": true, "rootRelative": "reject" },
   "layout": { "endOfLine": "lf", "tabWidth": 2 }

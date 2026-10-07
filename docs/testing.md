@@ -2,10 +2,12 @@
 
 `npm run format` applies Prettier to non-Markdown source using the owlapi EditorConfig convention.
 `npm run check:format` rejects formatting drift without writing and runs before qualification and local package creation.
-`npm run format:markdown` owns authored Markdown layout, semantic line wrapping and literal code preservation.
+`npm run format:markdown` owns all repository Markdown layout, semantic line wrapping and literal code preservation.
 `npm run check:markdown` independently requires the native `authored-gfm@1` policy and physical local-file links.
-The generic Prettier invocation excludes Markdown without changing `.prettierignore`, because the native authored selector consumes that ignore file too.
-Native locks, immutable plans/evidence, fixtures and generated projections stay under their owning tools, as listed in `.prettierignore`.
+The Markdown selector includes `**/*.md`, has no path exclusions, and consumes only `.gitignore` to omit installed dependencies and ignored runtime output.
+Plans, fixtures, tooling documentation, comparison documentation and generated references are checked too; `.prettierignore` cannot exempt them.
+The generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
+Generated documentation must converge through its owning generator, and its freshness check remains required.
 Repository-authored Markdown does not support two-space hard breaks; trailing-whitespace removal remains enabled.
 
 `npm run check:api-docs` qualifies imported generic JSDoc through the isolated native TypeDoc model and Markdown renderer, then checks all ten generated reference files for freshness.

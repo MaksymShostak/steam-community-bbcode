@@ -367,9 +367,12 @@ Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0
 
 The private `tooling/markdown` project pins the immutable Markdown Quality 1.0.3 core and both native platform archives recorded in `release.json`.
 It runs only on exact Node 24.21.0 here, separately from the unchanged converter runtime and shipped dependency graphs.
-The `authored-gfm@1` policy preserves the original 23 authored paths, excludes generated/reference/history/fixture content and checks real local targets even on target-only changes.
+The `authored-gfm@1` policy includes every repository `**/*.md` file without path exemptions and checks real local targets even on target-only changes.
+Only `.gitignore` omits dependencies and ignored runtime output; `.prettierignore` cannot hide source documents.
+Historical plans, fixtures, comparison/tooling guides and generated references follow the same policy.
+TypeDoc and conformance generators emit conforming Markdown, with their independent model and freshness checks retained.
 Native parsing, layout guards and the shipped result schema own the Markdown contract; the consumer launcher only enforces runtime, fresh evidence and exact exit propagation.
-Use `install:markdown`, `format:markdown`, `check:markdown` and `test:markdown`; generic Prettier invocation excludes Markdown without changing the selector's ignore inputs.
+Use `install:markdown`, `format:markdown`, `check:markdown` and `test:markdown`; generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
 The old prose-exclusive Python files and pip-update entry are retired; Python, comparator requirements and the MIT launcher notice remain.
 The scoped `micromark-extension-math` override selects KaTeX 0.18.2 to address [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7), with real ordinary-rendering and inherited-trust regressions.
 Trusted candidate-as-data qualification uses reviewed bootstrap policy/ignore/dependency bytes, bounded staging and credential-free checking; exact hosted-source/run acceptance and merge approval remain separate from local success.

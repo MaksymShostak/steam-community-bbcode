@@ -23,6 +23,12 @@ import {
 const { values } = parseArgs({
   options: { check: { type: "boolean", default: false } },
 });
+const sentences = new Intl.Segmenter("en", { granularity: "sentence" });
+/** @param {string} text */
+const sentenceLines = (text) =>
+  Array.from(sentences.segment(text), ({ segment }) => segment.trim()).join(
+    "\n",
+  );
 validateSpecification(await readSpecificationDocuments());
 const executions = steamDialectProfileIds.flatMap((profile) =>
   constructCases.map((fixture) => executeConstructCase(fixture, profile)),
@@ -186,7 +192,7 @@ const document = {
       children: [
         {
           type: "text",
-          value: `${rows.length} registry entries have an executed policy: ${sourceIds.length} observable source constructs and ${contextOnly.length} context-only renderer rules. ${executions.length} case/profile executions check canonical, nested, escaping and malformed contexts. These checks do not prove current Steam rendering, support for every parameter variant, or release readiness.`,
+          value: `${rows.length} registry entries have an executed policy: ${sourceIds.length} observable source constructs and ${contextOnly.length} context-only renderer rules.\n${executions.length} case/profile executions check canonical, nested, escaping and malformed contexts.\nThese checks do not prove current Steam rendering, support for every parameter variant, or release readiness.`,
         },
       ],
     },
@@ -196,7 +202,7 @@ const document = {
         {
           type: "text",
           value:
-            "A profile status records source evidence about Steam. An absent profile is unclassified. Conversion recognizes the complete registry in each selected profile; passing conversion tests is not evidence that Steam accepts that syntax on that surface. Unsupported fidelity below denotes an explained fallback.",
+            "A profile status records source evidence about Steam.\nAn absent profile is unclassified.\nConversion recognizes the complete registry in each selected profile; passing conversion tests is not evidence that Steam accepts that syntax on that surface.\nUnsupported fidelity below denotes an explained fallback.",
         },
       ],
     },
@@ -206,7 +212,7 @@ const document = {
         {
           type: "text",
           value:
-            "Target trees are checked against GFM syntax. Some GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM_RENDERER_AUTOLINK_POSSIBLE. The live Markdown REST endpoint is a separate retained check.",
+            "Target trees are checked against GFM syntax.\nSome GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM_RENDERER_AUTOLINK_POSSIBLE.\nThe live Markdown REST endpoint is a separate retained check.",
         },
       ],
     },
@@ -247,7 +253,7 @@ const document = {
       children: [
         {
           type: "text",
-          value: `${reverseReport.executedCaseCount} independently authored reverse cases exercise ${reverseReport.sourceNodeTypes.length} native MDAST node kinds. Equivalent mappings have exact Steam syntax and semantic expectations. Unsupported cases retain literal source, emit explicit diagnostics and verify that no active Steam markup is injected. Every source node is accounted for independently against the native GFM tree. Forward registry results do not contribute to these reverse classifications.`,
+          value: `${reverseReport.executedCaseCount} independently authored reverse cases exercise ${reverseReport.sourceNodeTypes.length} native MDAST node kinds.\nEquivalent mappings have exact Steam syntax and semantic expectations.\nUnsupported cases retain literal source, emit explicit diagnostics and verify that no active Steam markup is injected.\nEvery source node is accounted for independently against the native GFM tree.\nForward registry results do not contribute to these reverse classifications.`,
         },
       ],
     },
@@ -257,7 +263,7 @@ const document = {
         {
           type: "text",
           value:
-            "The target is the qualified Workshop-item subset. Table alignment, task state, heading levels 4-6, raw HTML, inline code, metadata and relative resources are preserved where no equivalent mapping is qualified. GFM reference definitions/references and hard-break source also remain literal. Code without metadata is supported only when its payload cannot close the Steam code region. Conventional list spacing is normalized; structure and paragraph separation are retained. These executions do not establish live Steam rendering or complete GFM reversibility.",
+            "The target is the qualified Workshop-item subset.\nTable alignment, task state, heading levels 4-6, raw HTML, inline code, metadata and relative resources are preserved where no equivalent mapping is qualified.\nGFM reference definitions/references and hard-break source also remain literal.\nCode without metadata is supported only when its payload cannot close the Steam code region.\nConventional list spacing is normalized; structure and paragraph separation are retained.\nThese executions do not establish live Steam rendering or complete GFM reversibility.",
         },
       ],
     },
@@ -295,7 +301,7 @@ const document = {
         {
           type: "text",
           value:
-            ". Edit the registry or authored conformance fixtures, then run npm run generate:conformance. npm run check:conformance executes both directions again and rejects stale reports.",
+            ".\nEdit the registry or authored conformance fixtures, then run npm run generate:conformance.\nnpm run check:conformance executes both directions again and rejects stale reports.",
         },
       ],
     },
@@ -321,7 +327,7 @@ const examples = {
         {
           type: "text",
           value:
-            "These examples use the already qualified canonical corpus and the default Workshop profile. Each output is actual serialized GFM whose semantics were independently checked by that corpus. Fidelity describes the selected example, not every attribute variant or live Steam rendering. Some examples contain several constructs so their required context remains visible.",
+            "These examples use the already qualified canonical corpus and the default Workshop profile.\nEach output is actual serialized GFM whose semantics were independently checked by that corpus.\nFidelity describes the selected example, not every attribute variant or live Steam rendering.\nSome examples contain several constructs so their required context remains visible.",
         },
       ],
     },
@@ -331,7 +337,7 @@ const examples = {
         {
           type: "text",
           value:
-            "Ordinary source punctuation is literal. Unknown syntax and unsupported source regions retain text with diagnostics. Layout whitespace adjoining converted blocks and list boundaries is normalized; opaque code/noparse and meaningful inline padding remain protected. The native serializer owns escaping and fence lengths.",
+            "Ordinary source punctuation is literal.\nUnknown syntax and unsupported source regions retain text with diagnostics.\nLayout whitespace adjoining converted blocks and list boundaries is normalized; opaque code/noparse and meaningful inline padding remain protected.\nThe native serializer owns escaping and fence lengths.",
         },
       ],
     },
@@ -365,7 +371,7 @@ for (const definition of steamConstructDefinitions) {
       children: [
         {
           type: "text",
-          value: `Context-only policy: ${definition.contextReason} No source occurrence or syntax example can be inferred. The result carries an unsupported preserve-source policy without inventing occurrences.`,
+          value: `Context-only policy: ${sentenceLines(definition.contextReason)}\nNo source occurrence or syntax example can be inferred.\nThe result carries an unsupported preserve-source policy without inventing occurrences.`,
         },
       ],
     });
@@ -382,7 +388,7 @@ for (const definition of steamConstructDefinitions) {
       children: [
         {
           type: "text",
-          value: `Example policy: ${fixture.fidelity}. Steam source:`,
+          value: `Example policy: ${fixture.fidelity}.\nSteam source:`,
         },
       ],
     },
@@ -398,7 +404,7 @@ for (const definition of steamConstructDefinitions) {
         {
           type: "text",
           value: result.diagnostics.length
-            ? `Diagnostics: ${result.diagnostics.map((diagnostic) => `${diagnostic.code}: ${diagnostic.message}`).join(" ")}`
+            ? `Diagnostics: ${result.diagnostics.map((diagnostic) => `${diagnostic.code}: ${diagnostic.message}`).join("\n")}`
             : "No conversion diagnostic is emitted for this qualified example.",
         },
       ],

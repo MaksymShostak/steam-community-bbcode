@@ -3,8 +3,8 @@ import { parseSteamNamedAttributes } from "../steam/parse-steam-bbcode-syntax.js
 
 /** @typedef {{noborder?: boolean, equalcells?: boolean}} SteamTableLayout */
 /**
- * Recognize only the two sourced Steam layout settings. Duplicate keys and
- * unknown values remain ambiguous; silently choosing a winner would lose source.
+ * Recognize only the two sourced Steam layout settings.
+ * Duplicate keys and unknown values remain ambiguous; silently choosing a winner would lose source.
  * @param {string} rawAttributes @returns {SteamTableLayout | undefined}
  */
 export function steamTableLayout(rawAttributes) {
