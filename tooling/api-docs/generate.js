@@ -10,8 +10,20 @@ import {
   ReferenceType,
   ReflectionType,
   ReflectionKind,
+  TypeContext,
   makeRecursiveVisitor,
 } from "typedoc";
+import {
+  createCompilerHost,
+  createProgram,
+  createSourceFile,
+  flattenDiagnosticMessageText,
+  isIntersectionTypeNode,
+  isParenthesizedTypeNode,
+  isTypeAliasDeclaration,
+  isUnionTypeNode,
+  ScriptTarget,
+} from "typescript";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { toMarkdown } from "mdast-util-to-markdown";
 import { gfmFromMarkdown, gfmToMarkdown } from "mdast-util-gfm";
@@ -93,6 +105,45 @@ class RepositoryMarkdownTheme extends MarkdownTheme {
   /** @param {import('typedoc-plugin-markdown').MarkdownPageEvent<import('typedoc').Reflection>} page */
   getRenderContext(page) {
     const context = super.getRenderContext(page);
+    context.partials.intersectionType = (model) =>
+      model.types
+        .map((type) => {
+          const rendered = context.partials.someType(type);
+          return type.needsParenthesis(TypeContext.intersectionElement)
+            ? `(${rendered})`
+            : rendered;
+        })
+        .join(" & ");
+    const parametersList = context.partials.parametersList;
+    context.partials.parametersList = (model, options) => {
+      const tree = fromMarkdown(parametersList(model, options), {
+        extensions: [gfm()],
+        mdastExtensions: [gfmFromMarkdown()],
+      });
+      const names = new Set(
+        model
+          .filter((parameter) => !(parameter.type instanceof ReflectionType))
+          .map(
+            (parameter) =>
+              `${parameter.name}${parameter.flags.isOptional || parameter.defaultValue ? "?" : ""}`,
+          ),
+      );
+      // Compact only native parameter-type paragraphs, not descriptions or code.
+      for (const [index, node] of tree.children.entries()) {
+        const type = tree.children[index + 1];
+        if (
+          node.type === "heading" &&
+          node.children.some(
+            (child) => child.type === "text" && names.has(child.value),
+          ) &&
+          type?.type === "paragraph"
+        )
+          for (const child of type.children)
+            if (child.type === "text")
+              child.value = child.value.replace(/\r\n|\r|\n/gu, " ");
+      }
+      return toMarkdown(tree, { extensions: [gfmToMarkdown()] });
+    };
     const declarationTitle = context.partials.declarationTitle;
     context.partials.declarationTitle = (model) =>
       [declarationTitle(model), typeReferences(context, model)]
@@ -116,6 +167,75 @@ class RepositoryMarkdownTheme extends MarkdownTheme {
         : "";
     return context;
   }
+}
+
+/** Validate the alias fences with the same native compiler that owns TypeDoc.
+ * @param {string} content
+ * @param {string} name
+ */
+function validateTypeAliases(content, name) {
+  const tree = fromMarkdown(content, {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  });
+  const aliases = tree.children.filter(
+    (node) =>
+      node.type === "code" &&
+      node.lang === "ts" &&
+      node.value.startsWith("type "),
+  );
+  const fileName = `${name}.ts`;
+  const source = createSourceFile(
+    fileName,
+    aliases.map((node) => (node.type === "code" ? node.value : "")).join("\n"),
+    ScriptTarget.Latest,
+    true,
+  );
+  const compilerOptions = { noLib: true, noResolve: true, noEmit: true };
+  const program = createProgram({
+    rootNames: [fileName],
+    options: compilerOptions,
+    host: {
+      ...createCompilerHost(compilerOptions),
+      getSourceFile: (path) => (path === fileName ? source : undefined),
+    },
+  });
+  assert.deepEqual(
+    program
+      .getSyntacticDiagnostics(source)
+      .map((diagnostic) =>
+        flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
+      ),
+    [],
+    `${name}: generated type aliases must be valid TypeScript`,
+  );
+  return source;
+}
+
+/** @param {import('typescript').SourceFile} source
+ * @param {string} name
+ * @param {number} commonTypes
+ */
+function assertGroupedVariants(source, name, commonTypes) {
+  const alias = source.statements.find(
+    (node) => isTypeAliasDeclaration(node) && node.name.text === name,
+  );
+  assert.ok(
+    alias && isTypeAliasDeclaration(alias),
+    `${name}: missing native alias`,
+  );
+  assert.ok(
+    isIntersectionTypeNode(alias.type),
+    `${name}: common fields must intersect every variant`,
+  );
+  assert.equal(alias.type.types.length, commonTypes + 1);
+  const variants = alias.type.types.at(-1);
+  assert.ok(
+    variants && isParenthesizedTypeNode(variants),
+    `${name}: variants must remain grouped`,
+  );
+  assert.ok(isUnionTypeNode(variants.type));
+  return variants.type.types.length;
 }
 
 /** Generate with the supported native application and preserve its diagnostics.
@@ -228,6 +348,63 @@ assert.ok(
   ),
   "The rendered imported property must retain its generic type in native code syntax.",
 );
+const defaults = fixture.getChildByName(["api", "documentedDefaults"]);
+assert.ok(defaults?.isDeclaration());
+const parameters = defaults.signatures?.[0]?.parameters;
+assert.ok(parameters);
+assert.equal(parameters.length, 4);
+const fixtureTree = fromMarkdown(renderedFixture);
+for (const parameter of parameters) {
+  assert.ok(parameter.defaultValue !== undefined);
+  const heading = fixtureTree.children.findIndex(
+    (node) =>
+      node.type === "heading" &&
+      node.children.some(
+        (child) =>
+          child.type === "text" && child.value === `${parameter.name}?`,
+      ),
+  );
+  assert.ok(
+    heading >= 0,
+    `${parameter.name}: default parameter heading must survive`,
+  );
+  const end = fixtureTree.children.findIndex(
+    (node, index) => index > heading && node.type === "heading",
+  );
+  assert.ok(
+    fixtureTree.children
+      .slice(heading + 1, end < 0 ? undefined : end)
+      .some(
+        (node) =>
+          node.type === "paragraph" &&
+          node.children.some(
+            (child) =>
+              child.type === "inlineCode" &&
+              child.value === parameter.defaultValue,
+          ),
+      ),
+    `${parameter.name}: native default ${parameter.defaultValue} must remain documented`,
+  );
+}
+assert.equal(
+  assertGroupedVariants(
+    validateTypeAliases(
+      await readFile(new URL("markdown/model.md", fixtureRoot), "utf8"),
+      "fixture/model",
+    ),
+    "TaggedEnvelope",
+    1,
+  ),
+  2,
+);
+assert.throws(
+  () =>
+    validateTypeAliases(
+      "```ts\ntype Broken = Common & | Left | Right;\n```",
+      "fixture/broken",
+    ),
+  /generated type aliases must be valid TypeScript/,
+);
 
 const reference = await generate({});
 const sourceSpan = reference.getChildByName(["index", "SourceSpan"]);
@@ -301,6 +478,11 @@ for (const name of names) {
     literals(tree),
     `Generated signatures, literals and anchors must survive Markdown serialization: ${name}`,
   );
+  const aliases = validateTypeAliases(content, name);
+  if (name === "index-1.md") {
+    assert.equal(assertGroupedVariants(aliases, "ConversionDiagnostic", 1), 3);
+    assert.equal(assertGroupedVariants(aliases, "SteamEmbeddedMedia", 2), 2);
+  }
   await writeFile(target, content);
 }
 if (values.check) {

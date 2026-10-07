@@ -4,4 +4,8 @@
  * @template T
  * @typedef {{value: T, label: string}} Envelope
  */
+/**
+ * Retain common fields on both tagged variants.
+ * @typedef {{shared: string} & ({kind: 'left', left: number} | {kind: 'right', right: number})} TaggedEnvelope
+ */
 export {};

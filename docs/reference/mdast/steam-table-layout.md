@@ -21,9 +21,6 @@ type SteamTableLayout = {
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 #### Type Declaration
 
 <a id="equalcells"></a>
@@ -59,9 +56,9 @@ Duplicate keys and unknown values remain ambiguous; silently choosing a winner w
 
 #### Parameters
 
-| Parameter       | Type     | Description |
-| --------------- | -------- | ----------- |
-| `rawAttributes` | `string` | -           |
+##### rawAttributes
+
+`string`
 
 #### Returns
 

@@ -20,9 +20,6 @@ Type references: [`steamParseDiagnosticCodes`](#steamparsediagnosticcodes).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ## Variables
 
 <a id="conversiondiagnosticcodes"></a>

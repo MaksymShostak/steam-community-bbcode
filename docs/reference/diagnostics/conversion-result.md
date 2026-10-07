@@ -24,9 +24,6 @@ Type references: [`DiagnosticConstructId`](#diagnosticconstructid), [`Conversion
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="contextonlyrendererpolicy"></a>
@@ -46,9 +43,6 @@ Type references: [`ConstructId`](../index-1.md#constructid).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="conversioncoverage"></a>
@@ -67,9 +61,6 @@ type ConversionCoverage = Readonly<{
 Type references: [`ConstructConversionOutcome`](#constructconversionoutcome), [`ContextOnlyRendererPolicy`](#contextonlyrendererpolicy), [`SteamDialectProfileId`](../index-1.md#steamdialectprofileid).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -91,9 +82,6 @@ Type references: [`DiagnosticCode`](../index-1.md#diagnosticcode), [`ConversionF
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="diagnosticconstructid"></a>
@@ -107,9 +95,6 @@ type DiagnosticConstructId = ConstructId | "steam.bbcode.unknown";
 Type references: [`ConstructId`](../index-1.md#constructid).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -128,9 +113,6 @@ type GfmNodeConversionOutcome = Readonly<{
 Type references: [`ConversionFidelity`](../index-1.md#conversionfidelity), [`ReadonlySourceSpan`](../steam/steam-bbcode-syntax.md#readonlysourcespan).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ## References
 

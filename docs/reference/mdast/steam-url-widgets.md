@@ -23,9 +23,6 @@ Type references: [`ConstructId`](../index-1.md#constructid), [`SteamUrlWidgetKin
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 #### Type Declaration
 
 <a id="constructid"></a>
@@ -66,9 +63,6 @@ type SteamUrlWidgetKind =
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ## Functions
 
 <a id="steamtextwithurlwidgets"></a>
@@ -86,9 +80,9 @@ Opaque regions and active link labels never call this.
 
 #### Parameters
 
-| Parameter | Type                                                                 | Description |
-| --------- | -------------------------------------------------------------------- | ----------- |
-| `node`    | [`SteamTextSyntax`](../steam/steam-bbcode-syntax.md#steamtextsyntax) | -           |
+##### node
+
+[`SteamTextSyntax`](../steam/steam-bbcode-syntax.md#steamtextsyntax)
 
 #### Returns
 

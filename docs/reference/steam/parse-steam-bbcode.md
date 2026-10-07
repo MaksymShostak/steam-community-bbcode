@@ -24,9 +24,6 @@ Type references: [`SteamParseDiagnosticCode`](../diagnostics/diagnostic-codes.md
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ## Functions
 
 <a id="isissuedsteambbcodeparseresult"></a>
@@ -44,9 +41,9 @@ A deserialized or fabricated tree has not passed the parser's runtime limits and
 
 #### Parameters
 
-| Parameter | Type      | Description |
-| --------- | --------- | ----------- |
-| `value`   | `unknown` | -           |
+##### value
+
+`unknown`
 
 #### Returns
 
@@ -107,10 +104,13 @@ This is a syntax operation; it does not serialize GFM or claim target representa
 
 #### Parameters
 
-| Parameter  | Type                                                                                                                                                                                                                                                  | Description |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `source`   | `string`                                                                                                                                                                                                                                              | -           |
-| `options?` | `Readonly`<{ `profile?`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](../index-1.md#steamparseresourcelimits)>; }> | -           |
+##### source
+
+`string`
+
+##### options?
+
+`Readonly`<{ `profile?`: | `"workshop-item"` | `"ugc-description"` | `"guide-section"` | `"discussion"` | `"review"` | `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](../index-1.md#steamparseresourcelimits)>; }> = `{}`
 
 #### Returns
 

@@ -148,9 +148,6 @@ Type references: [`steamConstructIds`](steam/registry-identifiers.md#steamconstr
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="conversiondiagnostic"></a>
@@ -158,7 +155,7 @@ Type references: [`steamConstructIds`](steam/registry-identifiers.md#steamconstr
 ### ConversionDiagnostic
 
 ```ts
-type ConversionDiagnostic = ConversionDiagnosticDetail &
+type ConversionDiagnostic = ConversionDiagnosticDetail & (
   | Readonly<{
   constructId: DiagnosticConstructId;
   scope: "construct";
@@ -169,15 +166,12 @@ type ConversionDiagnostic = ConversionDiagnosticDetail &
   | Readonly<{
   nodeType: Nodes["type"];
   scope: "gfm-node";
-}>;
+}>);
 ```
 
 Type references: [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail), [`DiagnosticConstructId`](diagnostics/conversion-result.md#diagnosticconstructid).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -190,9 +184,6 @@ type ConversionFidelity = "exact" | "equivalent" | "approximate" | "lossy" | "un
 ```
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -212,9 +203,9 @@ Type references: [`ConversionCoverage`](diagnostics/conversion-result.md#convers
 
 #### Type Parameters
 
-| Type Parameter | Description |
-| -------------- | ----------- |
-| `T`            |             |
+##### T
+
+`T`
 
 ---
 
@@ -229,9 +220,6 @@ type DiagnosticCode = typeof conversionDiagnosticCodes[number];
 Type references: [`conversionDiagnosticCodes`](diagnostics/diagnostic-codes.md#conversiondiagnosticcodes).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -249,9 +237,6 @@ Type references: [`GfmConversionResourceLimits`](#gfmconversionresourcelimits).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="parsesteamcommunitybbcodeoptions"></a>
@@ -268,9 +253,6 @@ type ParseSteamCommunityBbcodeOptions = Readonly<{
 Type references: [`SteamDialectProfileId`](steam/parse-steam-bbcode.md#steamdialectprofileid), [`SteamParseResourceLimits`](#steamparseresourcelimits).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -292,9 +274,9 @@ Type references: [`ConversionResult`](#conversionresult), [`ConversionCoverage`]
 
 #### Type Parameters
 
-| Type Parameter | Description |
-| -------------- | ----------- |
-| `T`            |             |
+##### T
+
+`T`
 
 ---
 
@@ -343,9 +325,6 @@ type: "steamAttributedBlockquote";
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steambbcodeparseresult"></a>
@@ -365,9 +344,6 @@ Type references: [`SteamBbcodeSyntaxNode`](steam/parse-steam-bbcode.md#steambbco
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steambbcodesyntaxnode"></a>
@@ -386,9 +362,6 @@ type SteamBbcodeSyntaxNode =
 Type references: [`SteamTextSyntax`](steam/steam-bbcode-syntax.md#steamtextsyntax), [`SteamListItemBoundarySyntax`](steam/steam-bbcode-syntax.md#steamlistitemboundarysyntax), [`SteamUnmatchedClosingTagSyntax`](steam/steam-bbcode-syntax.md#steamunmatchedclosingtagsyntax), [`SteamTagSyntax`](steam/steam-bbcode-syntax.md#steamtagsyntax), [`SteamOpaqueTagSyntax`](steam/steam-bbcode-syntax.md#steamopaquetagsyntax).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -422,9 +395,6 @@ type: "steamBlockSpoiler";
 ```
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -466,9 +436,6 @@ type: "steamColor";
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamdialectprofileid"></a>
@@ -483,9 +450,6 @@ Type references: [`steamDialectProfileIds`](steam/registry-identifiers.md#steamd
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamembeddedmedia"></a>
@@ -498,7 +462,7 @@ type SteamEmbeddedMedia = Node & {
   constructId: ConstructId;
   source: string;
   type: "steamEmbeddedMedia";
-} &
+} & (
   | {
   layout?: "leftthumb" | "rightthumb" | "full";
   mediaKind: "youtube";
@@ -507,7 +471,7 @@ type SteamEmbeddedMedia = Node & {
   autoplay?: boolean;
   mediaKind: "video";
   poster?: string;
-};
+});
 ```
 
 Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`ConstructId`](#constructid).
@@ -543,9 +507,6 @@ type: "steamEmbeddedMedia";
 ```
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -585,9 +546,6 @@ Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowconten
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamnoparse"></a>
@@ -616,9 +574,6 @@ value: string;
 ```
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -707,9 +662,6 @@ type: "steamPreviewImage";
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steampullquote"></a>
@@ -742,9 +694,6 @@ type: "steamPullQuote";
 ```
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -779,9 +728,6 @@ type: "steamSpoiler";
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamunderline"></a>
@@ -815,9 +761,6 @@ type: "steamUnderline";
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="unsupportedgfmfeaturediagnostic"></a>
@@ -834,9 +777,6 @@ type UnsupportedGfmFeatureDiagnostic = ConversionDiagnosticDetail & Readonly<{
 Type references: [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ## Functions
 
@@ -856,10 +796,13 @@ This pure function does not read files, fetch URLs or render arbitrary HTML.
 
 #### Parameters
 
-| Parameter  | Type                                                                                                         | Description |
-| ---------- | ------------------------------------------------------------------------------------------------------------ | ----------- |
-| `source`   | `string`                                                                                                     | -           |
-| `options?` | `Readonly`<{ `resourceLimits?`: `Partial`<[`GfmConversionResourceLimits`](#gfmconversionresourcelimits)>; }> | -           |
+##### source
+
+`string`
+
+##### options?
+
+`Readonly`<{ `resourceLimits?`: `Partial`<[`GfmConversionResourceLimits`](#gfmconversionresourcelimits)>; }> = `{}`
 
 #### Returns
 
@@ -888,10 +831,13 @@ Markdown syntax and escaping belong to the maintained native serializer.
 
 #### Parameters
 
-| Parameter  | Type                                                                                                                                                                                                                                     | Description |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `source`   | `string`                                                                                                                                                                                                                                 | -           |
-| `options?` | `Readonly`<{ `profile?`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }> | -           |
+##### source
+
+`string`
+
+##### options?
+
+`Readonly`<{ `profile?`: | `"workshop-item"` | `"ugc-description"` | `"guide-section"` | `"discussion"` | `"review"` | `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }> = `{}`
 
 #### Returns
 
@@ -922,10 +868,13 @@ Their profile cannot change, and resource limits belong to the initial parse.
 
 #### Parameters
 
-| Parameter  | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Description |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `source`   | \| `string` \| `Readonly`<{ `children`: readonly [`SteamBbcodeSyntaxNode`](#steambbcodesyntaxnode)\[]; `diagnostics`: readonly `Readonly`<{ `code`: \| `"STEAM_MAX_INPUT_BYTES_EXCEEDED"` \| `"STEAM_MAX_ATTRIBUTE_BYTES_EXCEEDED"` \| `"STEAM_MAX_NESTING_DEPTH_EXCEEDED"` \| `"STEAM_MAX_NODE_COUNT_EXCEEDED"` \| `"STEAM_LEXICAL_ERROR"` \| `"STEAM_SYNTAX_ERROR"` \| `"STEAM_UNCLOSED_TAG_HEADER"` \| `"STEAM_UNCLOSED_ATTRIBUTE_QUOTE"` \| `"STEAM_UNCLOSED_TAG"` \| `"STEAM_MISMATCHED_CLOSING_TAG"` \| `"STEAM_UNMATCHED_CLOSING_TAG"`; `message`: `string`; `sourceSpan?`: { `end`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; `start`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; }; }>\[]; `profile`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `source`: `string`; }> | -           |
-| `options?` | `Readonly`<{ `profile?`: \| `"workshop-item"` \| `"ugc-description"` \| `"guide-section"` \| `"discussion"` \| `"review"` \| `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | -           |
+##### source
+
+\| `string` | `Readonly`<{ `children`: readonly [`SteamBbcodeSyntaxNode`](#steambbcodesyntaxnode)\[]; `diagnostics`: readonly `Readonly`<{ `code`: | `"STEAM_MAX_INPUT_BYTES_EXCEEDED"` | `"STEAM_MAX_ATTRIBUTE_BYTES_EXCEEDED"` | `"STEAM_MAX_NESTING_DEPTH_EXCEEDED"` | `"STEAM_MAX_NODE_COUNT_EXCEEDED"` | `"STEAM_LEXICAL_ERROR"` | `"STEAM_SYNTAX_ERROR"` | `"STEAM_UNCLOSED_TAG_HEADER"` | `"STEAM_UNCLOSED_ATTRIBUTE_QUOTE"` | `"STEAM_UNCLOSED_TAG"` | `"STEAM_MISMATCHED_CLOSING_TAG"` | `"STEAM_UNMATCHED_CLOSING_TAG"`; `message`: `string`; `sourceSpan?`: { `end`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; `start`: { `column`: `number`; `line`: `number`; `offset?`: `number`; }; }; }>\[]; `profile`: | `"workshop-item"` | `"ugc-description"` | `"guide-section"` | `"discussion"` | `"review"` | `"announcement"`; `source`: `string`; }>
+
+##### options?
+
+`Readonly`<{ `profile?`: | `"workshop-item"` | `"ugc-description"` | `"guide-section"` | `"discussion"` | `"review"` | `"announcement"`; `resourceLimits?`: `Partial`<[`SteamParseResourceLimits`](#steamparseresourcelimits)>; }> = `{}`
 
 #### Returns
 

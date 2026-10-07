@@ -119,3 +119,89 @@ test("generated API pages retain every qualified link target beside fenced type 
       assert.ok(links.has(target), `${path}: lost link target ${target}`);
   }
 });
+
+test("generated API pages retain the complete baseline heading inventory", async () => {
+  /** @type {Record<string, Array<{depth: number, text: string}>>} */
+  const pages = JSON.parse(
+    await readFile(
+      new URL(
+        "documentation-fixtures/reference-headings.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  for (const [path, expected] of Object.entries(pages)) {
+    const tree = fromMarkdown(
+      await readFile(new URL(`../${path}`, import.meta.url), "utf8"),
+      { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] },
+    );
+    assert.deepEqual(
+      tree.children
+        .filter((node) => node.type === "heading")
+        .map((node) => ({
+          depth: node.depth,
+          text: node.children
+            .map((child) => ("value" in child ? child.value : ""))
+            .join(""),
+        })),
+      expected,
+      `${path}: changed baseline headings or duplicate-name ordering`,
+    );
+  }
+});
+
+test("public API parameter sections retain their empty-object defaults", async () => {
+  const pages = new Map([
+    [
+      "index-1.md",
+      [
+        "gfmToSteamCommunityBbcode()",
+        "steamCommunityBbcodeToGfm()",
+        "steamCommunityBbcodeToMdast()",
+      ],
+    ],
+    ["steam/parse-steam-bbcode.md", ["parseSteamCommunityBbcode()"]],
+  ]);
+  for (const [path, names] of pages) {
+    const tree = fromMarkdown(
+      await readFile(
+        new URL(`../docs/reference/${path}`, import.meta.url),
+        "utf8",
+      ),
+      { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] },
+    );
+    for (const name of names) {
+      const start = tree.children.findIndex(
+        (node) =>
+          node.type === "heading" &&
+          node.depth === 3 &&
+          node.children.some(
+            (child) => child.type === "text" && child.value === name,
+          ),
+      );
+      assert.ok(start >= 0, `${path}: missing ${name}`);
+      const next = tree.children.findIndex(
+        (node, index) =>
+          index > start && node.type === "heading" && node.depth <= 3,
+      );
+      const section = tree.children.slice(
+        start + 1,
+        next < 0 ? undefined : next,
+      );
+      assert.ok(
+        section.some(
+          (node) =>
+            node.type === "paragraph" &&
+            node.children.some(
+              (child) => child.type === "text" && child.value.includes(" = "),
+            ) &&
+            node.children.some(
+              (child) => child.type === "inlineCode" && child.value === "{}",
+            ),
+        ),
+        `${path}: ${name} lost options = {}`,
+      );
+    }
+  }
+});

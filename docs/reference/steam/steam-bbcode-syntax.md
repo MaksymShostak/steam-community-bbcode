@@ -20,9 +20,6 @@ Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue), [`SourceSpan`](.
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="readonlysyntaxvalue"></a>
@@ -37,9 +34,9 @@ Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue).
 
 #### Type Parameters
 
-| Type Parameter | Description |
-| -------------- | ----------- |
-| `T`            |             |
+##### T
+
+`T`
 
 ---
 
@@ -56,9 +53,6 @@ type SteamListItemBoundarySyntax = SteamSyntaxSource & Readonly<{
 Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -78,9 +72,6 @@ Type references: [`SteamTagSource`](#steamtagsource).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamsyntaxsource"></a>
@@ -97,9 +88,6 @@ type SteamSyntaxSource = Readonly<{
 Type references: [`ReadonlySourceSpan`](#readonlysourcespan).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -120,9 +108,6 @@ Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamtagsyntax"></a>
@@ -139,9 +124,6 @@ type SteamTagSyntax = SteamTagSource & Readonly<{
 Type references: [`SteamTagSource`](#steamtagsource), [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -160,9 +142,6 @@ Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamunmatchedclosingtagsyntax"></a>
@@ -179,9 +158,6 @@ type SteamUnmatchedClosingTagSyntax = SteamSyntaxSource & Readonly<{
 Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ## References
 

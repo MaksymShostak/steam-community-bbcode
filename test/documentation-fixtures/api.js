@@ -8,3 +8,14 @@
 export function envelope(value) {
   return {value, label: 'Example'};
 }
+
+/**
+ * Retain every documented default value.
+ * @param {object} [options] Options.
+ * @param {number} [count] Count.
+ * @param {boolean} [enabled] Enabled.
+ * @param {string} [label] Label.
+ */
+export function documentedDefaults(options = {}, count = 0, enabled = false, label = '') {
+  return {options, count, enabled, label};
+}

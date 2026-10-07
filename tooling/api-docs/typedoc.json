@@ -21,7 +21,7 @@
   "prettierConfigFile": "../../.prettierrc.json",
   "useCodeBlocks": true,
   "expandObjects": true,
-  "parametersFormat": "table",
+  "parametersFormat": "list",
   "useHTMLAnchors": true,
   "out": "../../artifacts/api-reference/markdown",
   "json": "../../artifacts/api-reference/model.json"

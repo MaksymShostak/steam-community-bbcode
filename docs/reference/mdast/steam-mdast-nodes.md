@@ -32,9 +32,6 @@ Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamdelete"></a>
@@ -61,9 +58,6 @@ Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamemphasis"></a>
@@ -89,9 +83,6 @@ children: SteamPhrasingContent[];
 Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -120,9 +111,6 @@ Type references: [`SteamParagraph`](#steamparagraph), [`SteamHeading`](#steamhea
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamfootnotedefinition"></a>
@@ -149,9 +137,6 @@ Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamheading"></a>
@@ -177,9 +162,6 @@ children: SteamPhrasingContent[];
 Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -230,9 +212,6 @@ Type references: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamlinkreference"></a>
@@ -258,9 +237,6 @@ children: SteamPhrasingContent[];
 Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -288,9 +264,6 @@ Type references: [`SteamListItem`](#steamlistitem).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamlistitem"></a>
@@ -317,9 +290,6 @@ Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamparagraph"></a>
@@ -345,9 +315,6 @@ children: SteamPhrasingContent[];
 Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -376,9 +343,6 @@ Type references: [`SteamStrong`](#steamstrong), [`SteamEmphasis`](#steamemphasis
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamstrong"></a>
@@ -404,9 +368,6 @@ children: SteamPhrasingContent[];
 Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ---
 
@@ -457,9 +418,6 @@ Type references: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamtablecell"></a>
@@ -486,9 +444,6 @@ Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
-| Type Parameter |
-| -------------- |
-
 ---
 
 <a id="steamtablerow"></a>
@@ -514,9 +469,6 @@ children: SteamTableCell[];
 Type references: [`SteamTableCell`](#steamtablecell).
 
 #### Type Parameters
-
-| Type Parameter |
-| -------------- |
 
 ## References
 
