@@ -13,7 +13,7 @@ import {
   symlinkSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -36,9 +36,6 @@ const validate = new Ajv({ allErrors: true, strict: true }).compile(
 );
 const policy = JSON.parse(
   readFileSync(join(root, ".markdown-quality.json"), "utf8"),
-);
-const frozen = JSON.parse(
-  readFileSync(new URL("authored-paths.json", import.meta.url), "utf8"),
 );
 
 function run(mode, directory, ...args) {
@@ -72,11 +69,29 @@ function fixture(t) {
   return directory;
 }
 
-test("full native selection matches the frozen incumbent authored paths", () => {
+test("full native selection includes every tracked and untracked repository Markdown file", () => {
   const report = run("inspect", root);
   assert.equal(report.exitCode, 0);
   assert.equal(report.selection.mode, "full");
-  assert.deepEqual(report.selection.files, frozen);
+  const files = execFileSync(
+    "git",
+    [
+      "ls-files",
+      "-z",
+      "--cached",
+      "--others",
+      "--exclude-standard",
+      "--",
+      "*.md",
+    ],
+    { cwd: root, encoding: "utf8" },
+  )
+    .split("\0")
+    .filter(Boolean);
+  assert.deepEqual(report.selection.files, [...new Set(files)].sort());
+  assert.deepEqual(policy.include, ["**/*.md"]);
+  assert.deepEqual(policy.exclude, []);
+  assert.deepEqual(policy.ignoreFiles, [".gitignore"]);
 });
 
 test("manifest, lock and installed core/native tuple match the immutable release", () => {
@@ -123,7 +138,7 @@ test("manifest, lock and installed core/native tuple match the immutable release
   assert.equal(lock.packages["node_modules/katex"].version, "0.18.2");
 });
 
-test("native formatting converges, preserves Steam literals and excludes generated/history files", (t) => {
+test("native formatting converges and preserves Steam literals in every repository directory", (t) => {
   const directory = fixture(t);
   const literal =
     "```bbcode\n[b]Literal[/b]  \n[url=https://example.com]Link[/url]\n```\n";
@@ -133,17 +148,24 @@ test("native formatting converges, preserves Steam literals and excludes generat
   );
   mkdirSync(join(directory, "docs/reference"), { recursive: true });
   mkdirSync(join(directory, "docs/plans"), { recursive: true });
-  const excluded = [
+  const included = [
     "docs/reference/api.md",
     "docs/plans/history.md",
     "docs/conversion-semantics.md",
     "docs/steam-support-matrix.md",
+    ".github/pull_request_template.md",
+    "tooling/type-coverage/README.md",
+    "comparison/README.md",
+    "test/fixtures/release/README.md",
   ];
-  for (const path of excluded)
+  for (const path of included) {
+    mkdirSync(dirname(join(directory, path)), { recursive: true });
     writeFileSync(
       join(directory, path),
-      "# Excluded\n\n[Missing](missing.md)  \n",
+      "# Included\n\nFirst sentence. Second sentence.\n",
     );
+  }
+  writeFileSync(join(directory, ".prettierignore"), "**/*.md\n");
   const original = readFileSync(join(directory, "README.md"), "utf8");
   const before = run("check", directory);
   assert.equal(before.exitCode, 1);
@@ -155,11 +177,33 @@ test("native formatting converges, preserves Steam literals and excludes generat
   assert.equal(run("check", directory).exitCode, 0);
   assert.equal(run("format", directory).exitCode, 0);
   assert.equal(readFileSync(join(directory, "README.md"), "utf8"), formatted);
-  for (const path of excluded)
+  for (const path of included)
     assert.equal(
       readFileSync(join(directory, path), "utf8"),
-      "# Excluded\n\n[Missing](missing.md)  \n",
+      "# Included\n\nFirst sentence.\nSecond sentence.\n",
     );
+});
+
+test("new Markdown under tooling, hidden, generated, history and fixture directories cannot hide a broken link", (t) => {
+  const directory = fixture(t);
+  for (const path of [
+    "tooling/tool/README.md",
+    ".github/new.md",
+    "docs/reference/new.md",
+    "docs/plans/new.md",
+    "test/fixtures/new.md",
+  ]) {
+    mkdirSync(dirname(join(directory, path)), { recursive: true });
+    writeFileSync(join(directory, path), "# Added\n\n[Missing](absent.txt).\n");
+    const report = run("check", directory);
+    assert.equal(report.exitCode, 1);
+    assert.ok(report.selection.files.includes(path));
+    assert.ok(
+      report.diagnostics.some(
+        (item) => item.path === path && item.rule === "local-target",
+      ),
+    );
+  }
 });
 
 test("target-only deletion fails a full check and invalid configuration reports exit two", (t) => {
