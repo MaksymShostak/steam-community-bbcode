@@ -45,10 +45,10 @@ test("consumer minimums and latest releases gate publication of the same candida
     "24.x",
     "26.x",
   ]);
-  assert.equal(
-    workflow.getIn(["jobs", "consumers", "needs"]),
+  assert.deepEqual(sequenceValues(["jobs", "consumers", "needs"]), [
+    "selection",
     "consumer-archive",
-  );
+  ]);
   assert.equal(
     workflow.getIn(["jobs", "consumers", "with", "artifact"]),
     "bbcode-consumer-archive",
@@ -110,14 +110,17 @@ function sequenceValues(path) {
 }
 
 test("short checks gate mutation without tolerating failed prerequisites", () => {
-  assert.equal(
-    workflow.getIn(["jobs", "converter", "needs"]),
+  assert.deepEqual(sequenceValues(["jobs", "converter", "needs"]), [
+    "selection",
     "dependency-review",
-  );
-  assert.equal(workflow.getIn(["jobs", "mutation", "needs"]), "converter");
+  ]);
+  assert.deepEqual(sequenceValues(["jobs", "mutation", "needs"]), [
+    "selection",
+    "converter",
+  ]);
   assert.equal(
     workflow.getIn(["jobs", "mutation", "if"]),
-    "${{ inputs.run-mutation == true }}",
+    "${{ needs.selection.outputs.package-required == 'true' && inputs.run-mutation == true }}",
   );
   assert.equal(
     workflow.getIn([
@@ -140,7 +143,12 @@ test("short checks gate mutation without tolerating failed prerequisites", () =>
     false,
   );
   for (const job of ["dependency-review", "converter"]) {
-    assert.equal(workflow.getIn(["jobs", job, "if"]), undefined);
+    assert.equal(
+      workflow.getIn(["jobs", job, "if"]),
+      job === "converter"
+        ? "needs.selection.outputs.package-required == 'true'"
+        : undefined,
+    );
     assert.equal(workflow.getIn(["jobs", job, "continue-on-error"]), undefined);
   }
   assert.deepEqual(
@@ -151,8 +159,10 @@ test("short checks gate mutation without tolerating failed prerequisites", () =>
 
 test("aggregate observes every prerequisite even after failure", () => {
   assert.deepEqual(sequenceValues(["jobs", "qualification", "needs"]), [
+    "selection",
     "dependency-review",
     "converter",
+    "consumer-archive",
     "mutation",
     "consumers",
     "markdown",
@@ -167,6 +177,8 @@ test("aggregate observes every prerequisite even after failure", () => {
     undefined,
   );
   for (const [key, job] of [
+    ["SELECTION_RESULT", "selection"],
+    ["ARCHIVE_RESULT", "consumer-archive"],
     ["DEPENDENCY_REVIEW_RESULT", "dependency-review"],
     ["CHECK_RESULT", "converter"],
     ["CONSUMER_RESULT", "consumers"],
@@ -182,6 +194,9 @@ test("aggregate observes every prerequisite even after failure", () => {
 
 /** @type {Record<string, string>} */
 const success = {
+  SELECTION_RESULT: "success",
+  PACKAGE_REQUIRED: "true",
+  ARCHIVE_RESULT: "success",
   MUTATION_REQUIRED: "true",
   DEPENDENCY_REVIEW_RESULT: "success",
   CHECK_RESULT: "success",
@@ -191,7 +206,52 @@ const success = {
 };
 const cases = [
   { name: "all succeed", env: success, status: 0 },
+  {
+    name: "proven docs permits precisely the package skips",
+    env: {
+      ...success,
+      PACKAGE_REQUIRED: "false",
+      CHECK_RESULT: "skipped",
+      ARCHIVE_RESULT: "skipped",
+      CONSUMER_RESULT: "skipped",
+      MUTATION_RESULT: "skipped",
+    },
+    status: 0,
+  },
+  ...["", "typo"].map((required) => ({
+    name: `invalid package selection ${required || "absent"}`,
+    env: { ...success, PACKAGE_REQUIRED: required },
+    status: 1,
+  })),
   ...[
+    "CHECK_RESULT",
+    "ARCHIVE_RESULT",
+    "CONSUMER_RESULT",
+    "MUTATION_RESULT",
+    "MARKDOWN_RESULT",
+    "SELECTION_RESULT",
+  ].flatMap((stage) =>
+    ["failure", "cancelled", "", "success"].map((result) => ({
+      name: `docs rejects unexpected ${stage} ${result || "absence"}`,
+      env: {
+        ...success,
+        PACKAGE_REQUIRED: "false",
+        CHECK_RESULT: "skipped",
+        ARCHIVE_RESULT: "skipped",
+        CONSUMER_RESULT: "skipped",
+        MUTATION_RESULT: "skipped",
+        [stage]: result,
+      },
+      status:
+        ["MARKDOWN_RESULT", "SELECTION_RESULT"].includes(stage) &&
+        result === "success"
+          ? 0
+          : 1,
+    })),
+  ),
+  ...[
+    "SELECTION_RESULT",
+    "ARCHIVE_RESULT",
     "DEPENDENCY_REVIEW_RESULT",
     "CHECK_RESULT",
     "MUTATION_RESULT",

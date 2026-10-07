@@ -44,8 +44,11 @@ Workflow configuration alone is not hosted qualification evidence; inspect the c
 
 Keep exact dependency locks and the reference build environment.
 The `22.x`, `24.x` and `26.x` CI selectors intentionally resolve the latest release when a run starts, so compatibility checks detect new regressions.
-The consumer artifacts retain `consumer-report.json` with actual runtime, tooling runtime, npm, platform, architecture, declaration version and archive SHA-256, plus `consumer-package-lock.json`, declaration resolution evidence and the qualification log.
-The workflow run binds them to the source commit and retained archive.
+Consumer diagnostics remain at their native runner paths and are streamed into the qualification log: `consumer-report.json` with actual runtime, tooling runtime, npm, platform, architecture, declaration version and archive SHA-256, plus `consumer-package-lock.json`, declaration resolution evidence and the qualification log.
+The reporting step binds them to the source commit, run/attempt, lane and retained archive; its summary lists file sizes and hashes.
+Package qualification retains one shared consumer archive for seven days, including reusable Release prechecks.
+Proven development-documentation-only PR/main checks skip package jobs and create no consumer archive; explicit qualification and Release always construct and exercise the package.
+After expiry, start a newly qualified run when the preliminary archive is needed; do not rebuild under an old run identity.
 Replay with those exact versions and bytes; a floating selector alone is not a reproducible environment identity.
 
 For local consumer qualification with an installed alternate Node executable:

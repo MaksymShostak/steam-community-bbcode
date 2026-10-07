@@ -47,8 +47,14 @@ The second command prints a new directory under `artifacts/release-candidates/`.
 It builds declarations with TS 7, packs through native npm and installs that archive into a temporary consumer.
 The existing authored JavaScript, CLI, declaration contracts, licence and package-boundary checks run against the installed package.
 Native npm audits the actual installed production graph with the same low-severity floor as dependency review and emits its CycloneDX SBOM.
-The candidate retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`. Schema version 2 records the hosted repository ID, ref, workflow revision, run/attempt, tag and qualification results.
+The local candidate directory retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`. Schema version 2 records the hosted repository ID, ref, workflow revision, run/attempt, tag and qualification results.
 Local candidates record `release: null` and cannot pass the hosted publication gate.
+
+Hosted Release logs the candidate's diagnostic evidence, then `npm run generate:release-transfer` stages the exact tarball, unchanged `candidate.json` and `pack-actual.json`, and generated `production.cdx.json` into `artifacts/release-transfer/`.
+It regenerates `SHA256SUMS` for exactly those four files, validates native candidate/pack identity and verifies copied hashes without repacking.
+The upload retains only this transfer directory for thirty days; native report paths and candidate schema remain unchanged.
+The tarball is executable package transport, metadata and pack inventory are inputs to the publisher/bootstrap/verifier, the SBOM is an existing release-asset obligation, and checksums bind transfer files.
+Coverage, audit/consumer reports, API sites, scratch trees and runtimes remain outside this archive; required diagnostics are in logs.
 
 Use `npm run pack:release -- --output artifacts/my-candidate` to choose an empty directory.
 The empty-directory requirement prevents mixing files from different attempts; it does not impose an immutable-release policy.
@@ -149,6 +155,11 @@ To repeat this read-only verification from a qualified source checkout:
 npm run verify:registry -- --candidate artifacts/my-candidate --tag next --output artifacts/registry-verification
 ```
 
-Retain the registry verification artifact with the candidate.
+Retain the registry-verification log/run reference with the candidate; the reporting step streams registry metadata, signatures, provenance, native consumer records and failures, with a bounded inventory summary.
+Registry verification has no separate Actions archive.
+CodeQL's complete unfiltered SARIF file remains retained with unchanged filtering/upload and repository-default retention.
+The preliminary seven-day archive from reusable checks is distinct from the thirty-day final publication candidate.
+If a required archive expires, start a newly qualified run rather than repacking under its old identity; registry recovery uses the original candidate while available.
+Check actual log access and retention through acceptance/recovery; masking, provider truncation, cancellation or expiry can make diagnostic evidence incomplete.
 If publishing succeeds but verification fails, diagnose or rerun the verification job against that same candidate; do not republish the version to recover a verification failure.
 Live trusted-publisher configuration and a successful public-registry run are required before claiming operational publication.

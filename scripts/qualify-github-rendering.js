@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { parseArgs } from "node:util";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -35,6 +35,12 @@ const runDirectory = await mkdtemp(
   fileURLToPath(new URL("../artifacts/github-rendering/run-", import.meta.url)),
 );
 console.log(`Retaining renderer evidence in ${runDirectory}`);
+// Bind reporting to this invocation even when a later renderer assertion fails.
+if (process.env["GITHUB_OUTPUT"])
+  await appendFile(
+    process.env["GITHUB_OUTPUT"],
+    `evidence-directory=${runDirectory}\n`,
+  );
 for (const scenario of scenarios) {
   const directory = pathToFileURL(join(runDirectory, scenario.name) + "/");
   await mkdir(directory, { recursive: true });

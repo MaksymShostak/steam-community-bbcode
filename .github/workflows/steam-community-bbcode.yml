@@ -5,12 +5,20 @@ on:
     branches: [main]
   workflow_call:
     inputs:
+      force-package:
+        description: Explicit reusable qualification always constructs the package
+        type: boolean
+        default: true
       run-mutation:
         description: Require both mutation profiles for candidate qualification
         type: boolean
         default: true
   workflow_dispatch:
     inputs:
+      force-package:
+        description: Explicit qualification always constructs the package
+        type: boolean
+        default: true
       run-mutation:
         description: Run both mutation profiles in addition to iteration checks
         type: boolean
@@ -21,9 +29,31 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
+  selection:
+    name: Select qualification from exact Git inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      package-required: ${{ steps.selection.outputs.package-required }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Record conservative selection
+        id: selection
+        env:
+          FORCE_PACKAGE: ${{ inputs.force-package == true }}
+        run: npm run qualify:ci-selection
   converter:
     name: BBCode / ${{ matrix.os }} / Node ${{ matrix.node }}
-    needs: dependency-review
+    needs: [selection, dependency-review]
+    if: needs.selection.outputs.package-required == 'true'
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -73,19 +103,12 @@ jobs:
           NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
         run: npm exec --yes --package=npm@12.0.2 -- npm run qualify:node-types -- --major "$NODE_TYPES_MAJOR"
         shell: bash
-      - name: Retain qualification reports
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: bbcode-${{ matrix.os }}-node-${{ matrix.node }}
-          retention-days: 30
-          if-no-files-found: warn
-          path: |
-            artifacts/runtime-coverage/
-            artifacts/supply-chain/
-            artifacts/api-reference/
-            artifacts/api-documentation-fixture/
-            artifacts/node-declarations/
+      - name: Report converter qualification
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+          EVIDENCE_LANE: ${{ matrix.os }} / Node ${{ matrix.node }}
+        run: npm run generate:ci-evidence -- --mode converter
   markdown:
     name: BBCode / Markdown / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -116,17 +139,16 @@ jobs:
         run: npm exec --yes --package=npm@12.0.2 -- npm run test:markdown:observer
       - name: Check all authored Markdown, including target-only changes
         run: npm exec --yes --package=npm@12.0.2 -- npm run check:markdown
-      - name: Retain the fresh native result and stderr
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: bbcode-markdown-${{ matrix.os }}
-          path: artifacts/prose/
-          if-no-files-found: error
-          retention-days: 30
+      - name: Report the fresh native Markdown result and stderr
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+          EVIDENCE_LANE: ${{ matrix.os }}
+        run: npm run generate:ci-evidence -- --mode markdown
   consumer-archive:
     name: Build consumer qualification archive
-    needs: dependency-review
+    needs: [selection, dependency-review]
+    if: needs.selection.outputs.package-required == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -140,21 +162,27 @@ jobs:
           package-manager-cache: false
       - run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
       - run: npm exec --yes --package=npm@12.0.2 -- npm run test:package
+      - name: Report archive qualification
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+        run: npm run generate:ci-evidence -- --mode archive
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: bbcode-consumer-archive
           path: artifacts/steam-community-bbcode-*.tgz
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 7
   consumers:
-    needs: consumer-archive
+    needs: [selection, consumer-archive]
+    if: needs.selection.outputs.package-required == 'true'
     uses: ./.github/workflows/node-consumers.yml
     with:
       artifact: bbcode-consumer-archive
   mutation:
     name: BBCode / Mutation / ${{ matrix.profile }}
-    if: ${{ inputs.run-mutation == true }}
-    needs: converter
+    if: ${{ needs.selection.outputs.package-required == 'true' && inputs.run-mutation == true }}
+    needs: [selection, converter]
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -177,23 +205,34 @@ jobs:
         env:
           MUTATION_PROFILE: ${{ matrix.profile }}
         run: npm exec --yes --package=npm@12.0.2 -- npm run "test:mutation:$MUTATION_PROFILE"
-      - name: Retain mutation reports
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: bbcode-mutation-${{ matrix.profile }}
-          retention-days: 30
-          if-no-files-found: warn
-          path: artifacts/mutation-${{ matrix.profile }}/
+      - name: Report mutation qualification
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+          MUTATION_PROFILE: ${{ matrix.profile }}
+        shell: bash
+        run: npm run generate:ci-evidence -- --mode mutation --profile "$MUTATION_PROFILE"
   qualification:
     name: BBCode / Qualification
-    needs: [dependency-review, converter, mutation, consumers, markdown]
+    needs:
+      [
+        selection,
+        dependency-review,
+        converter,
+        consumer-archive,
+        mutation,
+        consumers,
+        markdown,
+      ]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}
     steps:
       - name: Require iteration checks and the requested mutation result
         env:
+          SELECTION_RESULT: ${{ needs.selection.result }}
+          PACKAGE_REQUIRED: ${{ needs.selection.outputs.package-required }}
+          ARCHIVE_RESULT: ${{ needs.consumer-archive.result }}
           MUTATION_REQUIRED: ${{ inputs.run-mutation == true }}
           DEPENDENCY_REVIEW_RESULT: ${{ needs.dependency-review.result }}
           CHECK_RESULT: ${{ needs.converter.result }}
@@ -202,12 +241,25 @@ jobs:
           MARKDOWN_RESULT: ${{ needs.markdown.result }}
         run: |
           test "$DEPENDENCY_REVIEW_RESULT" = success
-          test "$CHECK_RESULT" = success
-          test "$CONSUMER_RESULT" = success
+          test "$SELECTION_RESULT" = success
           test "$MARKDOWN_RESULT" = success
-          case "$MUTATION_REQUIRED" in
-            true) test "$MUTATION_RESULT" = success ;;
-            false) test "$MUTATION_RESULT" = skipped ;;
+          case "$PACKAGE_REQUIRED" in
+            true)
+              test "$CHECK_RESULT" = success
+              test "$ARCHIVE_RESULT" = success
+              test "$CONSUMER_RESULT" = success
+              case "$MUTATION_REQUIRED" in
+                true) test "$MUTATION_RESULT" = success ;;
+                false) test "$MUTATION_RESULT" = skipped ;;
+                *) exit 1 ;;
+              esac
+              ;;
+            false)
+              test "$CHECK_RESULT" = skipped
+              test "$ARCHIVE_RESULT" = skipped
+              test "$CONSUMER_RESULT" = skipped
+              test "$MUTATION_RESULT" = skipped
+              ;;
             *) exit 1 ;;
           esac
   dependency-review:

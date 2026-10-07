@@ -21,12 +21,12 @@ jobs:
       - name: Install locked converter runtime dependencies
         run: npm exec --yes --package=npm@12.0.2 -- npm ci --omit=dev --ignore-scripts
       - name: Verify selected GitHub rendering contracts
+        id: renderer
         run: npm exec --yes --package=npm@12.0.2 -- npm run qualify:github
-      - name: Retain renderer observations
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: bbcode-github-renderer
-          path: artifacts/github-rendering/
-          retention-days: 30
-          if-no-files-found: warn
+      - name: Report current renderer observations
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+          EVIDENCE_DIRECTORY: ${{ steps.renderer.outputs.evidence-directory }}
+        shell: bash
+        run: npm run generate:ci-evidence -- --mode renderer --renderer-directory "$EVIDENCE_DIRECTORY"

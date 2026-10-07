@@ -134,8 +134,28 @@ It retains requests, responses, expected HTML, timestamps, request IDs and hashe
 All three cases passed a fresh live run on 10 September 2026.
 This is endpoint-specific HTML evidence; it does not assert browser interaction, live Steam acceptance or every GitHub surface's presentation.
 
-The locally prepared `steam-community-bbcode-renderer.yml` workflow runs the same command weekly and on manual dispatch, with a production-only locked install and retained artifacts.
+The `steam-community-bbcode-renderer.yml` workflow runs the same command weekly and on manual dispatch, with a production-only locked install.
+Its reporting step uses the exact directory emitted by the current invocation, including after a renderer failure, and streams requests, responses and provenance into logs instead of uploading an archive.
 It is separate from mutation testing and has a ten-minute job limit.
 Its syntax passes native actionlint; remote scheduling is not active because the owner requires all current changes to stay local.
 Adapt and activate it in the destination repository as part of that repository's CI setup.
 The original plan's selected-renderer qualification is complete here; destination schedule activation remains a delivery task.
+
+## Actions selection and diagnostic evidence
+
+`npm run qualify:ci-selection` records exact Git comparison inputs under `artifacts/ci-selection/selection.json`.
+Only added/modified `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and Markdown under `docs/plans/` or `docs/migration/` qualify for documentation-only selection; nested agent instructions require package checks.
+These paths are excluded from the distributed package and have no converter/build inputs; native authored-Markdown/link checks still inspect them.
+PR merge parents must match the event base/head; main pushes must be non-forced exact before/after comparisons.
+Unknown/mixed paths, deletions, renames, missing history or ambiguous identities select broad qualification; missing/failed selection cannot green the aggregate.
+Explicit dispatch, reusable qualification and Release remain broad.
+
+`npm run generate:ci-evidence -- --mode <lane>` streams native diagnostic files with runner commands suspended and emits a bounded summary of identities, file sizes, hashes and retrieval limits.
+Reports keep their existing product paths; local files remain useful for local diagnosis.
+Required evidence is in the reporting step's log, including mutation survivors/timeouts/errors and all available trusted-Markdown window samples, receipts, stdout and stderr.
+No routine converter, Markdown, consumer, mutation, renderer, trusted-Markdown or registry-report archive is uploaded, including during Release.
+Complete unfiltered CodeQL SARIF stays in its existing file artifact, with unchanged repository-default retention, filtering and native security upload.
+Only the seven-day shared consumer archive and the thirty-day slim release candidate otherwise remain.
+Logs can be masked, truncated, cancelled or expire; a local hash identifies original bytes and does not prove an unchanged GitHub display.
+Reporting failure blocks qualification, and missing required evidence prevents acceptance; inspect complete logs and their actual retention rather than treating summaries as a complete report.
+`npm run test:ci-evidence` exercises native Git fixtures, real Bash aggregates, safe diagnostic streaming, exact renderer directories, transfer bytes/checksums and existing native release gates.

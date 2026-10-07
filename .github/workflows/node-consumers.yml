@@ -58,13 +58,9 @@ jobs:
           test "${#archives[@]}" -eq 1
           test -f "${archives[0]}"
           npm exec --yes --package=npm@12.0.2 -- npm run test:package -- --archive "${archives[0]}" --runtime "$CONSUMER_NODE" --node-types "$NODE_TYPES_MAJOR" --output artifacts/consumer-qualification 2>&1 | tee consumer-qualification.log
-      - name: Retain exact environment, archive identity and consumer results
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: ${{ inputs.artifact }}-${{ matrix.os }}-${{ matrix.node }}-consumer
-          retention-days: 30
-          if-no-files-found: warn
-          path: |
-            artifacts/consumer-qualification/
-            consumer-qualification.log
+      - name: Report exact environment, archive identity and consumer results
+        if: ${{ !cancelled() }}
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+          EVIDENCE_LANE: ${{ matrix.os }} / Node ${{ matrix.node }}
+        run: npm run generate:ci-evidence -- --mode consumer
