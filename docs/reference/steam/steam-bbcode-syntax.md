@@ -16,6 +16,8 @@
 type ReadonlySourceSpan = ReadonlySyntaxValue<SourceSpan>;
 ```
 
+Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue), [`SourceSpan`](../index-1.md#sourcespan).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -30,6 +32,8 @@ type ReadonlySourceSpan = ReadonlySyntaxValue<SourceSpan>;
 ```ts
 type ReadonlySyntaxValue<T> = T extends object ? { readonly [K in keyof T]: ReadonlySyntaxValue<T[K]> } : T;
 ```
+
+Type references: [`ReadonlySyntaxValue`](#readonlysyntaxvalue).
 
 #### Type Parameters
 
@@ -48,6 +52,8 @@ type SteamListItemBoundarySyntax = SteamSyntaxSource & Readonly<{
   type: "steamListItemBoundary";
 }>;
 ```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 
@@ -68,6 +74,8 @@ type SteamOpaqueTagSyntax = SteamTagSource & Readonly<{
 }>;
 ```
 
+Type references: [`SteamTagSource`](#steamtagsource).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -85,6 +93,8 @@ type SteamSyntaxSource = Readonly<{
   sourceSpan: ReadonlySourceSpan;
 }>;
 ```
+
+Type references: [`ReadonlySourceSpan`](#readonlysourcespan).
 
 #### Type Parameters
 
@@ -106,6 +116,8 @@ type SteamTagSource = SteamSyntaxSource & Readonly<{
 }>;
 ```
 
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -123,6 +135,8 @@ type SteamTagSyntax = SteamTagSource & Readonly<{
   type: "steamTag";
 }>;
 ```
+
+Type references: [`SteamTagSource`](#steamtagsource), [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode).
 
 #### Type Parameters
 
@@ -142,6 +156,8 @@ type SteamTextSyntax = SteamSyntaxSource & Readonly<{
 }>;
 ```
 
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -159,6 +175,8 @@ type SteamUnmatchedClosingTagSyntax = SteamSyntaxSource & Readonly<{
   type: "steamUnmatchedClosingTag";
 }>;
 ```
+
+Type references: [`SteamSyntaxSource`](#steamsyntaxsource).
 
 #### Type Parameters
 

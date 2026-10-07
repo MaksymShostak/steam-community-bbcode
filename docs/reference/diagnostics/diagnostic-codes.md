@@ -16,6 +16,8 @@
 type SteamParseDiagnosticCode = typeof steamParseDiagnosticCodes[number];
 ```
 
+Type references: [`steamParseDiagnosticCodes`](#steamparsediagnosticcodes).
+
 #### Type Parameters
 
 | Type Parameter |

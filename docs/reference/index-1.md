@@ -144,6 +144,8 @@ Maximum number of syntax nodes.
 type ConstructId = typeof steamConstructIds[number];
 ```
 
+Type references: [`steamConstructIds`](steam/registry-identifiers.md#steamconstructids).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -169,6 +171,8 @@ type ConversionDiagnostic = ConversionDiagnosticDetail &
   scope: "gfm-node";
 }>;
 ```
+
+Type references: [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail), [`DiagnosticConstructId`](diagnostics/conversion-result.md#diagnosticconstructid).
 
 #### Type Parameters
 
@@ -204,6 +208,8 @@ type ConversionResult<T> = Readonly<{
 }>;
 ```
 
+Type references: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage), [`ConversionDiagnostic`](#conversiondiagnostic).
+
 #### Type Parameters
 
 | Type Parameter | Description |
@@ -219,6 +225,8 @@ type ConversionResult<T> = Readonly<{
 ```ts
 type DiagnosticCode = typeof conversionDiagnosticCodes[number];
 ```
+
+Type references: [`conversionDiagnosticCodes`](diagnostics/diagnostic-codes.md#conversiondiagnosticcodes).
 
 #### Type Parameters
 
@@ -237,6 +245,8 @@ type GfmToSteamBbcodeOptions = Readonly<{
 }>;
 ```
 
+Type references: [`GfmConversionResourceLimits`](#gfmconversionresourcelimits).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -254,6 +264,8 @@ type ParseSteamCommunityBbcodeOptions = Readonly<{
   resourceLimits?: Partial<SteamParseResourceLimits>;
 }>;
 ```
+
+Type references: [`SteamDialectProfileId`](steam/parse-steam-bbcode.md#steamdialectprofileid), [`SteamParseResourceLimits`](#steamparseresourcelimits).
 
 #### Type Parameters
 
@@ -276,6 +288,8 @@ type PartialConversionResult<T> = ConversionResult<T> & Readonly<{
 }>;
 ```
 
+Type references: [`ConversionResult`](#conversionresult), [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage), [`GfmNodeConversionOutcome`](diagnostics/conversion-result.md#gfmnodeconversionoutcome), [`UnsupportedGfmFeatureDiagnostic`](#unsupportedgfmfeaturediagnostic).
+
 #### Type Parameters
 
 | Type Parameter | Description |
@@ -297,6 +311,8 @@ type SteamAttributedBlockquote = Node & {
 };
 ```
 
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
+
 #### Type Declaration
 
 ##### author
@@ -310,6 +326,8 @@ author: string;
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
 
 ##### steamCommentId?
 
@@ -343,6 +361,8 @@ type SteamBbcodeParseResult = Readonly<{
 }>;
 ```
 
+Type references: [`SteamBbcodeSyntaxNode`](steam/parse-steam-bbcode.md#steambbcodesyntaxnode), [`SteamBbcodeParseDiagnostic`](steam/parse-steam-bbcode.md#steambbcodeparsediagnostic), [`SteamDialectProfileId`](steam/parse-steam-bbcode.md#steamdialectprofileid).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -363,6 +383,8 @@ type SteamBbcodeSyntaxNode =
   | SteamOpaqueTagSyntax;
 ```
 
+Type references: [`SteamTextSyntax`](steam/steam-bbcode-syntax.md#steamtextsyntax), [`SteamListItemBoundarySyntax`](steam/steam-bbcode-syntax.md#steamlistitemboundarysyntax), [`SteamUnmatchedClosingTagSyntax`](steam/steam-bbcode-syntax.md#steamunmatchedclosingtagsyntax), [`SteamTagSyntax`](steam/steam-bbcode-syntax.md#steamtagsyntax), [`SteamOpaqueTagSyntax`](steam/steam-bbcode-syntax.md#steamopaquetagsyntax).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -381,6 +403,8 @@ type SteamBlockSpoiler = Node & {
 };
 ```
 
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
+
 #### Type Declaration
 
 ##### children
@@ -388,6 +412,8 @@ type SteamBlockSpoiler = Node & {
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
 
 ##### type
 
@@ -414,6 +440,8 @@ type SteamColor = Node & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -421,6 +449,8 @@ type SteamColor = Node & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
 
 ##### color?
 
@@ -448,6 +478,8 @@ type: "steamColor";
 ```ts
 type SteamDialectProfileId = typeof steamDialectProfileIds[number];
 ```
+
+Type references: [`steamDialectProfileIds`](steam/registry-identifiers.md#steamdialectprofileids).
 
 #### Type Parameters
 
@@ -478,6 +510,8 @@ type SteamEmbeddedMedia = Node & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`ConstructId`](#constructid).
+
 #### Type Declaration
 
 ##### children
@@ -486,11 +520,15 @@ type SteamEmbeddedMedia = Node & {
 children: SteamPhrasingContent[];
 ```
 
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
 ##### constructId
 
 ```ts
 constructId: ConstructId;
 ```
+
+Type references: [`ConstructId`](#constructid).
 
 ##### source
 
@@ -527,6 +565,8 @@ type SteamMdastRoot = Omit<Root, "children"> & {
 };
 ```
 
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent), [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`SteamListItem`](mdast/steam-mdast-nodes.md#steamlistitem), [`SteamTableRow`](mdast/steam-mdast-nodes.md#steamtablerow), [`SteamTableCell`](mdast/steam-mdast-nodes.md#steamtablecell).
+
 #### Type Declaration
 
 ##### children
@@ -540,6 +580,8 @@ children: (
   | SteamTableCell
   | FrontmatterContent)[];
 ```
+
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent), [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`SteamListItem`](mdast/steam-mdast-nodes.md#steamlistitem), [`SteamTableRow`](mdast/steam-mdast-nodes.md#steamtablerow), [`SteamTableCell`](mdast/steam-mdast-nodes.md#steamtablecell).
 
 #### Type Parameters
 
@@ -605,6 +647,8 @@ type SteamPreviewImage = Node & {
 };
 ```
 
+Type references: [`ConstructId`](#constructid).
+
 #### Type Declaration
 
 ##### alignment?
@@ -624,6 +668,8 @@ alt: string;
 ```ts
 constructId: ConstructId;
 ```
+
+Type references: [`ConstructId`](#constructid).
 
 ##### image
 
@@ -677,6 +723,8 @@ type SteamPullQuote = Node & {
 };
 ```
 
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
+
 #### Type Declaration
 
 ##### children
@@ -684,6 +732,8 @@ type SteamPullQuote = Node & {
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
 
 ##### type
 
@@ -709,6 +759,8 @@ type SteamSpoiler = Node & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -716,6 +768,8 @@ type SteamSpoiler = Node & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
 
 ##### type
 
@@ -741,6 +795,8 @@ type SteamUnderline = Node & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -748,6 +804,8 @@ type SteamUnderline = Node & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
 
 ##### type
 
@@ -773,6 +831,8 @@ type UnsupportedGfmFeatureDiagnostic = ConversionDiagnosticDetail & Readonly<{
 }>;
 ```
 
+Type references: [`ConversionDiagnosticDetail`](diagnostics/conversion-result.md#conversiondiagnosticdetail).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -787,6 +847,8 @@ type UnsupportedGfmFeatureDiagnostic = ConversionDiagnosticDetail & Readonly<{
 ```ts
 function gfmToSteamCommunityBbcode(source, options?): PartialConversionResult<string>;
 ```
+
+Type references: [`PartialConversionResult`](#partialconversionresult), [`GfmConversionResourceLimits`](#gfmconversionresourcelimits).
 
 Convert a documented subset of GFM into Steam Community BBCode.
 Unsupported source semantics are reported separately from forward coverage.
@@ -819,6 +881,8 @@ function steamCommunityBbcodeToGfm(source, options?): Readonly<{
 }>;
 ```
 
+Type references: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage), [`ConversionDiagnostic`](#conversiondiagnostic), [`SteamParseResourceLimits`](#steamparseresourcelimits).
+
 Convert Steam source to GFM and retain per-input diagnostics and fidelity.
 Markdown syntax and escaping belong to the maintained native serializer.
 
@@ -848,6 +912,8 @@ function steamCommunityBbcodeToMdast(source, options?): Readonly<{
   value: SteamMdastRoot;
 }>;
 ```
+
+Type references: [`ConversionCoverage`](diagnostics/conversion-result.md#conversioncoverage), [`ConversionDiagnostic`](#conversiondiagnostic), [`SteamMdastRoot`](#steammdastroot), [`SteamBbcodeSyntaxNode`](#steambbcodesyntaxnode), [`SteamParseResourceLimits`](#steamparseresourcelimits).
 
 Interpret Steam source as MDAST while retaining diagnostics and per-input outcomes.
 This layer does not serialize Markdown or perform external I/O.

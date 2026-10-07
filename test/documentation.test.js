@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { fromMarkdown } from "mdast-util-from-markdown";
+import { gfm } from "micromark-extension-gfm";
+import { gfmFromMarkdown } from "mdast-util-gfm";
 import { checkDocumentationLinks } from "../scripts/check-documentation-links.js";
 import { steamConstructDefinitions } from "../src/steam/construct-registry.js";
 import { constructCases } from "./conformance/construct-cases.js";
@@ -86,4 +88,34 @@ test("each construct has an executed example or an explicit context-only explana
 
 test("package-local documentation links resolve to real files", async () => {
   await checkDocumentationLinks(new URL("../", import.meta.url));
+});
+
+test("generated API pages retain every qualified link target beside fenced type syntax", async () => {
+  /** @type {Record<string, string[]>} */
+  const pages = JSON.parse(
+    await readFile(
+      new URL(
+        "documentation-fixtures/reference-link-targets.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  for (const [path, expected] of Object.entries(pages)) {
+    const tree = fromMarkdown(
+      await readFile(new URL(`../${path}`, import.meta.url), "utf8"),
+      { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] },
+    );
+    /** @type {import('mdast').Nodes[]} */
+    const pending = [tree];
+    const links = new Set();
+    while (pending.length) {
+      const node = pending.pop();
+      assert.ok(node);
+      if ("children" in node) pending.push(...node.children);
+      if (node.type === "link") links.add(node.url);
+    }
+    for (const target of expected)
+      assert.ok(links.has(target), `${path}: lost link target ${target}`);
+  }
 });

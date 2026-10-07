@@ -18,6 +18,8 @@ type SteamBlockquote = Omit<Blockquote, "children"> & {
 };
 ```
 
+Type references: [`SteamFlowContent`](#steamflowcontent).
+
 #### Type Declaration
 
 ##### children
@@ -25,6 +27,8 @@ type SteamBlockquote = Omit<Blockquote, "children"> & {
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
@@ -43,6 +47,8 @@ type SteamDelete = Omit<Delete, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -50,6 +56,8 @@ type SteamDelete = Omit<Delete, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -68,6 +76,8 @@ type SteamEmphasis = Omit<Emphasis, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -75,6 +85,8 @@ type SteamEmphasis = Omit<Emphasis, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -104,6 +116,8 @@ type SteamFlowContent =
   | SteamEmbeddedMedia;
 ```
 
+Type references: [`SteamParagraph`](#steamparagraph), [`SteamHeading`](#steamheading), [`SteamBlockquote`](#steamblockquote), [`SteamFootnoteDefinition`](#steamfootnotedefinition), [`SteamList`](#steamlist), [`SteamTable`](#steamtable), [`SteamBlockSpoiler`](../index-1.md#steamblockspoiler), [`SteamAttributedBlockquote`](../index-1.md#steamattributedblockquote), [`SteamPullQuote`](../index-1.md#steampullquote), [`SteamEmbeddedMedia`](../index-1.md#steamembeddedmedia).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -121,6 +135,8 @@ type SteamFootnoteDefinition = Omit<FootnoteDefinition, "children"> & {
 };
 ```
 
+Type references: [`SteamFlowContent`](#steamflowcontent).
+
 #### Type Declaration
 
 ##### children
@@ -128,6 +144,8 @@ type SteamFootnoteDefinition = Omit<FootnoteDefinition, "children"> & {
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
@@ -146,6 +164,8 @@ type SteamHeading = Omit<Heading, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -153,6 +173,8 @@ type SteamHeading = Omit<Heading, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -174,6 +196,8 @@ type SteamLink = Omit<Link, "children" | "data"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent), [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
+
 #### Type Declaration
 
 ##### children
@@ -181,6 +205,8 @@ type SteamLink = Omit<Link, "children" | "data"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 ##### data?
 
@@ -190,6 +216,8 @@ optional data?: LinkData & {
 };
 ```
 
+Type references: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
+
 ###### Type Declaration
 
 ###### steamUrlWidget?
@@ -197,6 +225,8 @@ optional data?: LinkData & {
 ```ts
 optional steamUrlWidget?: SteamUrlWidget;
 ```
+
+Type references: [`SteamUrlWidget`](steam-url-widgets.md#steamurlwidget).
 
 #### Type Parameters
 
@@ -215,6 +245,8 @@ type SteamLinkReference = Omit<LinkReference, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -222,6 +254,8 @@ type SteamLinkReference = Omit<LinkReference, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -240,6 +274,8 @@ type SteamList = Omit<List, "children"> & {
 };
 ```
 
+Type references: [`SteamListItem`](#steamlistitem).
+
 #### Type Declaration
 
 ##### children
@@ -247,6 +283,8 @@ type SteamList = Omit<List, "children"> & {
 ```ts
 children: SteamListItem[];
 ```
+
+Type references: [`SteamListItem`](#steamlistitem).
 
 #### Type Parameters
 
@@ -265,6 +303,8 @@ type SteamListItem = Omit<ListItem, "children"> & {
 };
 ```
 
+Type references: [`SteamFlowContent`](#steamflowcontent).
+
 #### Type Declaration
 
 ##### children
@@ -272,6 +312,8 @@ type SteamListItem = Omit<ListItem, "children"> & {
 ```ts
 children: SteamFlowContent[];
 ```
+
+Type references: [`SteamFlowContent`](#steamflowcontent).
 
 #### Type Parameters
 
@@ -290,6 +332,8 @@ type SteamParagraph = Omit<Paragraph, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -297,6 +341,8 @@ type SteamParagraph = Omit<Paragraph, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -326,6 +372,8 @@ type SteamPhrasingContent =
   | SteamPreviewImage;
 ```
 
+Type references: [`SteamStrong`](#steamstrong), [`SteamEmphasis`](#steamemphasis), [`SteamDelete`](#steamdelete), [`SteamLink`](#steamlink), [`SteamLinkReference`](#steamlinkreference), [`SteamNoParse`](../index-1.md#steamnoparse), [`SteamUnderline`](../index-1.md#steamunderline), [`SteamSpoiler`](../index-1.md#steamspoiler), [`SteamColor`](../index-1.md#steamcolor), [`SteamPreviewImage`](../index-1.md#steampreviewimage).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -343,6 +391,8 @@ type SteamStrong = Omit<Strong, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -350,6 +400,8 @@ type SteamStrong = Omit<Strong, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -371,6 +423,8 @@ type SteamTable = Omit<Table, "children" | "data"> & {
 };
 ```
 
+Type references: [`SteamTableRow`](#steamtablerow), [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
+
 #### Type Declaration
 
 ##### children
@@ -378,6 +432,8 @@ type SteamTable = Omit<Table, "children" | "data"> & {
 ```ts
 children: SteamTableRow[];
 ```
+
+Type references: [`SteamTableRow`](#steamtablerow).
 
 ##### data?
 
@@ -387,6 +443,8 @@ optional data?: TableData & {
 };
 ```
 
+Type references: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
+
 ###### Type Declaration
 
 ###### steamTableLayout?
@@ -394,6 +452,8 @@ optional data?: TableData & {
 ```ts
 optional steamTableLayout?: SteamTableLayout;
 ```
+
+Type references: [`SteamTableLayout`](steam-table-layout.md#steamtablelayout).
 
 #### Type Parameters
 
@@ -412,6 +472,8 @@ type SteamTableCell = Omit<TableCell, "children"> & {
 };
 ```
 
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
+
 #### Type Declaration
 
 ##### children
@@ -419,6 +481,8 @@ type SteamTableCell = Omit<TableCell, "children"> & {
 ```ts
 children: SteamPhrasingContent[];
 ```
+
+Type references: [`SteamPhrasingContent`](#steamphrasingcontent).
 
 #### Type Parameters
 
@@ -437,6 +501,8 @@ type SteamTableRow = Omit<TableRow, "children"> & {
 };
 ```
 
+Type references: [`SteamTableCell`](#steamtablecell).
+
 #### Type Declaration
 
 ##### children
@@ -444,6 +510,8 @@ type SteamTableRow = Omit<TableRow, "children"> & {
 ```ts
 children: SteamTableCell[];
 ```
+
+Type references: [`SteamTableCell`](#steamtablecell).
 
 #### Type Parameters
 

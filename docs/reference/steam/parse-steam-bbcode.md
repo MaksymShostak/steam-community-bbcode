@@ -20,6 +20,8 @@ type SteamBbcodeParseDiagnostic = Readonly<{
 }>;
 ```
 
+Type references: [`SteamParseDiagnosticCode`](../diagnostics/diagnostic-codes.md#steamparsediagnosticcode), [`ReadonlySourceSpan`](steam-bbcode-syntax.md#readonlysourcespan).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -34,6 +36,8 @@ type SteamBbcodeParseDiagnostic = Readonly<{
 ```ts
 function isIssuedSteamBbcodeParseResult(value): value is Readonly<{ children: readonly SteamBbcodeSyntaxNode[]; diagnostics: readonly Readonly<{ code: "STEAM_MAX_INPUT_BYTES_EXCEEDED" | "STEAM_MAX_ATTRIBUTE_BYTES_EXCEEDED" | "STEAM_MAX_NESTING_DEPTH_EXCEEDED" | "STEAM_MAX_NODE_COUNT_EXCEEDED" | "STEAM_LEXICAL_ERROR" | "STEAM_SYNTAX_ERROR" | "STEAM_UNCLOSED_TAG_HEADER" | "STEAM_UNCLOSED_ATTRIBUTE_QUOTE" | "STEAM_UNCLOSED_TAG" | "STEAM_MISMATCHED_CLOSING_TAG" | "STEAM_UNMATCHED_CLOSING_TAG"; message: string; sourceSpan?: { end: { column: number; line: number; offset?: number }; start: { column: number; line: number; offset?: number } } }>[]; profile: "workshop-item" | "ugc-description" | "guide-section" | "discussion" | "review" | "announcement"; source: string }>;
 ```
+
+Type references: [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode).
 
 Conversion reuses immutable results issued by this parser.
 A deserialized or fabricated tree has not passed the parser's runtime limits and validation.
@@ -94,6 +98,8 @@ function parseSteamCommunityBbcode(source, options?): Readonly<{
   source: string;
 }>;
 ```
+
+Type references: [`SteamBbcodeSyntaxNode`](../index-1.md#steambbcodesyntaxnode), [`SteamParseResourceLimits`](../index-1.md#steamparseresourcelimits).
 
 Parse source into readonly Steam syntax with structured diagnostics.
 The default profile is the registry's Workshop-item profile.

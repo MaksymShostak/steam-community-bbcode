@@ -20,6 +20,8 @@ type ConstructConversionOutcome = Readonly<{
 }>;
 ```
 
+Type references: [`DiagnosticConstructId`](#diagnosticconstructid), [`ConversionFidelity`](../index-1.md#conversionfidelity), [`ReadonlySourceSpan`](../steam/steam-bbcode-syntax.md#readonlysourcespan).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -40,6 +42,8 @@ type ContextOnlyRendererPolicy = Readonly<{
 }>;
 ```
 
+Type references: [`ConstructId`](../index-1.md#constructid).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -59,6 +63,8 @@ type ConversionCoverage = Readonly<{
   registryVersion: string;
 }>;
 ```
+
+Type references: [`ConstructConversionOutcome`](#constructconversionoutcome), [`ContextOnlyRendererPolicy`](#contextonlyrendererpolicy), [`SteamDialectProfileId`](../index-1.md#steamdialectprofileid).
 
 #### Type Parameters
 
@@ -81,6 +87,8 @@ type ConversionDiagnosticDetail = Readonly<{
 }>;
 ```
 
+Type references: [`DiagnosticCode`](../index-1.md#diagnosticcode), [`ConversionFidelity`](../index-1.md#conversionfidelity), [`ReadonlySourceSpan`](../steam/steam-bbcode-syntax.md#readonlysourcespan).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -95,6 +103,8 @@ type ConversionDiagnosticDetail = Readonly<{
 ```ts
 type DiagnosticConstructId = ConstructId | "steam.bbcode.unknown";
 ```
+
+Type references: [`ConstructId`](../index-1.md#constructid).
 
 #### Type Parameters
 
@@ -114,6 +124,8 @@ type GfmNodeConversionOutcome = Readonly<{
   sourceSpan?: ReadonlySourceSpan;
 }>;
 ```
+
+Type references: [`ConversionFidelity`](../index-1.md#conversionfidelity), [`ReadonlySourceSpan`](../steam/steam-bbcode-syntax.md#readonlysourcespan).
 
 #### Type Parameters
 

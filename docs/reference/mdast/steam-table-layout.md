@@ -52,6 +52,8 @@ optional noborder?: boolean;
 function steamTableLayout(rawAttributes): SteamTableLayout | undefined;
 ```
 
+Type references: [`SteamTableLayout`](#steamtablelayout).
+
 Recognize only the two sourced Steam layout settings.
 Duplicate keys and unknown values remain ambiguous; silently choosing a winner would lose source.
 

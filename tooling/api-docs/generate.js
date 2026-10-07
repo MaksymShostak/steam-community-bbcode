@@ -4,7 +4,14 @@ import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { Application, Converter, ReferenceType, ReflectionType } from "typedoc";
+import {
+  Application,
+  Converter,
+  ReferenceType,
+  ReflectionType,
+  ReflectionKind,
+  makeRecursiveVisitor,
+} from "typedoc";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { toMarkdown } from "mdast-util-to-markdown";
 import { gfmFromMarkdown, gfmToMarkdown } from "mdast-util-gfm";
@@ -25,10 +32,77 @@ const environment = values["node-types"]
   ? nodeDeclarationEnvironment(values["node-types"])
   : undefined;
 
+/** @param {import('typedoc-plugin-markdown').MarkdownThemeContext} context
+ * @param {import('typedoc').Reflection} model
+ */
+function typeReferences(context, model) {
+  /** @type {Map<string, import('mdast').Link>} */
+  const links = new Map();
+  /** @type {Set<import('typedoc').Reflection>} */
+  const seen = new Set();
+  const visitor = makeRecursiveVisitor({
+    reference(type) {
+      const target = type.reflection;
+      const url =
+        target &&
+        target.kind !== ReflectionKind.TypeParameter &&
+        context.router.hasUrl(target)
+          ? context.urlTo(target)
+          : type.externalUrl;
+      if (url)
+        links.set(url, {
+          type: "link",
+          url,
+          children: [{ type: "inlineCode", value: target?.name ?? type.name }],
+        });
+    },
+    reflection(type) {
+      visit(type.declaration);
+    },
+  });
+  /** @param {import('typedoc').Reflection} reflection */
+  function visit(reflection) {
+    if (seen.has(reflection)) return;
+    seen.add(reflection);
+    if (
+      reflection.isDeclaration() ||
+      reflection.isSignature() ||
+      reflection.isParameter() ||
+      reflection.isTypeParameter()
+    )
+      reflection.type?.visit(visitor);
+    if (reflection.isTypeParameter()) reflection.default?.visit(visitor);
+    reflection.traverse(visit);
+  }
+  visit(model);
+  if (!links.size) return "";
+  /** @type {import('mdast').PhrasingContent[]} */
+  const children = [{ type: "text", value: "Type references: " }];
+  for (const link of links.values()) {
+    if (children.length > 1) children.push({ type: "text", value: ", " });
+    children.push(link);
+  }
+  children.push({ type: "text", value: "." });
+  return toMarkdown({
+    type: "root",
+    children: [{ type: "paragraph", children }],
+  });
+}
+
 class RepositoryMarkdownTheme extends MarkdownTheme {
   /** @param {import('typedoc-plugin-markdown').MarkdownPageEvent<import('typedoc').Reflection>} page */
   getRenderContext(page) {
     const context = super.getRenderContext(page);
+    const declarationTitle = context.partials.declarationTitle;
+    context.partials.declarationTitle = (model) =>
+      [declarationTitle(model), typeReferences(context, model)]
+        .filter(Boolean)
+        .join("\n\n");
+    const signatureTitle = context.partials.signatureTitle;
+    context.partials.signatureTitle = (model, options) =>
+      [signatureTitle(model, options), typeReferences(context, model)]
+        .filter(Boolean)
+        .join("\n\n");
     // Return types are TypeScript syntax, not prose or Markdown link punctuation.
     context.helpers.getReturnType = (type) =>
       type
@@ -134,6 +208,16 @@ const renderedFixture = await readFile(
 assert.match(renderedFixture, /Envelope/);
 assert.match(renderedFixture, /Retain the input in a labelled envelope/);
 assert.match(renderedFixture, /The same generic value and a label/);
+assert.ok(
+  fromMarkdown(renderedFixture).children.some(
+    (node) =>
+      node.type === "paragraph" &&
+      node.children.some(
+        (child) => child.type === "link" && child.url === "model.md#envelope",
+      ),
+  ),
+  "Fenced signatures must retain clickable references to imported generic types.",
+);
 const renderedModel = fromMarkdown(
   await readFile(new URL("markdown/model.md", fixtureRoot), "utf8"),
 );

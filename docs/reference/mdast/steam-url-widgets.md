@@ -19,6 +19,8 @@ type SteamUrlWidget = {
 };
 ```
 
+Type references: [`ConstructId`](../index-1.md#constructid), [`SteamUrlWidgetKind`](#steamurlwidgetkind-1).
+
 #### Type Parameters
 
 | Type Parameter |
@@ -34,6 +36,8 @@ type SteamUrlWidget = {
 constructId: ConstructId;
 ```
 
+Type references: [`ConstructId`](../index-1.md#constructid).
+
 <a id="kind"></a>
 
 ##### kind
@@ -41,6 +45,8 @@ constructId: ConstructId;
 ```ts
 kind: SteamUrlWidgetKind;
 ```
+
+Type references: [`SteamUrlWidgetKind`](#steamurlwidgetkind-1).
 
 ---
 
@@ -72,6 +78,8 @@ type SteamUrlWidgetKind =
 ```ts
 function steamTextWithUrlWidgets(node): (Text | SteamLink)[];
 ```
+
+Type references: [`SteamLink`](steam-mdast-nodes.md#steamlink), [`SteamTextSyntax`](../steam/steam-bbcode-syntax.md#steamtextsyntax).
 
 Split one literal source text node into native text/link nodes, retaining UTF-16 source spans.
 Opaque regions and active link labels never call this.
