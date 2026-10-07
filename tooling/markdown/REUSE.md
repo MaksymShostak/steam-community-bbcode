@@ -4,6 +4,10 @@ The trusted staging checker, its negative probes, the six-sample window driver, 
 The reused source is AGPL-3.0-only, matching this repository's package boundary.
 The adaptations select Steam's repository and bounded authored policy.
 They retain candidate data isolation, credential exclusion, report validation, process observation, exact identity binding and the 30-second/512-MiB budgets.
+Trusted qualification keeps its native `markdown-window/` paths, six samples, receipts and stdout/stderr.
+After the observer, the reporter runs through the trusted checkout's npm entry point and streams those files under suspended runner commands; candidate code is never used to report trusted results.
+The bounded summary supplies navigation and identities; full samples remain in the log, subject to masking, cancellation, truncation and retention limits.
+Trusted Markdown uploads no report archive; these changes preserve the observer's native isolation and budget rules.
 
 `release.json` preserves the producer's immutable Markdown Quality 1.0.3 tuple from Hadden-Industries/markdown-quality at `7994fdb08efa4fc391f6e035c9fff17820635b58`, binding released source `92d6e9f61b5fffe6f33d8878ef8e2880ca187ac0`.
 The isolated package retains its own `LICENSE` and `THIRD-PARTY-NOTICES.md`, including upstream native notices; no native asset is copied into Steam source.

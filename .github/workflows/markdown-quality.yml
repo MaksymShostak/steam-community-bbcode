@@ -109,21 +109,11 @@ jobs:
           MARKDOWN_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           MARKDOWN_TRUSTED_SHA: ${{ github.workflow_sha }}
         run: node trusted/scripts/run-markdown-window.mjs
-      - name: Retain evidence even when the canonical checker finds a defect
+      - name: Report trusted window and every available sample
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: trusted-markdown-linux
-          path: |
-            ${{ runner.temp }}/markdown-window/window.json
-            ${{ runner.temp }}/markdown-window/sample-*/markdown-evidence/trusted-markdown-run.json
-            ${{ runner.temp }}/markdown-window/sample-*/stdout.txt
-            ${{ runner.temp }}/markdown-window/sample-*/stderr.txt
-          if-no-files-found: error
-          retention-days: 90
-          compression-level: 0
-          include-hidden-files: false
-          archive: true
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+        run: npm --prefix trusted run generate:ci-evidence -- --mode trusted-markdown --window-directory "$RUNNER_TEMP/markdown-window"
   markdown_windows:
     if: github.event_name == 'workflow_dispatch'
     name: Trusted Markdown / Windows
@@ -194,18 +184,8 @@ jobs:
           MARKDOWN_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           MARKDOWN_TRUSTED_SHA: ${{ github.workflow_sha }}
         run: node trusted/scripts/run-markdown-window.mjs
-      - name: Retain evidence even when the canonical checker finds a defect
+      - name: Report trusted window and every available sample
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: trusted-markdown-windows
-          path: |
-            ${{ runner.temp }}/markdown-window/window.json
-            ${{ runner.temp }}/markdown-window/sample-*/markdown-evidence/trusted-markdown-run.json
-            ${{ runner.temp }}/markdown-window/sample-*/stdout.txt
-            ${{ runner.temp }}/markdown-window/sample-*/stderr.txt
-          if-no-files-found: error
-          retention-days: 90
-          compression-level: 0
-          include-hidden-files: false
-          archive: true
+        env:
+          EVIDENCE_OUTCOME: ${{ job.status }}
+        run: npm --prefix trusted run generate:ci-evidence -- --mode trusted-markdown --window-directory "$env:RUNNER_TEMP/markdown-window"
