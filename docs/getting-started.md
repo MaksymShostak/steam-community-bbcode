@@ -12,7 +12,7 @@ From the root of this standalone checkout with Node 24.21.0, npm 12.0.2 and Pyth
 ```text
 npm run set-up:development
 npm run check
-npm run run:cli -- to-gfm path/to/description.bbcode
+npm run cli -- to-gfm path/to/description.bbcode
 ```
 
 Setup installs the locked root, both isolated compiler-API tooling graphs, all three Node declaration environments and the separate Markdown graph, and retains a Python `.venv`.

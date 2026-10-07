@@ -91,7 +91,7 @@ The converter's ordinary documented dependency setup must already be complete.
 ```powershell
 .venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes --target artifacts/comparison/python -r comparison/python/requirements-windows-py314.txt
 dotnet tool install Converter.MarkdownToBBCodeSteam.Tool --tool-path artifacts/comparison/dotnet --version 1.0.0.29 --configfile comparison/dotnet/NuGet.Config
-npm run run:comparison
+npm run compare:alternatives
 npm test
 ```
 

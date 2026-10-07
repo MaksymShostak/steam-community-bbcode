@@ -11,6 +11,7 @@ const verbs = new Set([
   "build",
   "check",
   "clean",
+  "compare",
   "format",
   "generate",
   "install",
@@ -18,22 +19,73 @@ const verbs = new Set([
   "pack",
   "publish",
   "qualify",
-  "run",
   "set-up",
   "test",
   "typecheck",
   "validate",
   "verify",
 ]);
+const lifecycleNames = new Set([
+  "dependencies",
+  "prepare",
+  "preprepare",
+  "postprepare",
+  "prepublish",
+  "prepublishOnly",
+  "prepack",
+  "postpack",
+  "install",
+  "postinstall",
+  "preinstall",
+  "publish",
+  "postpublish",
+  "version",
+  "preversion",
+  "postversion",
+  "start",
+  "prestart",
+  "poststart",
+  "stop",
+  "prestop",
+  "poststop",
+  "restart",
+  "prerestart",
+  "postrestart",
+  "test",
+  "pretest",
+  "posttest",
+]);
+
+/**
+ * @param {string} name
+ * @param {ReadonlySet<string>} names
+ * @returns {boolean}
+ */
+function isAllowedScriptName(name, names) {
+  if (name === "run" || name.startsWith("run:")) return false;
+  if (lifecycleNames.has(name) || name === "cli") return true;
+  if (
+    /^[a-z]+(?:-[a-z]+)*(?::[a-z]+(?:-[a-z]+)*)*$/u.test(name) &&
+    verbs.has(name.split(":")[0] ?? "")
+  )
+    return true;
+  for (const prefix of ["pre", "post"]) {
+    if (!name.startsWith(prefix)) continue;
+    const base = name.slice(prefix.length);
+    if (names.has(base) && isAllowedScriptName(base, names)) return true;
+  }
+  return false;
+}
 
 test("first-party npm commands use verb-first names without noun-first aliases", () => {
-  for (const name of Object.keys(manifest.scripts))
-    assert.ok(verbs.has(name.split(":")[0] ?? ""), name);
+  const names = new Set(Object.keys(manifest.scripts));
+  for (const name of names) assert.ok(isAllowedScriptName(name, names), name);
   for (const name of [
     "generate:spec",
     "check:spec",
     "check:format",
-    "run:comparison",
+    "cli",
+    "compare:alternatives",
     "pack:release",
     "set-up:development",
   ])
@@ -44,6 +96,44 @@ test("first-party npm commands use verb-first names without noun-first aliases",
     manifest.scripts["set-up:development"],
     /scripts\/set-up-development\.js/u,
   );
+});
+
+test("script names reject generic run verbs and imprecise dispatcher aliases", () => {
+  const names = new Set(["cli", "compare:alternatives", "check:docs"]);
+  for (const name of ["cli", "compare:alternatives", "check:docs"])
+    assert.ok(isAllowedScriptName(name, names), name);
+  for (const name of [
+    "run",
+    "run:cli",
+    "run:comparison",
+    "cli:help",
+    "comparison:run",
+    "check:Docs",
+    "check:docs_extra",
+    "check::docs",
+    "preunknown",
+    "prerun:cli",
+  ])
+    assert.equal(isAllowedScriptName(name, names), false, name);
+});
+
+test("npm lifecycle events and hooks retain their exact consumer-owned names", () => {
+  const names = new Set(["cli", "check:docs", "test", "run:cli"]);
+  for (const name of lifecycleNames)
+    assert.ok(isAllowedScriptName(name, new Set()), name);
+  for (const name of [
+    "prepare",
+    "prepack",
+    "postpack",
+    "prepublishOnly",
+    "dependencies",
+    "precheck:docs",
+    "postcheck:docs",
+    "precli",
+    "posttest",
+  ])
+    assert.ok(isAllowedScriptName(name, names), name);
+  assert.equal(isAllowedScriptName("prerun:cli", names), false);
 });
 
 test("root npm command chains reference existing first-party entry points", () => {
