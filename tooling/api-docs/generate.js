@@ -53,6 +53,7 @@ function typeReferences(context, model) {
   /** @type {Set<import('typedoc').Reflection>} */
   const seen = new Set();
   const visitor = makeRecursiveVisitor({
+    /** @param {import('typedoc').ReferenceType} type @returns {void} */
     reference(type) {
       const target = type.reflection;
       const url =
@@ -68,6 +69,7 @@ function typeReferences(context, model) {
           children: [{ type: "inlineCode", value: target?.name ?? type.name }],
         });
     },
+    /** @param {import('typedoc').ReflectionType} type @returns {void} */
     reflection(type) {
       visit(type.declaration);
     },
