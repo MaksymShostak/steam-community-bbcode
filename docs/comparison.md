@@ -7,7 +7,7 @@ These cases exercise documented capabilities and literal-text preservation; they
 The source checkout's `comparison/README.md` describes applicability and native reproduction.
 `comparison/results/windows-x64.json` retains exact tool versions, inputs, expected trees, stdout/stderr, exceptions, parsed output and classifications.
 Those development artifacts are deliberately absent from the packed runtime.
-Run `npm run run:comparison` only after installing the isolated comparator graphs described there; ordinary checks do not require those environments.
+Run `npm run compare:alternatives` only after installing the isolated comparator graphs described there; ordinary checks do not require those environments.
 
 The current recorded candidate meets all 50 corpus contracts, including explicit preservation where GFM or the qualified Steam subset cannot express a feature.
 Steamify 2.0.1, Steam Editor Tools 0.5.1 and the BUTR converter 1.0.0.29 are invoked unmodified through documented APIs.
