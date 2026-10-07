@@ -48,6 +48,15 @@ Use `**/*.md` with no policy exclusions and only repository Git ignores for depe
 Correct generated Markdown through its owning generators and verify regeneration and complete selection; do not weaken lint or link rules to accommodate previously omitted files.
 The no-full-product-tests and local-only delivery decisions remain unchanged.
 
+### Remote delivery authorization, 2026-10-07
+
+The owner subsequently authorized publication to origin through pull requests and normal merges once all applicable checks pass.
+This supersedes the earlier local-only delivery restriction; the prohibition on full local product tests remains effective, and hosted required controls remain unchanged.
+Before bootstrap integration, apply the already-reviewed all-repository Markdown policy and selection tests so trusted candidate qualification cannot retain the obsolete 23-path exemptions.
+Land the shadow bootstrap first, qualify the exact cutover candidate using that integrated trusted source on both platforms, then merge the cutover through normal protected controls.
+The owner also authorized notification to Codex thread `01a10942-8e9b-7b62-ae73-e6977b59718d` after the complete integration is verified on remote main, followed by deletion of local spent integration branches.
+No direct push to main, protection bypass, remote-branch deletion, npm publication or historical source retirement is authorized by this delivery instruction.
+
 The owner requested a proposal based on successful integrations in other repositories.
 This document proposes requirements, decisions and a bounded R2 migration of developer tooling and CI enforcement.
 It does not authorize registration, installations, environment changes, source reformatting, independent scans, commits, pushes, merges or publication in Steam.
