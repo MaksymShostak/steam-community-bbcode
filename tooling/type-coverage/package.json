@@ -4,7 +4,7 @@
   "private": true,
   "license": "AGPL-3.0-only",
   "type": "module",
-  "packageManager": "npm@12.0.2",
+  "packageManager": "npm@12.2.0",
   "engines": {
     "node": ">=22"
   },
@@ -13,9 +13,9 @@
     "check:api-docs": "type-coverage --project ../api-docs/tsconfig.json --not-only-in-cwd --at-least 100 --is 100 --strict --detail --report-semantic-error"
   },
   "devDependencies": {
-    "@types/node": "26.6.4",
-    "type-coverage": "2.30.3",
-    "type-coverage-core": "2.30.3",
-    "typescript": "6.0.3"
+    "@types/node": ">=26.6.4",
+    "type-coverage": ">=2.30.3",
+    "type-coverage-core": ">=2.30.3",
+    "typescript": ">=6.0.3 <7"
   }
 }

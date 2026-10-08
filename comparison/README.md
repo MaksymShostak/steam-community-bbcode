@@ -84,7 +84,7 @@ These remain historical observations, with no claim that the generic package imp
 
 ## Reproduction
 
-Run from the repository root on Windows x64, with the checkout's Python 3.14 `.venv`, Node 24.20.0/npm 12.0.2, and `.NET` 10 runtime installed.
+Run from the repository root on Windows x64, with the checkout's Python 3.14 `.venv`, Node 24.20.0/npm 12.2.0, and `.NET` 10 runtime installed.
 The recorded Python lock is platform-specific.
 The converter's ordinary documented dependency setup must already be complete.
 

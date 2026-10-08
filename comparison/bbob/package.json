@@ -10,8 +10,8 @@
     "qualify": "npm test && npm run typecheck"
   },
   "devDependencies": {
-    "@bbob/parser": "4.4.1",
-    "typescript": "7.0.2",
-    "@types/node": "26.6.4"
+    "@bbob/parser": ">=4.4.1",
+    "typescript": ">=7.0.2",
+    "@types/node": ">=26.6.4"
   }
 }

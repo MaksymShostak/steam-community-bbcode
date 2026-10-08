@@ -106,11 +106,11 @@ test("manifest, lock and installed core/native tuple match the immutable release
   );
   assert.equal(
     manifest.devDependencies["@hadden-industries/markdown-quality"],
-    release.version,
+    `>=${release.version}`,
   );
   assert.equal(
     lock.packages[""].devDependencies["@hadden-industries/markdown-quality"],
-    release.version,
+    `>=${release.version}`,
   );
   for (const item of release.archives) {
     const record = lock.packages[`node_modules/${item.package}`];
