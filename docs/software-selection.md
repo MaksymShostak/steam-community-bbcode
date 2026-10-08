@@ -1,5 +1,19 @@
 # Software selection and qualification
 
+## Development dependency policy (8 October 2026)
+
+Registry development dependencies use `>=` ranges whose minimums are the latest stable releases at refresh time.
+Committed npm lockfiles retain the exact installed versions; setup and CI use locked installs with npm 12.2.0.
+Runtime dependency declarations remain exact.
+
+The two compiler-API tooling environments retain the approved TypeScript 6 exception as `>=6.0.3 <7`: TypeDoc does not support TypeScript 7, and the primary TypeScript 7 package does not expose the compiler API consumed by type-coverage.
+Node declaration qualification preserves its separate majors with `>=22.20.5 <23`, `>=24.19.1 <25` and `>=26.6.4 <27`.
+The root development declarations use `>=26.6.4`; the Node 26 development runtime minimum is 26.11.1.
+Markdown tooling permits `>=1.0.3` while release, archive integrity and native executable checks still verify the exact locked capability.
+These compatibility bounds were explicitly approved on 8 October 2026.
+Development requires Python >=3.14.8, checked by Python's native runtime tuple before installing dependencies or changing a virtual environment.
+.python-version and CI select exact 3.14.8 as the reproducible reference.
+
 ## Dependency refresh (15 September 2026)
 
 The current root declaration dependency is `@types/node` 26.5.1, with separately locked compatibility environments for 22.20.2, 24.13.4 and 26.5.1.
@@ -42,7 +56,7 @@ Seeded generated checks exercise arbitrary bounded Markdown and literal delimite
 | Component                                | Current selected/candidate version | Role and evidence                                                                                                                              |
 | ---------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | Node                                     | 24.20.0                            | Repository development LTS; package target remains Node 22/24/26.                                                                              |
-| npm                                      | 12.0.2                             | Repository-selected native package manager, invoked with npm exec.                                                                             |
+| npm                                      | 12.2.0                             | Repository-selected native package manager, invoked with npm exec.                                                                             |
 | TypeScript                               | 7.0.2                              | Primary strict JavaScript checker and declaration emitter; installed type consumer passed.                                                     |
 | @types/node                              | 22.20.1                            | Latest Node 22 declarations for the oldest supported runtime, as required by the plan.                                                         |
 | @types/mdast / @types/unist              | 4.0.4 / 3.0.3                      | Public declaration dependencies, installed without dev dependency hoisting.                                                                    |

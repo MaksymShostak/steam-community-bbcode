@@ -59,13 +59,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [22.22.2, 24.15.0, 26.0.0, 22.x, 24.x, 26.x]
+        node: [22.22.2, 24.15.0, 26.11.1, 22.x, 24.x, 26.x]
         include:
           - node: 22.22.2
             nodeTypes: "22"
           - node: 24.15.0
             nodeTypes: "24"
-          - node: 26.0.0
+          - node: 26.11.1
             nodeTypes: "26"
           - node: 22.x
             nodeTypes: "22"
@@ -89,19 +89,19 @@ jobs:
         with:
           python-version-file: .python-version
       - name: Exercise standalone development setup
-        run: npm exec --yes --package=npm@12.0.2 -- npm run set-up:development -- --product-only
+        run: npm exec --yes --package=npm@12.2.0 -- npm run set-up:development -- --product-only
       - name: Generate locked dependency inventories
         run: |
           node --input-type=module -e "import {mkdirSync} from 'node:fs'; mkdirSync('artifacts/supply-chain', {recursive: true});"
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom > artifacts/supply-chain/package.cdx.json
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom:type-coverage > artifacts/supply-chain/type-coverage.cdx.json
-          npm exec --yes --package=npm@12.0.2 -- npm run --silent generate:sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
+          npm exec --yes --package=npm@12.2.0 -- npm run --silent generate:sbom > artifacts/supply-chain/package.cdx.json
+          npm exec --yes --package=npm@12.2.0 -- npm run --silent generate:sbom:type-coverage > artifacts/supply-chain/type-coverage.cdx.json
+          npm exec --yes --package=npm@12.2.0 -- npm run --silent generate:sbom:api-docs > artifacts/supply-chain/api-docs.cdx.json
       - name: Check the converter and real packed consumer
-        run: npm exec --yes --package=npm@12.0.2 -- npm run check:product
+        run: npm exec --yes --package=npm@12.2.0 -- npm run check:product
       - name: Qualify matching Node declarations and the retained archive
         env:
           NODE_TYPES_MAJOR: ${{ matrix.nodeTypes }}
-        run: npm exec --yes --package=npm@12.0.2 -- npm run qualify:node-types -- --major "$NODE_TYPES_MAJOR"
+        run: npm exec --yes --package=npm@12.2.0 -- npm run qualify:node-types -- --major "$NODE_TYPES_MAJOR"
         shell: bash
       - name: Report converter qualification
         if: ${{ !cancelled() }}
@@ -131,14 +131,14 @@ jobs:
           python-version-file: .python-version
       - name: Install only the isolated Markdown graph and standard-library observer environment
         run: |
-          npm exec --yes --package=npm@12.0.2 -- npm run install:markdown
+          npm exec --yes --package=npm@12.2.0 -- npm run install:markdown
           python -m venv .venv
       - name: Test the native integration and staging boundaries
-        run: npm exec --yes --package=npm@12.0.2 -- npm run test:markdown
+        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown
       - name: Test resource-observer boundaries
-        run: npm exec --yes --package=npm@12.0.2 -- npm run test:markdown:observer
+        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown:observer
       - name: Check all authored Markdown, including target-only changes
-        run: npm exec --yes --package=npm@12.0.2 -- npm run check:markdown
+        run: npm exec --yes --package=npm@12.2.0 -- npm run check:markdown
       - name: Report the fresh native Markdown result and stderr
         if: ${{ !cancelled() }}
         env:
@@ -160,8 +160,8 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
-      - run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
-      - run: npm exec --yes --package=npm@12.0.2 -- npm run test:package
+      - run: npm exec --yes --package=npm@12.2.0 -- npm ci --ignore-scripts
+      - run: npm exec --yes --package=npm@12.2.0 -- npm run test:package
       - name: Report archive qualification
         if: ${{ !cancelled() }}
         env:
@@ -200,11 +200,11 @@ jobs:
           node-version: 24.20.0
           package-manager-cache: false
       - name: Install locked converter development dependencies
-        run: npm exec --yes --package=npm@12.0.2 -- npm ci --ignore-scripts
+        run: npm exec --yes --package=npm@12.2.0 -- npm ci --ignore-scripts
       - name: Qualify mutation sensitivity
         env:
           MUTATION_PROFILE: ${{ matrix.profile }}
-        run: npm exec --yes --package=npm@12.0.2 -- npm run "test:mutation:$MUTATION_PROFILE"
+        run: npm exec --yes --package=npm@12.2.0 -- npm run "test:mutation:$MUTATION_PROFILE"
       - name: Report mutation qualification
         if: ${{ !cancelled() }}
         env:

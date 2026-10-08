@@ -15,7 +15,7 @@
     }
   },
   "devDependencies": {
-    "@hadden-industries/markdown-quality": "1.0.3"
+    "@hadden-industries/markdown-quality": ">=1.0.3"
   },
   "overrides": {
     "micromark-extension-math": {

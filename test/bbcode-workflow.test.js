@@ -313,7 +313,7 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   assert.deepEqual(declarationLanes.toJSON(), [
     { node: "22.22.2", nodeTypes: "22" },
     { node: "24.15.0", nodeTypes: "24" },
-    { node: "26.0.0", nodeTypes: "26" },
+    { node: "26.11.1", nodeTypes: "26" },
     { node: "22.x", nodeTypes: "22" },
     { node: "24.x", nodeTypes: "24" },
     { node: "26.x", nodeTypes: "26" },
@@ -324,7 +324,7 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
   );
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "node"]),
-    ["22.22.2", "24.15.0", "26.0.0", "22.x", "24.x", "26.x"],
+    ["22.22.2", "24.15.0", "26.11.1", "22.x", "24.x", "26.x"],
   );
   assert.equal(workflow.getIn(["permissions", "contents"]), "read");
   assert.doesNotMatch(
@@ -381,7 +381,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   assert.equal(bootstrap.get("if"), undefined);
   assert.equal(
     bootstrap.get("run"),
-    "npm exec --yes --package=npm@12.0.2 -- npm run set-up:development -- --product-only",
+    "npm exec --yes --package=npm@12.2.0 -- npm run set-up:development -- --product-only",
   );
   const check = steps.items.find(
     (step) =>
@@ -392,7 +392,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   assert.equal(check.get("if"), undefined);
   assert.equal(
     check.get("run"),
-    "npm exec --yes --package=npm@12.0.2 -- npm run check:product",
+    "npm exec --yes --package=npm@12.2.0 -- npm run check:product",
   );
 });
 

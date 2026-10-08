@@ -11,7 +11,7 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pythonVersionArguments = [
   "-I",
   "-c",
-  'import sys; print(".".join(map(str, sys.version_info[:3])))',
+  'import sys\nminimum = tuple(map(int, sys.argv[1].split(".")))\nif sys.version_info < minimum:\n    sys.exit("Use Python >=" + sys.argv[1] + ".")\nprint(".".join(map(str, sys.version_info[:3])))',
 ];
 
 /** @type {CommandExecutor} */
@@ -43,7 +43,7 @@ export function setUpDevelopment({
     productOnly || nodeVersion === "24.21.0",
     "Markdown setup requires Node 24.21.0; use --product-only on another supported converter runtime, then install Markdown tooling separately on its qualified runtime.",
   );
-  const pythonVersion = readFileSync(
+  const pythonMinimum = readFileSync(
     join(root, ".python-version"),
     "utf8",
   ).trim();
@@ -79,11 +79,9 @@ export function setUpDevelopment({
     npmVersion,
     `Use npm ${npmVersion}.`,
   );
-  assert.equal(
-    checked(python, pythonVersionArguments),
-    pythonVersion,
-    `Use Python ${pythonVersion}.`,
-  );
+  // Python owns comparison of its runtime tuple against the reference minimum.
+  const pythonArguments = [...pythonVersionArguments, pythonMinimum];
+  checked(python, pythonArguments);
   const environment = join(root, ".venv");
   const interpreter = join(
     environment,
@@ -91,11 +89,7 @@ export function setUpDevelopment({
   );
   const existingEnvironment = existsSync(environment);
   if (existingEnvironment) {
-    assert.equal(
-      checked(interpreter, pythonVersionArguments),
-      pythonVersion,
-      `The existing environment must use Python ${pythonVersion}.`,
-    );
+    checked(interpreter, pythonArguments);
   }
   checked(process.execPath, [npmCli, "ci", "--ignore-scripts"]);
   for (const directory of [
@@ -116,11 +110,7 @@ export function setUpDevelopment({
   if (!productOnly)
     checked(process.execPath, [npmCli, "run", "install:markdown"]);
   if (!existingEnvironment) checked(python, ["-I", "-m", "venv", ".venv"]);
-  assert.equal(
-    checked(interpreter, pythonVersionArguments),
-    pythonVersion,
-    `The environment must use Python ${pythonVersion}.`,
-  );
+  const pythonVersion = checked(interpreter, pythonArguments);
   return {
     node: nodeVersion,
     npm: npmVersion,

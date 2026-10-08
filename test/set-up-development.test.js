@@ -54,10 +54,10 @@ function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), "bbcode setup with spaces "));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   writeFileSync(join(root, ".node-version"), `${process.versions.node}\n`);
-  writeFileSync(join(root, ".python-version"), "3.14.7\n");
+  writeFileSync(join(root, ".python-version"), "3.14.8\n");
   writeFileSync(
     join(root, "package.json"),
-    JSON.stringify({ packageManager: "npm@12.0.2" }),
+    JSON.stringify({ packageManager: "npm@12.2.0" }),
   );
   const npmCli = join(root, "npm path with spaces", "npm-cli.js");
   const python = join(root, "python path with spaces", "python");
@@ -67,9 +67,9 @@ function fixture(t) {
   const execute = (command, args, cwd) => {
     calls.push({ command, args, root: cwd });
     const stdout = args.includes("--version")
-      ? "12.0.2\n"
+      ? "12.2.0\n"
       : args.includes("-c")
-        ? "3.14.7\n"
+        ? "3.14.8\n"
         : "";
     return { status: 0, stdout, stderr: "" };
   };
@@ -141,15 +141,17 @@ test("a compatible installed Node need not equal the reference pin", (t) => {
   assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 6);
 });
 
-test("mismatched npm and Python versions stop before installations", (t) => {
+test("mismatched npm and below-minimum Python stop before installations", (t) => {
   for (const prerequisite of ["npm", "Python"]) {
     const f = fixture(t);
     const execute = f.execute;
     f.execute = (command, args, root) => {
       const result = execute(command, args, root);
-      return args.includes(prerequisite === "npm" ? "--version" : "-c")
-        ? { ...result, stdout: "0.0.0\n" }
-        : result;
+      if (prerequisite === "npm" && args.includes("--version"))
+        return { ...result, stdout: "0.0.0\n" };
+      if (prerequisite === "Python" && args.includes("-c"))
+        return { ...result, status: 1, stderr: "Use Python >=3.14.8." };
+      return result;
     };
     assert.throws(() => setUpDevelopment(f), new RegExp(prerequisite));
     assert.ok(
@@ -207,10 +209,10 @@ test("an existing environment is validated rather than overwritten", (t) => {
   f.execute = (command, args, root) => {
     const result = execute(command, args, root);
     return command.includes(".venv")
-      ? { ...result, stdout: "3.13.0\n" }
+      ? { ...result, status: 1, stderr: "Use Python >=3.14.8." }
       : result;
   };
-  assert.throws(() => setUpDevelopment(f), /Python 3\.14\.7/);
+  assert.throws(() => setUpDevelopment(f), /Python >=3\.14\.8/);
   assert.ok(
     f.calls.every(
       (call) => !call.args.includes("ci") && !call.args.includes("venv"),
