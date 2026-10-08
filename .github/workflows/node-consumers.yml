@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -34,7 +34,7 @@ jobs:
       - name: Retain the consumer executable path
         id: runtime
         run: node --input-type=module -e "import {appendFileSync} from 'node:fs'; appendFileSync(process.env.GITHUB_OUTPUT, 'path=' + process.execPath + '\nmajor=' + process.versions.node.split('.')[0] + '\n');"
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
           package-manager-cache: false
@@ -44,7 +44,7 @@ jobs:
         run: |
           npm exec --yes --package=npm@12.2.0 -- npm ci --ignore-scripts
           npm exec --yes --package=npm@12.2.0 -- npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: ${{ inputs.artifact }}
           path: artifacts/consumer-candidate
