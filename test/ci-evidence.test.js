@@ -55,7 +55,7 @@ test("hostile diagnostic text stays data, full logs survive summary limits and c
   assert.ok(log.includes("record-999"));
   assert.ok(log.endsWith(`\n::${token}::\n`));
   assert.ok(Buffer.byteLength(summary) < 65 * 1024);
-  assert.doesNotMatch(summary, /<script>|::set-env/u);
+  assert.doesNotMatch(summary, /<script\b|::set-env/iu);
   assert.match(summary, /&lt;script&gt;path/u);
   assert.match(summary, /1001 complete files/u);
   const lines = /** @type {string[]} */ ([]);
@@ -74,6 +74,48 @@ test("hostile diagnostic text stays data, full logs survive summary limits and c
     /sink failed/u,
   );
   assert.match(lines.at(-1) ?? "", /\n::bbcode-[a-f0-9]{64}::\n/u);
+});
+
+test("summary paths and identity fields escape HTML regardless of tag casing or syntax", () => {
+  /** @type {ReadonlyArray<readonly [string, string]>} */
+  const cases = [
+    ["<SCRIPT>evil</SCRIPT>", "&lt;SCRIPT&gt;evil&lt;/SCRIPT&gt;"],
+    [
+      '<ScRiPt src="x">evil</sCrIpT ignored>',
+      "&lt;ScRiPt src=&quot;x&quot;&gt;evil&lt;/sCrIpT ignored&gt;",
+    ],
+    ["<script\tonload='evil'", "&lt;script\tonload=&#39;evil&#39;"],
+    [
+      "</li><img src=x onerror=evil><li>",
+      "&lt;/li&gt;&lt;img src=x onerror=evil&gt;&lt;li&gt;",
+    ],
+    ["&lt;SCRIPT&gt; & café 🦉", "&amp;lt;SCRIPT&amp;gt; &amp; café 🦉"],
+  ];
+  for (const [source, escaped] of cases) {
+    let log = "";
+    let summary = "";
+    reportEvidence([{ path: source, bytes: Buffer.from(source) }], {
+      mode: "fixture",
+      env: { EVIDENCE_LANE: source },
+      write: (text) => {
+        log += text;
+      },
+      summary: (text) => {
+        summary += text;
+      },
+    });
+    assert.ok(log.includes(`\n${source}\n`), source);
+    assert.ok(summary.includes(`<li>${escaped}:`), source);
+    // JSON string escaping precedes HTML escaping in the identity block.
+    const escapedIdentity = escaped
+      .replaceAll("&quot;", "\\&quot;")
+      .replaceAll("\t", "\\t");
+    assert.ok(
+      summary.includes(`&quot;lane&quot;: &quot;${escapedIdentity}&quot;`),
+      source,
+    );
+    assert.doesNotMatch(summary, /<script\b|<img\b/iu);
+  }
 });
 
 test("report collection uses exact native outputs and exposes absent or redirected evidence", () => {
