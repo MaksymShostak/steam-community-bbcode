@@ -11,11 +11,11 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "^22.22.2 || ^24.15.0 || ^26.0.0",
+      "version": "^22.22.2 || ^24.15.0 || ^26.11.1",
       "onFail": "error"
     }
   },
-  "packageManager": "npm@12.0.2",
+  "packageManager": "npm@12.2.0",
   "main": "./src/index.js",
   "bin": {
     "steam-community-bbcode": "src/cli.js"
@@ -59,7 +59,7 @@
     "check:markdown": "node scripts/run-markdown.mjs check",
     "test:markdown": "node --test tooling/markdown/integration.test.mjs scripts/check-markdown-candidate.probes.mjs",
     "test:markdown:observer": "node scripts/runRepositoryPython.js -I -B -X utf8 scripts/observe-markdown-window.probes.py",
-    "test:documentation-tooling": "node --test test/set-up-development.test.js test/repository-python.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/documentation.test.js test/development-command-names.test.js",
+    "test:documentation-tooling": "node --test test/set-up-development.test.js test/repository-python.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/documentation.test.js test/development-command-names.test.js scripts/set-up-development.probes.mjs",
     "lint": "eslint src scripts test tooling/api-docs/*.js eslint.config.js --max-warnings 0",
     "qualify:github": "node scripts/qualify-github-rendering.js --live",
     "qualify:performance": "node --test test/performance/*.test.js",
@@ -102,24 +102,24 @@
     "micromark-extension-gfm": "3.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
-    "@sigstore/rekor-types": "5.0.0",
-    "@stryker-mutator/core": "10.0.0",
-    "@stryker-mutator/tap-runner": "10.0.0",
-    "@types/make-fetch-happen": "10.0.4",
-    "@types/node": "26.6.1",
-    "ajv": "8.20.0",
-    "ajv-formats": "3.0.1",
-    "c8": "12.0.0",
-    "eslint": "10.10.0",
-    "eslint-config-prettier": "10.1.8",
-    "fast-check": "4.10.1",
-    "globals": "17.12.0",
-    "prettier": "3.9.6",
-    "publint": "0.3.24",
-    "sigstore": "5.0.0",
-    "typescript": "7.0.2",
-    "yaml": "2.9.1"
+    "@eslint/js": ">=10.0.1",
+    "@sigstore/rekor-types": ">=5.0.0",
+    "@stryker-mutator/core": ">=10.0.0",
+    "@stryker-mutator/tap-runner": ">=10.0.0",
+    "@types/make-fetch-happen": ">=10.0.4",
+    "@types/node": ">=26.6.4",
+    "ajv": ">=8.20.0",
+    "ajv-formats": ">=3.0.1",
+    "c8": ">=12.0.0",
+    "eslint": ">=10.12.0",
+    "eslint-config-prettier": ">=10.1.8",
+    "fast-check": ">=4.10.2",
+    "globals": ">=17.13.0",
+    "prettier": ">=3.9.9",
+    "publint": ">=0.3.25",
+    "sigstore": ">=5.0.0",
+    "typescript": ">=7.0.2",
+    "yaml": ">=2.9.1"
   },
   "overrides": {
     "typed-rest-client@2.3.1": {

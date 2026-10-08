@@ -6,7 +6,7 @@
 | ----- | ---------------- | ------------------- | ------------- |
 | 22    | 22.11.0          | 22.22.2             | LTS           |
 | 24    | 24.11.0          | 24.15.0             | LTS           |
-| 26    | 26.0.0           | 26.0.0              | Current       |
+| 26    | 26.0.0           | 26.11.1             | Current       |
 
 Support includes stable minor and patch releases at or above each minimum within that major.
 Other majors and prereleases are outside the declared ranges.
@@ -14,7 +14,7 @@ Recommend the latest patched LTS release for ordinary use; historical minimums a
 Reassess Node 26 when it enters LTS without silently changing its existing minimum.
 
 Consumer minimums for Node 22 and 24 are their first LTS releases.
-Development minimums also satisfy the locked development dependency graph, including npm 12.0.2 and Sigstore 5.
+Development minimums also satisfy the locked development dependency graph, including npm 12.2.0 and Sigstore 5.
 They are deliberately separate: consumers do not need the publisher's development tools.
 These targets require passing qualification before a release can claim the tested compatibility.
 
@@ -22,7 +22,8 @@ These targets require passing qualification before a release can claim the teste
 `package.json#devEngines.runtime` is enforced by npm before `install`, `ci` and `run`, including `npm run set-up:development` on a fresh clone.
 Use that npm entry point for setup.
 The exact `.node-version` identifies the Node 24.21.0 reference build and Markdown environment; it does not change converter runtime compatibility.
-The existing npm and Python requirements remain unchanged.
+The selected package manager is npm 12.2.0; development requires Python >=3.14.8.
+.python-version selects the reproducible 3.14.8 reference, and setup accepts newer interpreters and existing virtual environments that meet that minimum.
 Markdown Quality 1.0.3 is isolated in `tooling/markdown` and is qualified here on exact Node 24.21.0, Windows x64 and Ubuntu 24.04 x64.
 Its dependency graph is never installed in the other converter lanes or shipped to consumers.
 Use `npm run set-up:development -- --product-only` and `npm run check:product` on another supported converter runtime; select Node 24.21.0 separately for `install:markdown`, `test:markdown` and `check:markdown`.

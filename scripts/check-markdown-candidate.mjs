@@ -318,14 +318,19 @@ async function main() {
   );
   const lockBytes = readFileSync(join(toolingRoot, "package-lock.json"));
   const lock = JSON.parse(lockBytes.toString("utf8"));
-  const expectedVersion =
+  const expectedRange =
     manifest.devDependencies?.["@hadden-industries/markdown-quality"];
   if (
     lock.packages?.[""]?.devDependencies?.[
       "@hadden-industries/markdown-quality"
-    ] !== expectedVersion
+    ] !== expectedRange
   )
     throw new Error("Trusted manifest and lock disagree");
+  const expectedVersion =
+    lock.packages?.["node_modules/@hadden-industries/markdown-quality"]
+      ?.version;
+  if (!expectedVersion)
+    throw new Error("Trusted lock has no Markdown capability version");
   const staging = stageCandidate({ sourceRoot, trustedRoot, outputRoot });
   const cli = join(
     toolingRoot,
@@ -334,7 +339,7 @@ async function main() {
   const started = performance.now();
   const result = await checkCandidate({ outputRoot, cli, staging });
   if (result.trustedPackage.version !== expectedVersion)
-    throw new Error("Installed capability differs from the exact trusted pin");
+    throw new Error("Installed capability differs from the exact trusted lock");
   const nativeManifest = JSON.parse(
     readFileSync(
       join(dirname(dirname(cli)), "assets/tool-manifest.json"),

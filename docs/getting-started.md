@@ -7,7 +7,7 @@ The complete documentation-tooling environment uses exact Node 24.21.0, also rec
 The converter's broader development and consumer runtime ranges are unchanged.
 The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
-From the root of this standalone checkout with Node 24.21.0, npm 12.0.2 and Python 3.14.7 installed:
+From the root of this standalone checkout with Node 24.21.0, npm 12.2.0 and Python >=3.14.8 installed:
 
 ```text
 npm run set-up:development
