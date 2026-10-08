@@ -42,6 +42,27 @@ test("flow-whitespace does not trim ordinary document text or inline separation"
 });
 
 for (const ending of ["\n", "\r\n", "\r"]) {
+  test(`GFM serialization preserves a terminal source line ending: ${JSON.stringify(ending)}`, () => {
+    const source = `[b]B[/b]${ending}`;
+    const result = steamCommunityBbcodeToGfm(source);
+    assert.equal(result.value, "**B**&#xA;\n");
+    const paragraph = fromMarkdown(result.value).children[0];
+    assert.ok(paragraph?.type === "paragraph");
+    const [bold, newline] = paragraph.children;
+    assert.ok(bold?.type === "strong");
+    assert.deepEqual(
+      bold.children.map((node) =>
+        node.type === "text" ? node.value : node.type,
+      ),
+      ["B"],
+    );
+    assert.ok(newline?.type === "text");
+    assert.equal(newline.value, "\n");
+    assert.deepEqual(result.diagnostics, []);
+  });
+}
+
+for (const ending of ["\n", "\r\n", "\r"]) {
   test(`flow-whitespace list delimiters preserve a tight list: ${JSON.stringify(ending)}`, () => {
     const source = ["[list]", "[*] One", "[*]\tTwo", "[/list]"].join(ending);
     const result = steamCommunityBbcodeToGfm(source);

@@ -95,10 +95,10 @@
     "@types/unist": "3.0.3",
     "chevrotain": "13.2.0",
     "linkify-it": "6.1.0",
-    "mdast-util-from-markdown": "2.0.3",
+    "mdast-util-from-markdown": "2.1.0",
     "mdast-util-gfm": "3.1.0",
-    "mdast-util-gfm-strikethrough": "2.0.0",
-    "mdast-util-to-markdown": "2.1.2",
+    "mdast-util-gfm-strikethrough": "2.0.1",
+    "mdast-util-to-markdown": "2.2.0",
     "micromark-extension-gfm": "3.0.0"
   },
   "devDependencies": {

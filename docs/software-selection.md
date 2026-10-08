@@ -14,6 +14,19 @@ These compatibility bounds were explicitly approved on 8 October 2026.
 Development requires Python >=3.14.8, checked by Python's native runtime tuple before installing dependencies or changing a virtual environment.
 .python-version and CI select exact 3.14.8 as the reproducible reference.
 
+## Markdown runtime refresh (8 October 2026)
+
+PR #19 selects the maintained MIT packages mdast-util-from-markdown 2.1.0, mdast-util-gfm-strikethrough 2.0.1 and mdast-util-to-markdown 2.2.0.
+The existing native parser, GFM extension and serializer retain their roles; all approved floating development declarations and compatible compiler/type environments remain unchanged.
+
+The serializer now preserves terminal paragraph line endings as character references instead of silently losing them.
+The owner explicitly accepted that output change on 8 October 2026.
+CLI file/stdin qualification compares identical source bytes, and native-parser regressions verify the retained newline for LF, CRLF and CR source endings.
+Executed examples and conformance evidence are regenerated through the existing native generator.
+There is no serializer output rewriting or vendor patch.
+
+Sources: [serializer 2.2.0](https://github.com/syntax-tree/mdast-util-to-markdown/releases/tag/2.2.0), [upstream newline-preservation fix](https://github.com/syntax-tree/mdast-util-to-markdown/commit/b2fff9ff7014e6587a8d7dabcd89a4dc150b764e), [parser 2.1.0](https://github.com/syntax-tree/mdast-util-from-markdown/releases/tag/2.1.0), and [strikethrough 2.0.1](https://github.com/syntax-tree/mdast-util-gfm-strikethrough/releases/tag/2.0.1).
+
 ## Dependency refresh (15 September 2026)
 
 The current root declaration dependency is `@types/node` 26.5.1, with separately locked compatibility environments for 22.20.2, 24.13.4 and 26.5.1.
