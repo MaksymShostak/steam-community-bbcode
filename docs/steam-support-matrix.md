@@ -12,7 +12,7 @@ Conversion recognizes the complete registry in each selected profile; passing co
 Unsupported fidelity below denotes an explained fallback.
 
 Target trees are checked against GFM syntax.
-Some GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM\_RENDERER\_AUTOLINK\_POSSIBLE.
+Some GitHub surfaces additionally autolink escaped text; the full native consumer detects additional links and emits GFM_RENDERER_AUTOLINK_POSSIBLE.
 The live Markdown REST endpoint is a separate retained check.
 
 | Construct                             | Policy tests                                        | Observed target fidelity | Steam profile evidence                                                                                                                                                              |
