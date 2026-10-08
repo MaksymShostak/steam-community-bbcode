@@ -77,7 +77,8 @@ test("hostile diagnostic text stays data, full logs survive summary limits and c
 });
 
 test("summary paths and identity fields escape HTML regardless of tag casing or syntax", () => {
-  for (const [source, escaped] of [
+  /** @type {ReadonlyArray<readonly [string, string]>} */
+  const cases = [
     ["<SCRIPT>evil</SCRIPT>", "&lt;SCRIPT&gt;evil&lt;/SCRIPT&gt;"],
     [
       '<ScRiPt src="x">evil</sCrIpT ignored>',
@@ -89,7 +90,8 @@ test("summary paths and identity fields escape HTML regardless of tag casing or 
       "&lt;/li&gt;&lt;img src=x onerror=evil&gt;&lt;li&gt;",
     ],
     ["&lt;SCRIPT&gt; & café 🦉", "&amp;lt;SCRIPT&amp;gt; &amp; café 🦉"],
-  ]) {
+  ];
+  for (const [source, escaped] of cases) {
     let log = "";
     let summary = "";
     reportEvidence([{ path: source, bytes: Buffer.from(source) }], {
