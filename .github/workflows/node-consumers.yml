@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -34,7 +34,7 @@ jobs:
       - name: Retain the consumer executable path
         id: runtime
         run: node --input-type=module -e "import {appendFileSync} from 'node:fs'; appendFileSync(process.env.GITHUB_OUTPUT, 'path=' + process.execPath + '\nmajor=' + process.versions.node.split('.')[0] + '\n');"
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .node-version
           package-manager-cache: false
