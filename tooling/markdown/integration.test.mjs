@@ -2,9 +2,19 @@
 // Consumer probes exercise the installed public contracts with Steam Community BBCode's policy.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import {
+  readFileSync,
+  mkdtempSync,
+  mkdirSync,
+  copyFileSync,
+  writeFileSync,
+  symlinkSync,
+  rmSync,
+} from "node:fs";
+import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -106,7 +116,7 @@ test("public logical formatting preserves Steam literals and converges at the re
   assert.deepEqual(readFileSync(join(root, path)), original);
 });
 
-test("the root policy selects authored anchors and accounts for retained archives", async () => {
+test("the root policy selects authored anchors and explains operational exclusions", async () => {
   const report = await inspectSelection({ root });
   validateQualityResult(report);
   assert.equal(report.exitCode, 0);
@@ -135,5 +145,86 @@ test("the root policy selects authored anchors and accounts for retained archive
   assert.equal(
     json(join(root, ".markdown-quality.json")).ignoreFiles,
     undefined,
+  );
+});
+
+test("consumer check commands retain fresh reports, stderr and exact native exits", (t) => {
+  const fixture = mkdtempSync(join(tmpdir(), "steam-markdown-reports-"));
+  t.after(() => rmSync(fixture, { recursive: true, force: true }));
+  mkdirSync(join(fixture, "tooling/markdown"), { recursive: true });
+  for (const path of [
+    ".markdown-quality.json",
+    ".markdown-quality-execution.json",
+    ".node-version",
+    ".python-version",
+    "tooling/markdown/package.json",
+    "tooling/markdown/package-lock.json",
+  ])
+    copyFileSync(join(root, path), join(fixture, path));
+  symlinkSync(
+    join(tooling, "node_modules"),
+    join(fixture, "tooling/markdown/node_modules"),
+    process.platform === "win32" ? "junction" : "dir",
+  );
+  const npmCli = process.env.npm_execpath;
+  assert.ok(npmCli, "Run through npm run test:markdown.");
+  const reportPath = join(fixture, "artifacts/prose/check.json");
+  const stderrPath = join(fixture, "artifacts/prose/check.stderr.txt");
+  mkdirSync(join(fixture, "artifacts/prose"), { recursive: true });
+  for (const expected of [0, 1, 2]) {
+    writeFileSync(reportPath, "stale report");
+    writeFileSync(stderrPath, "stale stderr");
+    writeFileSync(
+      join(fixture, "README.md"),
+      expected === 1
+        ? "# Fixture\n\n[Missing](absent.txt).\n"
+        : "# Fixture\n\nSafe prose.\n",
+    );
+    if (expected === 2)
+      writeFileSync(join(fixture, ".markdown-quality.json"), "{invalid");
+    const completed = spawnSync(
+      process.execPath,
+      [npmCli, "--prefix", "tooling/markdown", "run", "check"],
+      {
+        cwd: fixture,
+        encoding: "utf8",
+        timeout: 30000,
+        maxBuffer: 8388608,
+        windowsHide: true,
+      },
+    );
+    assert.ifError(completed.error);
+    assert.equal(completed.signal, null);
+    assert.equal(
+      completed.status,
+      expected,
+      completed.stderr + readFileSync(stderrPath, "utf8"),
+    );
+    const report = JSON.parse(readFileSync(reportPath, "utf8"));
+    validateQualityResult(report);
+    assert.equal(report.exitCode, expected);
+    assert.ok(!readFileSync(stderrPath, "utf8").includes("stale stderr"));
+  }
+});
+
+test("the retained KaTeX override renders math and rejects inherited trust", () => {
+  const mathRequire = createRequire(
+    requireMarkdown.resolve("micromark-extension-math"),
+  );
+  const katex = mathRequire("katex");
+  assert.equal(mathRequire("katex/package.json").version, "0.18.2");
+  assert.ok(katex.renderToString("x^2").includes("katex"));
+  const options = Object.create({ trust: true });
+  options.throwOnError = false;
+  const html = katex.renderToString(
+    "\\href{javascript:alert(1)}{click}",
+    options,
+  );
+  assert.ok(!html.includes('<a href="javascript:'));
+  assert.ok(html.includes("<mtext>\\href</mtext>"));
+  assert.ok(
+    katex
+      .renderToString("\\href{https://example.com}{click}", { trust: true })
+      .includes('<a href="https://example.com"'),
   );
 });

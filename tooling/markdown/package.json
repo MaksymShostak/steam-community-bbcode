@@ -19,7 +19,7 @@
   },
   "overrides": {
     "micromark-extension-math": {
-      "katex": ">=0.18.2 <1"
+      "katex": "0.18.2"
     }
   },
   "scripts": {

@@ -40,7 +40,7 @@
     "qualify:ci-selection": "node scripts/select-ci-qualification.js",
     "generate:ci-evidence": "node scripts/report-ci-evidence.js",
     "generate:release-transfer": "node scripts/stage-release-transfer.js",
-    "test:ci-evidence": "node --test test/ci-evidence.test.js test/ci-qualification-selection.test.js test/release-candidate-staging.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/github-rendering.test.js",
+    "test:ci-evidence": "node --test test/ci-evidence.test.js test/markdown-workflow.test.js test/ci-qualification-selection.test.js test/release-candidate-staging.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/github-rendering.test.js",
     "qualify:node-types": "node scripts/qualify-node-declarations.js",
     "format": "prettier --write --ignore-unknown . \"!**/*.md\"",
     "check:format": "prettier --check --ignore-unknown . \"!**/*.md\"",
