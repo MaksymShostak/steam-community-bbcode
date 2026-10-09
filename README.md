@@ -62,3 +62,5 @@ They are maintained alongside the code and excluded from npm installations.
 Licensed under [AGPL-3.0-only](LICENSE).
 Retained [third-party notices](docs/third-party-notices.md) preserve separate terms.
 See [SECURITY.md](SECURITY.md) for private vulnerability reporting and [GitHub issues](https://github.com/MaksymShostak/steam-community-bbcode/issues) for other reports.
+
+[Hosted trusted-policy isolation failure fixture](missing-centralization-fixture.md)

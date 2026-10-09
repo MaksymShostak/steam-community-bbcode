@@ -17,3 +17,4 @@ __pycache__/
 
 # Qualified development toolchain archives are immutable trusted inputs.
 !/tooling/markdown/archives/*.tgz
+*.md

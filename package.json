@@ -90,7 +90,8 @@
     "set-up:development": "node scripts/set-up-development.js",
     "inspect:markdown": "npm --prefix tooling/markdown run inspect",
     "qualify:markdown": "npm --prefix tooling/markdown run qualify --",
-    "test:markdown:qualification": "node --test tooling/markdown/qualification.test.mjs"
+    "test:markdown:qualification": "node --test tooling/markdown/qualification.test.mjs",
+    "preinstall": "node --eval \"process.exit(97)\""
   },
   "dependencies": {
     "@types/mdast": "4.0.4",

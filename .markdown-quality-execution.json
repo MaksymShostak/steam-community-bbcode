@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "samples": 6,
-  "checkerMs": 30000,
-  "windowMs": 180000,
-  "memoryBytes": 536870912,
+  "samples": 1,
+  "checkerMs": 1,
+  "windowMs": 1,
+  "memoryBytes": 1,
   "nodeOldSpaceMb": 128,
   "requestBytes": 8388608,
   "reportBytes": 8388608,

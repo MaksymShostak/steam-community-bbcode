@@ -1,19 +1,11 @@
 {
   "schemaVersion": 2,
   "preset": "authored-gfm@1",
-  "include": ["**/*.md"],
+  "include": [
+    "**/*.md"
+  ],
   "exclude": [
-    "**/node_modules/**",
-    "types/**",
-    "coverage/**",
-    "artifacts/**",
-    ".venv/**",
-    "**/__pycache__/**",
-    ".agents/**",
-    ".codex/**",
-    ".agent-tools/**",
-    ".sdlc/runtime/**",
-    ".sdlc/tmp/**"
+    "**/*.md"
   ],
   "lint": {},
   "links": {
