@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
@@ -53,8 +54,14 @@ test("CLI accepts a spaced file path after the option terminator and explicit st
     fileURLToPath(new URL("./fixtures/cli/", import.meta.url)),
   );
   assert.equal(file.status, 0);
-  assert.equal(file.stdout, "**B**\n");
-  const stdin = cli(["to-gfm", "-"], "[b]B[/b]");
+  // Compare the same source: the file's final newline is retained by the
+  // native serializer as a character reference within its paragraph.
+  assert.equal(file.stdout, "**B**&#xA;\n");
+  const source = readFileSync(
+    new URL("./fixtures/cli/- source.bbcode", import.meta.url),
+    "utf8",
+  );
+  const stdin = cli(["to-gfm", "-"], source);
   assert.equal(stdin.status, 0);
   assert.equal(stdin.stdout, file.stdout);
 });

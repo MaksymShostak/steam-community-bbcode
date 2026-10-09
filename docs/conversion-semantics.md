@@ -102,7 +102,7 @@ A \*literal\* \<tag>
 
 ```
 
-Diagnostics: STEAM\_UNDERLINE\_LOWERED\_TO\_TEXT: Underline presentation is omitted; its content is retained.
+Diagnostics: STEAM_UNDERLINE_LOWERED_TO_TEXT: Underline presentation is omitted; its content is retained.
 
 ## steam.bbcode.i
 
@@ -161,7 +161,7 @@ A \*literal\* \<tag>
 
 ```
 
-Diagnostics: STEAM\_SPOILER\_LOWERED\_TO\_DETAILS: Steam spoiler presentation becomes a GitHub collapsible block.
+Diagnostics: STEAM_SPOILER_LOWERED_TO_DETAILS: Steam spoiler presentation becomes a GitHub collapsible block.
 
 ## steam.bbcode.noparse
 
@@ -425,7 +425,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_PULLQUOTE\_LOWERED\_TO\_BLOCKQUOTE: Pull-quote presentation becomes an ordinary blockquote.
+Diagnostics: STEAM_PULLQUOTE_LOWERED_TO_BLOCKQUOTE: Pull-quote presentation becomes an ordinary blockquote.
 
 ## steam.bbcode.img
 
@@ -461,7 +461,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_MEDIA\_EMBED\_LOWERED\_TO\_LINK: Steam media-widget presentation becomes an ordinary link; playback, poster and layout are not retained.
+Diagnostics: STEAM_MEDIA_EMBED_LOWERED_TO_LINK: Steam media-widget presentation becomes an ordinary link; playback, poster and layout are not retained.
 
 ## steam.bbcode.video
 
@@ -479,7 +479,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_MEDIA\_EMBED\_LOWERED\_TO\_LINK: Steam media-widget presentation becomes an ordinary link; playback, poster and layout are not retained.
+Diagnostics: STEAM_MEDIA_EMBED_LOWERED_TO_LINK: Steam media-widget presentation becomes an ordinary link; playback, poster and layout are not retained.
 
 ## steam.bbcode.previewimg
 
@@ -497,7 +497,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_GUIDE\_IMAGE\_UNRESOLVED: The guide image identifier has no URL in this document; source is retained without fetching or inventing an image.
+Diagnostics: STEAM_GUIDE_IMAGE_UNRESOLVED: The guide image identifier has no URL in this document; source is retained without fetching or inventing an image.
 
 ## steam.bbcode.previewicon
 
@@ -515,7 +515,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_CONSTRUCT\_PRESERVED: This construct is preserved literally in this content context.
+Diagnostics: STEAM_CONSTRUCT_PRESERVED: This construct is preserved literally in this content context.
 
 ## steam.bbcode.screenshot
 
@@ -533,7 +533,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_PREVIEW\_IMAGE\_PRESENTATION\_OMITTED: The image and alternative text are retained; Steam preview navigation and layout are omitted.
+Diagnostics: STEAM_PREVIEW_IMAGE_PRESENTATION_OMITTED: The image and alternative text are retained; Steam preview navigation and layout are omitted.
 
 ## steam.bbcode.color
 
@@ -551,7 +551,7 @@ A \*literal\* \<tag>
 
 ```
 
-Diagnostics: STEAM\_COLOR\_LOWERED\_TO\_TEXT: Historical color presentation is omitted; its content is retained.
+Diagnostics: STEAM_COLOR_LOWERED_TO_TEXT: Historical color presentation is omitted; its content is retained.
 
 ## steam.renderer.youtube-widget
 
@@ -569,7 +569,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.store-widget
 
@@ -587,7 +587,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.ugc-widget
 
@@ -605,7 +605,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.inventory-widget
 
@@ -623,7 +623,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.vimeo-widget
 
@@ -641,7 +641,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.sketchfab-widget
 
@@ -659,7 +659,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_URL\_WIDGET\_LOWERED\_TO\_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
+Diagnostics: STEAM_URL_WIDGET_LOWERED_TO_LINK: Steam URL-widget presentation becomes an ordinary link; current remote rendering is not inferred.
 
 ## steam.renderer.emoticon-expansion
 
@@ -677,7 +677,7 @@ Generated GFM:
 
 ```
 
-Diagnostics: STEAM\_EMOTICON\_PRESERVED\_AS\_TEXT: The Steam emoticon token is retained as text; its remote image and hover presentation are not reproduced.
+Diagnostics: STEAM_EMOTICON_PRESERVED_AS_TEXT: The Steam emoticon token is retained as text; its remote image and hover presentation are not reproduced.
 
 ## steam.renderer.bracket-expansion
 
@@ -705,8 +705,8 @@ Steam source:
 Generated GFM:
 
 ```markdown
-{STEAM\_CLAN\_IMAGE}/image.png
+{STEAM_CLAN_IMAGE}/image.png
 
 ```
 
-Diagnostics: STEAM\_CLAN\_IMAGE\_UNRESOLVED: The Steam clan-image placeholder has no qualified resolution context; its source is retained.
+Diagnostics: STEAM_CLAN_IMAGE_UNRESOLVED: The Steam clan-image placeholder has no qualified resolution context; its source is retained.
