@@ -439,7 +439,7 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
   for (const script of [
     "install:markdown",
     "test:markdown",
-    "test:markdown:observer",
+    "test:markdown:qualification",
     "check:markdown",
   ])
     assert.ok(

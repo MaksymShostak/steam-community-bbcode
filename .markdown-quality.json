@@ -1,10 +1,27 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "preset": "authored-gfm@1",
   "include": ["**/*.md"],
-  "exclude": [],
-  "ignoreFiles": [".gitignore"],
+  "exclude": [
+    "**/node_modules/**",
+    "types/**",
+    "coverage/**",
+    "artifacts/**",
+    ".venv/**",
+    "**/__pycache__/**",
+    ".agents/**",
+    ".codex/**",
+    ".agent-tools/**",
+    ".sdlc/runtime/**",
+    ".sdlc/tmp/**"
+  ],
   "lint": {},
-  "links": { "localFiles": true, "rootRelative": "reject" },
-  "layout": { "endOfLine": "lf", "tabWidth": 2 }
+  "links": {
+    "localFiles": true,
+    "rootRelative": "reject"
+  },
+  "layout": {
+    "endOfLine": "lf",
+    "tabWidth": 2
+  }
 }

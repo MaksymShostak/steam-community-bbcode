@@ -135,7 +135,7 @@ It explicitly demonstrates that `[noparse]` prevents inner tags from being inter
 [^S06] Valve's formatting help for some other Community contexts additionally documents tables, including `[table]`, `[tr]`, `[th]`, `[td]`, `noborder=1` and `equalcells=1`.
 [^S07]
 
-The long-running community-maintained _Comprehensive Formatting Help_ guide is therefore necessary secondary evidence.
+The long-running community-maintained *Comprehensive Formatting Help* guide is therefore necessary secondary evidence.
 It explicitly exists to catalogue all Steam markup tags, parameters, context differences and parsing problems, and observes that Valve's own help is inaccurate/inconsistent across Steam surfaces. [^S08] Particularly relevant to this project, its current UGC-description/summary matrix records a broader set than Valve's Workshop help page: headings, bold, underline, italic, strike, spoiler, `noparse`, rule, URL, `previewyoutube`, list, ordered list, quote, code, table, image and video, alongside renderer behaviours such as bracket expansion and word filtering.
 Guide sections expose yet further constructs such as `previewimg`, `previewicon` and `screenshot`.
 [^S08]

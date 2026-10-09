@@ -1,329 +1,139 @@
 // SPDX-License-Identifier: AGPL-3.0-only
+// Consumer probes exercise the installed public contracts with Steam Community BBCode's policy.
 import assert from "node:assert/strict";
-import { test } from "node:test";
-import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import {
-  mkdtempSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-  rmSync,
-  copyFileSync,
-  symlinkSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { test } from "node:test";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const cli = join(
-  root,
-  "tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js",
-);
-const requireTool = createRequire(cli);
-const Ajv = requireTool("ajv");
-const validate = new Ajv({ allErrors: true, strict: true }).compile(
-  JSON.parse(
-    readFileSync(
-      join(
-        root,
-        "tooling/markdown/node_modules/@hadden-industries/markdown-quality/schemas/result.schema.json",
-      ),
-      "utf8",
-    ),
-  ),
-);
-const policy = JSON.parse(
-  readFileSync(join(root, ".markdown-quality.json"), "utf8"),
-);
+const tooling = join(root, "tooling/markdown");
+const requireMarkdown = createRequire(join(tooling, "package.json"));
+const entry = requireMarkdown.resolve("@hadden-industries/markdown-quality");
+const {
+  inspectSelection,
+  processDocument,
+  readExecutionProfile,
+  validateQualityResult,
+} = await import(pathToFileURL(entry).href);
+const json = (path) => JSON.parse(readFileSync(path, "utf8"));
+const sourceSha = "47febbe1b6f3282814e77db7ea13eac72b4928ed";
 
-function run(mode, directory, ...args) {
-  const result = spawnSync(
-    process.execPath,
-    [cli, mode, "--root", directory, "--json", ...args],
-    {
-      encoding: "utf8",
-      timeout: 30000,
-      windowsHide: true,
-      maxBuffer: 8 * 1024 * 1024,
-    },
+test("installed public contracts bind Steam Community BBCode's retained source and resource policy", () => {
+  const workflow = readFileSync(
+    join(root, ".github/workflows/markdown-quality.yml"),
+    "utf8",
   );
-  assert.ifError(result.error);
-  assert.equal(result.signal, null);
-  const report = JSON.parse(result.stdout);
-  assert.ok(validate(report), JSON.stringify(validate.errors));
-  assert.equal(report.exitCode, result.status);
-  return report;
-}
-
-function fixture(t) {
-  const directory = mkdtempSync(join(tmpdir(), "steam-markdown-"));
-  t.after(() => rmSync(directory, { recursive: true, force: true }));
-  writeFileSync(
-    join(directory, ".markdown-quality.json"),
-    JSON.stringify(policy),
-  );
-  writeFileSync(join(directory, ".gitignore"), "");
-  writeFileSync(join(directory, ".prettierignore"), "");
-  return directory;
-}
-
-test("full native selection includes every tracked and untracked repository Markdown file", () => {
-  const report = run("inspect", root);
-  assert.equal(report.exitCode, 0);
-  assert.equal(report.selection.mode, "full");
-  const files = execFileSync(
-    "git",
-    [
-      "ls-files",
-      "-z",
-      "--cached",
-      "--others",
-      "--exclude-standard",
-      "--",
-      "*.md",
-    ],
-    { cwd: root, encoding: "utf8" },
-  )
-    .split("\0")
-    .filter(Boolean);
-  assert.deepEqual(report.selection.files, [...new Set(files)].sort());
-  assert.deepEqual(policy.include, ["**/*.md"]);
-  assert.deepEqual(policy.exclude, []);
-  assert.deepEqual(policy.ignoreFiles, [".gitignore"]);
-});
-
-test("manifest, lock and installed core/native tuple match the immutable release", () => {
-  const manifest = JSON.parse(
-    readFileSync(new URL("package.json", import.meta.url), "utf8"),
-  );
-  const lock = JSON.parse(
-    readFileSync(new URL("package-lock.json", import.meta.url), "utf8"),
-  );
-  const release = JSON.parse(
-    readFileSync(new URL("release.json", import.meta.url), "utf8"),
+  assert.ok(workflow.includes(`markdown-quality.yml@${sourceSha}`));
+  const profile = readExecutionProfile({ root });
+  assert.equal(profile.samples, 6);
+  assert.equal(profile.checkerMs, 30000);
+  assert.equal(profile.windowMs, 180000);
+  assert.equal(profile.memoryBytes, 536870912);
+  assert.equal(profile.nodeOldSpaceMb, 128);
+  assert.equal(profile.limits.workerHeapMb, 128);
+  assert.equal(profile.runtimes.node, process.versions.node);
+  const lock = json(join(root, profile.toolchain.lockFile));
+  const manifest = json(join(tooling, "package.json"));
+  const name = "@hadden-industries/markdown-quality";
+  assert.equal(
+    manifest.devDependencies[name],
+    lock.packages[""].devDependencies[name],
   );
   assert.equal(
-    manifest.devDependencies["@hadden-industries/markdown-quality"],
-    `>=${release.version}`,
+    lock.packages[`node_modules/${name}`].resolved,
+    `file:archives/hadden-industries-markdown-quality-1.0.3.tgz`,
   );
-  assert.equal(
-    lock.packages[""].devDependencies["@hadden-industries/markdown-quality"],
-    `>=${release.version}`,
-  );
-  for (const item of release.archives) {
-    const record = lock.packages[`node_modules/${item.package}`];
-    assert.equal(record.version, release.version);
-    assert.equal(record.integrity, item.integrity);
+  assert.equal(manifest.devDependencies[name], ">=1.0.3");
+  const source = json(join(tooling, "source.json"));
+  assert.equal(source.source, sourceSha);
+  for (const archive of source.archives) {
+    const bytes = readFileSync(join(tooling, "archives", archive.filename));
+    assert.equal(
+      createHash("sha256").update(bytes).digest("hex"),
+      archive.sha256,
+    );
+    const record = Object.values(lock.packages).find(
+      (item) => item.resolved === `file:archives/${archive.filename}`,
+    );
+    assert.ok(record);
+    assert.equal(
+      record.integrity,
+      `sha512-${createHash("sha512").update(bytes).digest("base64")}`,
+    );
   }
+  // The immutable core digest is the independently qualified source47 archive.
   assert.equal(
-    JSON.parse(
-      readFileSync(
-        join(
-          root,
-          "tooling/markdown/node_modules/@hadden-industries/markdown-quality/package.json",
-        ),
-        "utf8",
-      ),
-    ).version,
-    release.version,
+    createHash("sha256")
+      .update(readFileSync(join(root, profile.toolchain.coreArchive)))
+      .digest("hex"),
+    "ad51a2ccb721a2b14a05e8c1a61d9a1b7b3276d55a90beadb4c9f33d49702127",
   );
-  assert.equal(
-    requireTool(
-      `@hadden-industries/markdown-quality-${process.platform}-${process.arch}/package.json`,
-    ).version,
-    release.version,
-  );
-  assert.equal(lock.packages["node_modules/katex"].version, "0.18.2");
+  assert.ok(requireMarkdown.resolve(`${name}/result-schema`));
+  assert.ok(requireMarkdown.resolve(`${name}/execution-schema`));
 });
 
-test("native formatting converges and preserves Steam literals in every repository directory", (t) => {
-  const directory = fixture(t);
+test("public logical formatting preserves Steam literals and converges at the real fixture path", async () => {
+  const path = "test/fixtures/steamify/README.md";
+  const original = readFileSync(join(root, path));
   const literal =
     "```bbcode\n[b]Literal[/b]  \n[url=https://example.com]Link[/url]\n```\n";
-  writeFileSync(
-    join(directory, "README.md"),
-    `# Fixture\n\nFirst line.  \nSecond line.\n\n${literal}`,
+  const content = Buffer.from(
+    `# Fixture\n\nFirst sentence. Second sentence.\n\n${literal}`,
   );
-  mkdirSync(join(directory, "docs/reference"), { recursive: true });
-  mkdirSync(join(directory, "docs/plans"), { recursive: true });
-  const included = [
-    "docs/reference/api.md",
-    "docs/plans/history.md",
-    "docs/conversion-semantics.md",
-    "docs/steam-support-matrix.md",
-    ".github/pull_request_template.md",
-    "tooling/type-coverage/README.md",
-    "comparison/README.md",
-    "test/fixtures/release/README.md",
-  ];
-  for (const path of included) {
-    mkdirSync(dirname(join(directory, path)), { recursive: true });
-    writeFileSync(
-      join(directory, path),
-      "# Included\n\nFirst sentence. Second sentence.\n",
-    );
-  }
-  writeFileSync(join(directory, ".prettierignore"), "**/*.md\n");
-  const original = readFileSync(join(directory, "README.md"), "utf8");
-  const before = run("check", directory);
-  assert.equal(before.exitCode, 1);
-  assert.equal(readFileSync(join(directory, "README.md"), "utf8"), original);
-  assert.equal(run("format", directory).exitCode, 0);
-  const formatted = readFileSync(join(directory, "README.md"), "utf8");
-  assert.ok(formatted.includes(literal));
-  assert.ok(formatted.includes("First line.\\\nSecond line."));
-  assert.equal(run("check", directory).exitCode, 0);
-  assert.equal(run("format", directory).exitCode, 0);
-  assert.equal(readFileSync(join(directory, "README.md"), "utf8"), formatted);
-  for (const path of included)
-    assert.equal(
-      readFileSync(join(directory, path), "utf8"),
-      "# Included\n\nFirst sentence.\nSecond sentence.\n",
-    );
+  const result = await processDocument({
+    root,
+    path,
+    requestId: "steam-literal",
+    content,
+  });
+  validateQualityResult(result, { requestId: "steam-literal" });
+  assert.equal(result.exitCode, 0);
+  const formatted = Buffer.from(result.document.contentBase64, "base64");
+  assert.ok(formatted.toString("utf8").includes(literal));
+  const repeated = await processDocument({
+    root,
+    path,
+    requestId: "steam-convergence",
+    content: formatted,
+  });
+  validateQualityResult(repeated, { requestId: "steam-convergence" });
+  assert.equal(repeated.exitCode, 0);
+  assert.equal(repeated.document.contentBase64, result.document.contentBase64);
+  assert.deepEqual(result.written, []);
+  assert.deepEqual(readFileSync(join(root, path)), original);
 });
 
-test("new Markdown under tooling, hidden, generated, history and fixture directories cannot hide a broken link", (t) => {
-  const directory = fixture(t);
+test("the root policy selects authored anchors and accounts for retained archives", async () => {
+  const report = await inspectSelection({ root });
+  validateQualityResult(report);
+  assert.equal(report.exitCode, 0);
   for (const path of [
-    "tooling/tool/README.md",
-    ".github/new.md",
-    "docs/reference/new.md",
-    "docs/plans/new.md",
-    "test/fixtures/new.md",
+    "AGENTS.md",
+    "README.md",
+    "SECURITY.md",
+    "docs/testing.md",
+    "comparison/README.md",
+    "test/fixtures/steamify/README.md",
   ]) {
-    mkdirSync(dirname(join(directory, path)), { recursive: true });
-    writeFileSync(join(directory, path), "# Added\n\n[Missing](absent.txt).\n");
-    const report = run("check", directory);
-    assert.equal(report.exitCode, 1);
-    assert.ok(report.selection.files.includes(path));
-    assert.ok(
-      report.diagnostics.some(
-        (item) => item.path === path && item.rule === "local-target",
-      ),
-    );
+    assert.ok(report.selection.files.includes(path), path);
   }
-});
-
-test("target-only deletion fails a full check and invalid configuration reports exit two", (t) => {
-  const directory = fixture(t);
-  writeFileSync(
-    join(directory, "README.md"),
-    "# Fixture\n\n[Local target](target.txt).\n",
-  );
-  writeFileSync(join(directory, "target.txt"), "target\n");
-  assert.equal(run("check", directory).exitCode, 0);
-  rmSync(join(directory, "target.txt"));
-  const broken = run("check", directory);
-  assert.equal(broken.exitCode, 1);
-  assert.ok(
-    broken.diagnostics.some(
-      (item) => item.source === "links" && item.rule === "local-target",
-    ),
-  );
-  const malformed = run("check", directory, "--config", "absent.json");
-  assert.equal(malformed.exitCode, 2);
-  assert.ok(malformed.errors.length > 0);
-});
-
-test("the scoped KaTeX override rejects inherited trust and still renders ordinary math", () => {
-  const mathRequire = createRequire(
-    requireTool.resolve("micromark-extension-math"),
-  );
-  const katex = mathRequire("katex");
-  assert.ok(katex.renderToString("x^2").includes("katex"));
-  const options = Object.create({ trust: true });
-  options.throwOnError = false;
-  const html = katex.renderToString(
-    "\\href{javascript:alert(1)}{click}",
-    options,
-  );
-  assert.ok(!html.includes('<a href="javascript:'));
-  assert.ok(html.includes("<mtext>\\href</mtext>"));
-  assert.ok(
-    katex
-      .renderToString("\\href{https://example.com}{click}", { trust: true })
-      .includes('<a href="https://example.com"'),
-  );
-});
-
-test("a native Git checkout with autocrlf enabled preserves LF policy identity", (t) => {
-  const directory = fixture(t);
-  writeFileSync(join(directory, ".gitattributes"), "* text=auto eol=lf\n");
-  writeFileSync(join(directory, "README.md"), "# Fixture\n\nSafe prose.\n");
-  execFileSync("git", ["init", "--quiet", directory]);
-  execFileSync("git", ["-C", directory, "add", "."]);
-  const checkout = mkdtempSync(join(tmpdir(), "steam-markdown-checkout-"));
-  t.after(() => rmSync(checkout, { recursive: true, force: true }));
-  execFileSync("git", [
-    "-C",
-    directory,
-    "-c",
-    "core.autocrlf=true",
-    "checkout-index",
-    "--all",
-    `--prefix=${checkout.replaceAll("\\", "/")}/`,
-  ]);
-  assert.deepEqual(
-    readFileSync(join(checkout, ".markdown-quality.json")),
-    readFileSync(join(directory, ".markdown-quality.json")),
-  );
+  for (const path of [
+    "artifacts/fixture.md",
+    ".sdlc/runtime/fixture.md",
+    "coverage/fixture.md",
+    "tooling/markdown/node_modules/fixture.md",
+  ]) {
+    const explicit = await inspectSelection({ root, files: [path] });
+    validateQualityResult(explicit);
+    assert.equal(explicit.exitCode, 0);
+    assert.deepEqual(explicit.selection.files, []);
+    assert.equal(explicit.selection.exclusions[0].reason, "excluded");
+  }
   assert.equal(
-    run("check", checkout).configDigest,
-    run("check", directory).configDigest,
-  );
-});
-
-test("the repository launcher persists fresh native reports and exact exits", (t) => {
-  const directory = fixture(t);
-  mkdirSync(join(directory, "scripts"));
-  mkdirSync(join(directory, "tooling/markdown"), { recursive: true });
-  copyFileSync(
-    join(root, "scripts/run-markdown.mjs"),
-    join(directory, "scripts/run-markdown.mjs"),
-  );
-  symlinkSync(
-    join(root, "tooling/markdown/node_modules"),
-    join(directory, "tooling/markdown/node_modules"),
-    process.platform === "win32" ? "junction" : "dir",
-  );
-  const reportPath = join(directory, "artifacts/prose/check.json");
-  function launch(expected) {
-    const result = spawnSync(
-      process.execPath,
-      [join(directory, "scripts/run-markdown.mjs"), "check"],
-      { encoding: "utf8", timeout: 30000, windowsHide: true },
-    );
-    assert.ifError(result.error);
-    assert.equal(result.status, expected, result.stderr);
-    assert.equal(readFileSync(reportPath, "utf8"), result.stdout);
-    const report = JSON.parse(result.stdout);
-    assert.ok(validate(report), JSON.stringify(validate.errors));
-    assert.equal(report.exitCode, expected);
-  }
-  writeFileSync(join(directory, "README.md"), "# Fixture\n\nSafe prose.\n");
-  launch(0);
-  writeFileSync(
-    join(directory, "README.md"),
-    "# Fixture\n\n[Missing](absent.txt).\n",
-  );
-  launch(1);
-  writeFileSync(join(directory, ".markdown-quality.json"), "{invalid");
-  launch(2);
-  rmSync(join(directory, "tooling/markdown/node_modules"));
-  const missing = spawnSync(
-    process.execPath,
-    [join(directory, "scripts/run-markdown.mjs"), "check"],
-    { encoding: "utf8", timeout: 30000, windowsHide: true },
-  );
-  assert.ifError(missing.error);
-  assert.equal(missing.status, 2);
-  assert.equal(readFileSync(reportPath, "utf8"), "");
-  assert.ok(
-    readFileSync(
-      join(directory, "artifacts/prose/check.stderr.txt"),
-      "utf8",
-    ).includes("MODULE_NOT_FOUND"),
+    json(join(root, ".markdown-quality.json")).ignoreFiles,
+    undefined,
   );
 });

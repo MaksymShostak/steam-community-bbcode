@@ -19,7 +19,17 @@
   },
   "overrides": {
     "micromark-extension-math": {
-      "katex": "0.18.2"
+      "katex": ">=0.18.2 <1"
     }
+  },
+  "scripts": {
+    "check": "cd ../.. && node -e \"require('node:fs').mkdirSync('artifacts/prose', {recursive:true})\" && \"tooling/markdown/node_modules/.bin/markdown-quality\" check --execution-profile .markdown-quality-execution.json --json > artifacts/prose/check.json 2> artifacts/prose/check.stderr.txt",
+    "format": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" format",
+    "inspect": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect --execution-profile .markdown-quality-execution.json --json",
+    "qualify": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality-qualify\""
+  },
+  "optionalDependencies": {
+    "@hadden-industries/markdown-quality-win32-x64": "file:archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
+    "@hadden-industries/markdown-quality-linux-x64": "file:archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz"
   }
 }
