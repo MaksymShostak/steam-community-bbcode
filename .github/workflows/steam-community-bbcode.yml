@@ -135,8 +135,8 @@ jobs:
           python -m venv .venv
       - name: Test the native integration and staging boundaries
         run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown
-      - name: Test resource-observer boundaries
-        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown:observer
+      - name: Test the public trusted qualification integration
+        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown:qualification
       - name: Check all authored Markdown, including target-only changes
         run: npm exec --yes --package=npm@12.2.0 -- npm run check:markdown
       - name: Report the fresh native Markdown result and stderr

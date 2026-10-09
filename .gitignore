@@ -14,3 +14,6 @@ __pycache__/
 /.sdlc/tmp/
 /.mcp.json.repository-setup.*.staged.tmp
 /.mcp.json.repository-setup.*.activation.backup
+
+# Qualified development toolchain archives are immutable trusted inputs.
+!/tooling/markdown/archives/*.tgz

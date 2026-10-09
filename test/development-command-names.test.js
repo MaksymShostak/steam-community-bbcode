@@ -15,6 +15,7 @@ const verbs = new Set([
   "format",
   "generate",
   "install",
+  "inspect",
   "lint",
   "pack",
   "publish",

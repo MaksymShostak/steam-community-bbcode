@@ -1,17 +1,19 @@
 # Trusted Markdown qualification reuse
 
-The trusted staging checker, its negative probes, the six-sample window driver, the Python resource observer and its probes, and the workflow are adapted from Hadden-Industries/owlapi at `4f6adbd3a925ad2e0ccfc98550f216642957f870`.
-The reused source is AGPL-3.0-only, matching this repository's package boundary.
-The adaptations select Steam's repository and bounded authored policy.
-They retain candidate data isolation, credential exclusion, report validation, process observation, exact identity binding and the 30-second/512-MiB budgets.
-Trusted qualification keeps its native `markdown-window/` paths, six samples, receipts and stdout/stderr.
-After the observer, the reporter runs through the trusted checkout's npm entry point and streams those files under suspended runner commands; candidate code is never used to report trusted results.
-The bounded summary supplies navigation and identities; full samples remain in the log, subject to masking, cancellation, truncation and retention limits.
-Trusted Markdown uploads no report archive; these changes preserve the observer's native isolation and budget rules.
+The installed public Markdown Quality contracts and SHA-pinned reusable workflow replace the former OwlAPI-derived checker, observer, window and launcher copies.
+Producer source/workflow `47febbe1b6f3282814e77db7ea13eac72b4928ed`, its exact tree/lock and retained archives are bound by `source.json` and the isolated npm lock.
+The development dependency request remains `>=1.0.3`; `npm ci --ignore-scripts` installs the qualified archive graph.
+The reused package is AGPL-3.0-only, matching this repository's boundary, and owns its native notices and observer.
+Schema 2 root policy owns Markdown selection; the validated execution profile owns six samples, 30-second checks, a 180-second window and 512 MiB observed process-tree memory.
+Candidate data isolation, credential exclusion, semantic report validation, process observation and exact identity binding are producer responsibilities.
+The shared workflow retains its native `shared-markdown-evidence/` window, sample receipts, stdout/stderr and staging under per-platform `shared-markdown-*` artifacts.
+Ordinary consumer checks retain `artifacts/prose/check.json` and `artifacts/prose/check.stderr.txt` for the existing log/summary reporter.
+The independent reporter's optional `trusted-markdown` mode remains a read-only collector for retained historical `markdown-window/` evidence.
+It has no automatic shared-workflow caller and implements no staging, checking, selection or observation; the new shared workflow owns its own evidence publication.
 
 `release.json` preserves the producer's immutable Markdown Quality 1.0.3 tuple from Hadden-Industries/markdown-quality at `7994fdb08efa4fc391f6e035c9fff17820635b58`, binding released source `92d6e9f61b5fffe6f33d8878ef8e2880ca187ac0`.
 The isolated package retains its own `LICENSE` and `THIRD-PARTY-NOTICES.md`, including upstream native notices; no native asset is copied into Steam source.
 
-Shadow qualification does not format live documents or retire Snapper.
-The separately prepared local cutover replaces the prose-exclusive consumer files and canonical command references; it does not uninstall packages from an existing Python environment.
-The bootstrap must pass incumbent checks and be integrated before its trusted workflow can qualify a cutover candidate for exact owner acceptance.
+Trusted qualification inspects immutable candidate data without formatting live documents.
+The consumer cutover retires only the identified Markdown mechanics; application generators, package/document checks, copied MIT notices and retained historical source evidence remain.
+Local tests, actual hosted positive/negative qualification, independent reviews and remote-main delivery are separate acceptance facts.

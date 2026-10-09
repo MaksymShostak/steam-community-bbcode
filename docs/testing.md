@@ -4,7 +4,8 @@
 `npm run check:format` rejects formatting drift without writing and runs before qualification and local package creation.
 `npm run format:markdown` owns all repository Markdown layout, semantic line wrapping and literal code preservation.
 `npm run check:markdown` independently requires the native `authored-gfm@1` policy and physical local-file links.
-The Markdown selector includes `**/*.md`, has no path exclusions, and consumes only `.gitignore` to omit installed dependencies and ignored runtime output.
+The schema 2 Markdown policy includes `**/*.md` and explicitly excludes only the operational paths formerly omitted through `.gitignore`.
+The policy is the sole selection authority; all 54 authored documents remain included.
 Plans, fixtures, tooling documentation, comparison documentation and generated references are checked too; `.prettierignore` cannot exempt them.
 The generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
 Generated documentation must converge through its owning generator, and its freshness check remains required.
@@ -30,21 +31,21 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command                              | Contract                                                                                    |
-| ------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `npm test`                           | Focused runtime examples and seeded properties                                              |
-| `npm run qualify:parser`             | Native grammar foundation and resource contracts                                            |
-| `npm run qualify:performance`        | Bounded subprocess regression for opaque text and adjacent formatting                       |
-| `npm run qualify:github`             | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                   |
-| `npm run test:coverage`              | Both suites under c8/V8, including unloaded runtime source                                  |
-| `npm run check:conformance`          | Generated forward/reverse policy report matches executed cases                              |
-| `npm run check:docs`                 | Construct examples and package-local documentation links                                    |
-| `npm run check:markdown`             | Full native authored layout, lint and physical local-file links, without writing            |
-| `npm run test:markdown`              | Native tuple, scope, literals, convergence, exits, report freshness and candidate isolation |
-| `npm run test:markdown:observer`     | Process identity, resource accounting and observer cleanup boundaries                       |
-| `npm run test:documentation-tooling` | Focused setup, workflow aggregation and broader documentation-link regressions              |
-| `npm run test:mutation`              | Sequential Stryker library and real-process CLI qualification                               |
-| `npm run test:package`               | Packed source, declarations, maps, executable and fresh consumers                           |
+| Command                               | Contract                                                                                 |
+| ------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `npm test`                            | Focused runtime examples and seeded properties                                           |
+| `npm run qualify:parser`              | Native grammar foundation and resource contracts                                         |
+| `npm run qualify:performance`         | Bounded subprocess regression for opaque text and adjacent formatting                    |
+| `npm run qualify:github`              | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                |
+| `npm run test:coverage`               | Both suites under c8/V8, including unloaded runtime source                               |
+| `npm run check:conformance`           | Generated forward/reverse policy report matches executed cases                           |
+| `npm run check:docs`                  | Construct examples and package-local documentation links                                 |
+| `npm run check:markdown`              | Full native authored layout, lint and physical local-file links, without writing         |
+| `npm run test:markdown`               | Public tuple, policy, profile, Steam literals, consumer reports/exits and KaTeX override |
+| `npm run test:markdown:qualification` | Public trusted staging, candidate isolation and bounded checking                         |
+| `npm run test:documentation-tooling`  | Focused setup, workflow aggregation and broader documentation-link regressions           |
+| `npm run test:mutation`               | Sequential Stryker library and real-process CLI qualification                            |
+| `npm run test:package`                | Packed source, declarations, maps, executable and fresh consumers                        |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.

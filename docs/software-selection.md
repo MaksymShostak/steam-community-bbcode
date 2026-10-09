@@ -390,7 +390,7 @@ None of these rejected qualification tools enter the adopted dependency graphs.
 
 Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0), [PyPI distribution](https://pypi.org/project/snapper-fmt/0.11.0/), [Prettier prose wrapping](https://prettier.io/docs/options#prose-wrap), [semantic line breaks](https://sembr.org/), [mdformat-slw](https://github.com/KyleKing/mdformat-slw), and [Flowmark](https://github.com/jlevy/flowmark).
 
-## Current authored Markdown tooling (7 October 2026)
+## Authored Markdown tooling release preimage (7 October 2026)
 
 The private `tooling/markdown` project pins the immutable Markdown Quality 1.0.3 core and both native platform archives recorded in `release.json`.
 It runs only on exact Node 24.21.0 here, separately from the unchanged converter runtime and shipped dependency graphs.
@@ -403,6 +403,29 @@ Use `install:markdown`, `format:markdown`, `check:markdown` and `test:markdown`;
 The old prose-exclusive Python files and pip-update entry are retired; Python, comparator requirements and the MIT launcher notice remain.
 The scoped `micromark-extension-math` override selects KaTeX 0.18.2 to address [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7), with real ordinary-rendering and inherited-trust regressions.
 Trusted candidate-as-data qualification uses reviewed bootstrap policy/ignore/dependency bytes, bounded staging and credential-free checking; exact hosted-source/run acceptance and merge approval remain separate from local success.
+
+## Centralized Markdown tooling (9 October 2026)
+
+The development dependency remains `@hadden-industries/markdown-quality >=1.0.3`.
+The committed npm lock resolves the qualified development core and Windows/Linux archives in `tooling/markdown/archives`; `npm run install:markdown` installs that exact graph with lifecycle scripts disabled.
+`tooling/markdown/source.json` records producer source/workflow `47febbe1b6f3282814e77db7ea13eac72b4928ed`, its source tree/lock and archive digests.
+The historical `release.json` remains recovery evidence for the previous public release; it does not identify the active development implementation.
+The package-owned native licence inventory and copied MIT notices remain unchanged.
+
+Schema 2 root policy owns every include/exclude decision, including the former `.gitignore` operational exclusions.
+The full selection preserves all 54 authored documents, including historical plans, generated references and Steam fixtures.
+Ignored external files cannot change Markdown policy.
+The shared schema 1 execution profile preserves six samples, a 30-second checker budget, a 180-second window and the 512 MiB observed process-tree memory threshold.
+Node 24.21.0 and Python 3.14.8 remain the qualified tooling runtimes.
+These bounds do not change the converter's supported runtime declarations or package acceptance thresholds.
+
+Root npm commands delegate directly to installed public package bins.
+`check:markdown` retains the complete native JSON and stderr at `artifacts/prose/check.json` and `artifacts/prose/check.stderr.txt`, preserving the existing diagnostic collectors and exact native exit.
+`inspect:markdown` exposes full selection; `qualify:markdown` exposes the public qualification CLI.
+`test:markdown` checks the actual consumer policy/profile/archive wiring; `test:markdown:qualification` exercises trusted staging and missing-link rejection despite candidate exclusion, ignore, profile and lifecycle controls.
+The copied checker, observer, window and launcher implementations are retired.
+The SHA-pinned shared workflow accepts separate reviewed trusted and candidate commits and supplies Windows/Linux hosted receipts.
+Hosted qualification, independent review, branch delivery and npm publication remain separate boundaries.
 
 ## Release tooling reuse (9 September 2026)
 

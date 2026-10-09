@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.3",
+  "source": "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+  "tree": "b2161065787070b9beb4f68c217cf4244b43cde4",
+  "sourceLockSha256": "4e0723698b853069fca5b07eb6a99f0bfb43ce73e4c9e68a5b4e4292c529c803",
+  "workflow": "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+  "acquisition": "Qualified development archives; >=1.0.3 request with local archive resolutions in the committed npm lock. npm ci is authoritative.",
+  "archives": [
+    {
+      "filename": "hadden-industries-markdown-quality-1.0.3.tgz",
+      "sha256": "ad51a2ccb721a2b14a05e8c1a61d9a1b7b3276d55a90beadb4c9f33d49702127"
+    },
+    {
+      "filename": "hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
+      "sha256": "1207f1c49b0f73d8d7bf5c6a74dfdc928daffd132a5adf7d2dbc488f0d2d617d"
+    },
+    {
+      "filename": "hadden-industries-markdown-quality-linux-x64-1.0.3.tgz",
+      "sha256": "8735357f776ecb520e40008e14f0fc3bc98715d02d60e847ae52847b8d8c6575"
+    }
+  ]
+}
