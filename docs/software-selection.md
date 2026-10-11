@@ -11,8 +11,8 @@ Node declaration qualification preserves its separate majors with `>=22.20.5 <23
 The root development declarations use `>=26.6.4`; the Node 26 development runtime minimum is 26.11.1.
 Markdown tooling permits `>=1.0.3` while release, archive integrity and native executable checks still verify the exact locked capability.
 These compatibility bounds were explicitly approved on 8 October 2026.
-Development requires Python >=3.14.8, checked by Python's native runtime tuple before installing dependencies or changing a virtual environment.
-.python-version and CI select exact 3.14.8 as the reproducible reference.
+Development requires stable Python at or above `.python-version`, checked by Python's native runtime tuple before installing dependencies or changing a virtual environment.
+CI uses pinned setup-uv to discover that same file and provision the exact reference; no second Python version is maintained.
 
 ## Markdown runtime refresh (8 October 2026)
 
@@ -416,7 +416,7 @@ Schema 2 root policy owns every include/exclude decision, including the former `
 The full selection preserves all 54 authored documents, including historical plans, generated references and Steam fixtures.
 Ignored external files cannot change Markdown policy.
 The shared schema 1 execution profile preserves six samples, a 30-second checker budget, a 180-second window and the 512 MiB observed process-tree memory threshold.
-Node 24.21.0 and Python 3.14.8 remain the qualified tooling runtimes.
+Node 24.21.0 and the stable Python target in `.python-version` select the tooling runtimes.
 These bounds do not change the converter's supported runtime declarations or package acceptance thresholds.
 
 Root npm commands delegate directly to installed public package bins.

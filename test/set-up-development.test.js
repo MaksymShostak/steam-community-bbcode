@@ -13,6 +13,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setUpDevelopment } from "../scripts/set-up-development.js";
 
+const pythonTarget = readFileSync(
+  new URL("../.python-version", import.meta.url),
+  "utf8",
+).trim();
+
 test("npm enforces the development range before running a fresh-clone script", (t) => {
   const f = fixture(t);
   const npmCli = process.env["npm_execpath"];
@@ -54,7 +59,7 @@ function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), "bbcode setup with spaces "));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   writeFileSync(join(root, ".node-version"), `${process.versions.node}\n`);
-  writeFileSync(join(root, ".python-version"), "3.14.8\n");
+  writeFileSync(join(root, ".python-version"), pythonTarget + "\n");
   writeFileSync(
     join(root, "package.json"),
     JSON.stringify({ packageManager: "npm@12.2.0" }),
@@ -69,7 +74,7 @@ function fixture(t) {
     const stdout = args.includes("--version")
       ? "12.2.0\n"
       : args.includes("-c")
-        ? "3.14.8\n"
+        ? pythonTarget + "\n"
         : "";
     return { status: 0, stdout, stderr: "" };
   };
@@ -150,7 +155,11 @@ test("mismatched npm and below-minimum Python stop before installations", (t) =>
       if (prerequisite === "npm" && args.includes("--version"))
         return { ...result, stdout: "0.0.0\n" };
       if (prerequisite === "Python" && args.includes("-c"))
-        return { ...result, status: 1, stderr: "Use Python >=3.14.8." };
+        return {
+          ...result,
+          status: 1,
+          stderr: `Use stable Python >=${pythonTarget}.`,
+        };
       return result;
     };
     assert.throws(() => setUpDevelopment(f), new RegExp(prerequisite));
@@ -209,10 +218,10 @@ test("an existing environment is validated rather than overwritten", (t) => {
   f.execute = (command, args, root) => {
     const result = execute(command, args, root);
     return command.includes(".venv")
-      ? { ...result, status: 1, stderr: "Use Python >=3.14.8." }
+      ? { ...result, status: 1, stderr: `Use stable Python >=${pythonTarget}.` }
       : result;
   };
-  assert.throws(() => setUpDevelopment(f), /Python >=3\.14\.8/);
+  assert.throws(() => setUpDevelopment(f), /stable Python >=/);
   assert.ok(
     f.calls.every(
       (call) => !call.args.includes("ci") && !call.args.includes("venv"),

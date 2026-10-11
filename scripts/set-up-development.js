@@ -11,7 +11,7 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pythonVersionArguments = [
   "-I",
   "-c",
-  'import sys\nminimum = tuple(map(int, sys.argv[1].split(".")))\nif sys.version_info < minimum:\n    sys.exit("Use Python >=" + sys.argv[1] + ".")\nprint(".".join(map(str, sys.version_info[:3])))',
+  'import sys\nminimum = tuple(map(int, sys.argv[1].split(".")))\nif sys.version_info < minimum or sys.version_info.releaselevel != "final":\n    sys.exit("Use stable Python >=" + sys.argv[1] + ".")\nprint(".".join(map(str, sys.version_info[:3])))',
 ];
 
 /** @type {CommandExecutor} */

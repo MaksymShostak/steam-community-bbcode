@@ -84,12 +84,13 @@ These remain historical observations, with no claim that the generic package imp
 
 ## Reproduction
 
-Run from the repository root on Windows x64, with the checkout's Python 3.14 `.venv`, Node 24.20.0/npm 12.2.0, and `.NET` 10 runtime installed.
-The recorded Python lock is platform-specific.
+Run from the repository root on Windows x64, with the checkout's stable `.venv` selected by `.python-version`, the repository Node/npm toolchain, and `.NET` 10 runtime installed.
+The active `requirements-windows.txt` lock is platform-specific; `requirements-windows-py314.txt` and the committed benchmark reports remain historical evidence.
+The active lock updates the Pydantic/core pair for native wheels on the selected interpreter; other comparator package versions are retained.
 The converter's ordinary documented dependency setup must already be complete.
 
 ```powershell
-.venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes --target artifacts/comparison/python -r comparison/python/requirements-windows-py314.txt
+.venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes --target artifacts/comparison/python -r comparison/python/requirements-windows.txt
 dotnet tool install Converter.MarkdownToBBCodeSteam.Tool --tool-path artifacts/comparison/dotnet --version 1.0.0.29 --configfile comparison/dotnet/NuGet.Config
 npm run compare:alternatives
 npm test
