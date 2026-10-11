@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -72,5 +72,59 @@ test("native Python accepts versions above the minimum and rejects older interpr
       assert.throws(setup, /Python/);
       assert.ok(calls.every((args) => !args.includes("ci")));
     }
+  }
+});
+
+test("the native setup guard rejects prereleases at and above the canonical minimum", (t) => {
+  const interpreter = fileURLToPath(
+    new URL(
+      process.platform === "win32"
+        ? "../.venv/Scripts/python.exe"
+        : "../.venv/bin/python",
+      import.meta.url,
+    ),
+  );
+  const root = mkdtempSync(join(tmpdir(), "bbcode stable Python "));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const target = readFileSync(
+    new URL("../.python-version", import.meta.url),
+    "utf8",
+  ).trim();
+  writeFileSync(join(root, ".python-version"), target + "\n");
+  writeFileSync(
+    join(root, "package.json"),
+    JSON.stringify({ packageManager: "npm@12.2.0" }),
+  );
+  for (const offset of [0, 1]) {
+    const [major, minor, patch] = target.split(".").map(Number);
+    /** @type {import('./set-up-development.js').CommandExecutor} */
+    const execute = (_command, args) => {
+      if (!args.includes("-c"))
+        return { status: 0, stdout: "12.2.0\n", stderr: "" };
+      const probeArgs = [...args];
+      probeArgs[2] =
+        `import sys\nfrom collections import namedtuple\nsys.version_info = namedtuple("Version", "major minor micro releaselevel serial")(${major}, ${minor + offset}, ${patch}, "candidate", 1)\n` +
+        args[2];
+      const probe = spawnSync(interpreter, probeArgs, {
+        encoding: "utf8",
+        windowsHide: true,
+      });
+      return {
+        status: probe.status,
+        stdout: probe.stdout,
+        stderr: probe.stderr,
+      };
+    };
+    assert.throws(
+      () =>
+        setUpDevelopment({
+          root,
+          python: interpreter,
+          npmCli: process.env["npm_execpath"],
+          execute,
+          productOnly: true,
+        }),
+      /Use stable Python/,
+    );
   }
 });

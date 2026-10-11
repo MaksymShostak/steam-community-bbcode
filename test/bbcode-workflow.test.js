@@ -476,3 +476,41 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
     /tooling\/prose|qualify:prose|docs:format/u,
   );
 });
+
+test("every Python CI lane provisions from the sole repository target", () => {
+  /** @type {Array<[typeof workflow | typeof release, string]>} */
+  const lanes = [
+    [workflow, "converter"],
+    [workflow, "markdown"],
+    [release, "candidate"],
+  ];
+  for (const [document, job] of lanes) {
+    const steps = document.getIn(["jobs", job, "steps"], true);
+    assert.ok(isSeq(steps));
+    const provision = steps.items.find(
+      (step) =>
+        isMap(step) &&
+        String(step.get("uses")).startsWith("astral-sh/setup-uv@"),
+    );
+    assert.ok(isMap(provision));
+    assert.equal(
+      provision.get("uses"),
+      "astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884",
+    );
+    const inputs = provision.getIn(["with"], true);
+    assert.ok(isMap(inputs));
+    assert.deepEqual(inputs.toJSON(), {
+      version: "0.13.0",
+      "activate-environment": true,
+      "venv-path": "${{ runner.temp }}/python",
+      "no-project": true,
+      "enable-cache": false,
+    });
+    // With no override, uv discovers the root .python-version after checkout.
+    const checkout = steps.items.findIndex(
+      (step) =>
+        isMap(step) && String(step.get("uses")).startsWith("actions/checkout@"),
+    );
+    assert.ok(steps.items.indexOf(provision) > checkout);
+  }
+});

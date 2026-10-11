@@ -185,7 +185,7 @@ const inputPaths = [
   "package-lock.json",
   "scripts/compare-alternatives.js",
   "comparison/python/convert.py",
-  "comparison/python/requirements-windows-py314.txt",
+  "comparison/python/requirements-windows.txt",
   "comparison/dotnet/NuGet.Config",
 ];
 for (const directory of [
@@ -228,7 +228,7 @@ const report = {
   license: "AGPL-3.0-only",
   executedAt: new Date().toISOString(),
   scope:
-    "Windows x64 Python 3.14 local execution; unmodified public APIs. Selected common cases, not complete project coverage or live Steam rendering.",
+    "Windows x64 local execution on the Python runtime recorded below; unmodified public APIs. Selected common cases, not complete project coverage or live Steam rendering.",
   oracle:
     "Authored conformance trees and Steam spellings. Native GFM syntax parser; reverse outputs use the candidate Steam consumer, whose gaps can affect external classifications. Review raw outputs before asserting a comparator defect.",
   interpretation:

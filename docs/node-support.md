@@ -22,8 +22,8 @@ These targets require passing qualification before a release can claim the teste
 `package.json#devEngines.runtime` is enforced by npm before `install`, `ci` and `run`, including `npm run set-up:development` on a fresh clone.
 Use that npm entry point for setup.
 The exact `.node-version` identifies the Node 24.21.0 reference build and Markdown environment; it does not change converter runtime compatibility.
-The selected package manager is npm 12.2.0; development requires Python >=3.14.8.
-.python-version selects the reproducible 3.14.8 reference, and setup accepts newer interpreters and existing virtual environments that meet that minimum.
+The selected package manager is npm 12.2.0; development requires stable Python at or above the minimum in `.python-version`.
+That file selects the reproducible reference for setup, CI and Markdown tooling; setup also accepts newer stable interpreters and compatible existing environments.
 Markdown Quality 1.0.3 is isolated in `tooling/markdown` and is qualified here on exact Node 24.21.0, Windows x64 and Ubuntu 24.04 x64.
 Its dependency graph is never installed in the other converter lanes or shipped to consumers.
 Use `npm run set-up:development -- --product-only` and `npm run check:product` on another supported converter runtime; select Node 24.21.0 separately for `install:markdown`, `test:markdown` and `check:markdown`.
