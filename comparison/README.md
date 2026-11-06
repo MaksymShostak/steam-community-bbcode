@@ -5,6 +5,7 @@
 This benchmark executes unmodified published tools through their documented APIs.
 The candidate and three active alternatives yield 200 observations.
 It compares 37 Steam-to-GFM cases and 13 GFM-to-Steam cases against independently authored semantic trees.
+
 The forward corpus includes four ordinary controls and 33 construct cases, many deliberately containing literal Markdown/HTML-shaped text.
 These are conformance probes, not a representative workload or a performance benchmark.
 Several failures can have the same underlying cause.
@@ -38,6 +39,7 @@ The classifier separately retains wrong structure, silent loss, unconverted sour
 The candidate meets all 50 authored cases.
 That includes diagnosed fallbacks; it does not mean every Steam feature has a lossless GFM equivalent.
 No alternative exceeds the candidate on this selected documented Steam-source corpus.
+
 This is not a global dominance claim: the reverse subset intentionally preserves features such as inline code, heading levels 4–6 and meaningful image alt text that other projects choose to transform.
 Those alternative capabilities remain relevant.
 
@@ -60,6 +62,7 @@ The raw results show these distinct issues or policy differences:
 
 Forward results use the native GFM syntax parser with its supported extension composition.
 Reverse results use the candidate Steam consumer, followed by that native GFM parser, against authored expected trees.
+
 This dependency limits the independence of reverse classifications: inspect raw output before reporting an upstream defect.
 These are not browser screenshots, Steam renderer results, security findings, or evidence of complete coverage of the other projects.
 
@@ -76,6 +79,7 @@ Earlier form-data, nwmatcher and qs repairs did not remove that remaining depend
 The complete preceding five-provider report, including all 250 observations, is preserved byte-for-byte in [the historical report](results/historical/windows-x64-2026-09-10.json).
 Its SHA-256 is `aafe061b9a4efc4dc1553b6790bc5cc7dad2b21cf17b6a4da87f80dc8fc79c45`.
 [Source commit b13825c](https://github.com/MaksymShostak/oxygen-not-included/tree/b13825c099c1ea715917af8cc67eaea6fff067e3/tools/steam-community-bbcode) retains the exact historical runner, capability policy and dependency locks.
+
 The current command does not install or execute that comparator, and its archived results are not included in current provider counts or relabelled as fresh runs.
 All 200 retained-provider observations and all 50 case definitions remain identical to that historical report.
 
@@ -86,6 +90,7 @@ These remain historical observations, with no claim that the generic package imp
 
 Run from the repository root on Windows x64, with the checkout's stable `.venv` selected by `.python-version`, the repository Node/npm toolchain, and `.NET` 10 runtime installed.
 The active `requirements-windows.txt` lock is platform-specific; `requirements-windows-py314.txt` and the committed benchmark reports remain historical evidence.
+
 The active lock updates the Pydantic/core pair for native wheels on the selected interpreter; other comparator package versions are retained.
 The converter's ordinary documented dependency setup must already be complete.
 
@@ -103,6 +108,7 @@ No global setting, permission, tool, or root SDK version was changed.
 
 The npm command runs public APIs in separate processes, with a 30-second timeout and 8-MiB output cap per external case.
 Python uses child-only `PYTHONPATH` and native text streams configured to preserve newlines.
+
 The `.NET` CLI receives an actual UTF-8 file through `-i`, avoiding its path-or-text ambiguity.
 No shim, vendor patch, monkeypatch, alternate checker or checker suppression is involved.
 These execution bounds are benchmark bounds, not library guarantees.

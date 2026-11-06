@@ -8,6 +8,8 @@ See [JavaScript and types](javascript-and-types.md).
 The [generated package-root reference](reference/index-1.md) documents signatures, options and result types from checked JSDoc.
 Its [module index](reference/index.md) also includes source-owned supporting types; those source modules are internal and are not additional package import entry points.
 
+## Choose a conversion function
+
 | Function                                       | Input                                     | Result                                                                                  |
 | ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------- |
 | `parseSteamCommunityBbcode(source, options?)`  | A BBCode string                           | Immutable source syntax, original source, profile and parser diagnostics                |
@@ -49,6 +51,7 @@ Narrow Steam extensions retain underline, spoiler, attributed quote, pull quote,
 GFM lowering removes empty presentation wrappers, combines equivalent adjacent or nested styles, and carries styles across paragraph boundaries.
 Native GFM serialization preserves whitespace within deletion using character references.
 It also preserves terminal paragraph line endings as character references; for example, `[b]B[/b]` followed by a newline emits `**B**&#xA;` followed by the Markdown document newline.
+
 Parsing that output retains the source newline within the paragraph, with textual CRLF and CR normalized to LF.
 These target normalizations leave the immutable source syntax and Steam MDAST unchanged.
 Only ASCII layout whitespace separates structural table rows/cells; non-ASCII whitespace there remains diagnosed source content.

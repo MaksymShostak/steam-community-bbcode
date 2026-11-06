@@ -9,6 +9,7 @@ Each runtime lane also selects its matching locked `@types/node` environment und
 Run `npm run check` to produce the canonical package archive, then `npm run qualify:node-types` to check all three declaration targets against that same archive.
 Use `npm run qualify:node-types -- --major 22` to select one target.
 The compatibility checks run TS7 source checking, TS6 compiler-API checking, TypeDoc, 100% type coverage and installed declaration consumers without changing canonical dependency locks or rebuilding the archive.
+
 Native compiler file lists and TypeDoc's actual programs must resolve every Node declaration from the selected environment.
 Logs and the exact declaration version are retained under `artifacts/node-declarations/<major>/`.
 These are declaration compatibility results; only a run on the corresponding Node executable establishes runtime evidence for that major.
@@ -27,6 +28,7 @@ Declaration maps must resolve to the source included in the tarball.
 `npm run check:types` compares two clean declaration builds.
 `npm run test:package` packs with npm 12, installs the actual archive into an isolated temporary consumer, and checks ESM loading and declaration resolution.
 The installed JavaScript smoke executes parsing, MDAST interpretation and GFM serialization and the partial reverse API, including diagnosed fallbacks.
+
 Declaration fixtures cover the public APIs and nested/media extension contracts.
 The consumer check also invokes the installed npm binary with offline resolution for help, stdin conversion and the shipped conformance report.
 CLI source has a native Node shebang and requires no compiler or loader at execution time.

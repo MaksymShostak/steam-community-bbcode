@@ -23,6 +23,7 @@ A local pass does not authorize a commit, push, npm release, GitHub protection c
 Use precise verb-first names for custom npm operations, with lowercase kebab-case words and colon-separated qualifiers, such as `compare:alternatives`.
 Do not name a script `run` or use the `run:` prefix.
 The exact name `cli` is an exception for the multipurpose command dispatcher, not a general noun-first namespace.
+
 Keep npm lifecycle events and `pre`/`post` hooks under their exact npm-defined names; custom hooks must refer to an existing valid script.
 `test/development-command-names.test.js` enforces this repository convention; npm does not define a general custom-script naming standard or an implicit CI role for `cli`.
 

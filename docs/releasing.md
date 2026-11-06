@@ -17,6 +17,7 @@ Do not publish through ONI or merge the package branch into ONI main.
 
 Preserve source, tests, isolated locks, licence notices, original plans and their execution lineage.
 The private recovery archive retains ignored qualification evidence, raw failures, original candidates and the unsent upstream report; none belongs in active destination lifecycle state or npm archives.
+
 The copied Workshop-description fixture retains its local MIT/Klei notice, and the reused Python launcher retains its MIT notice.
 The optional comparator retains this repository's Python launcher and `.venv`; no prose-only Python dependency is required.
 Authored Markdown uses the root-installed Markdown Quality development dependency and the ordinary reference runtime.
@@ -28,6 +29,7 @@ The historical ONI trusted-base PR linkage failure remains recorded; destination
 The lean npm allowlist ships runtime source, declarations and maps, `coverage.json`, the README, security guidance, licence and third-party notices.
 Source specifications, generated API references, design decisions and maintainer guides stay in Git.
 The shipped README links to a fixed documentation commit; when public behavior changes, update those links to a published commit documenting that behavior before qualifying the archive.
+
 Do not point release-specific instructions at a moving branch or remove notices with the documentation.
 The installed-consumer checks reject extra documentation and specifications, validate local links and execute the public API, CLI and declarations from the actual tarball.
 
@@ -48,19 +50,23 @@ Consumer/declaration runtime floors and the credential-limited publication job r
 The second command prints a new directory under `artifacts/release-candidates/`.
 It builds declarations with TS 7, packs through native npm and installs that archive into a temporary consumer.
 The existing authored JavaScript, CLI, declaration contracts, licence and package-boundary checks run against the installed package.
+
 Native npm audits the actual installed production graph with the same low-severity floor as dependency review and emits its CycloneDX SBOM.
+
 The local candidate directory retains the archive, native pack inventory, consumer report, audit, SBOM, Git revision and dirty-state marker, archive SHA-256/SHA-512 integrity, and `SHA256SUMS`. Schema version 2 records the hosted repository ID, ref, workflow revision, run/attempt, tag and qualification results.
 Local candidates record `release: null` and cannot pass the hosted publication gate.
 
 Hosted Release logs the candidate's diagnostic evidence, then `npm run generate:release-transfer` stages the exact tarball, unchanged `candidate.json` and `pack-actual.json`, and generated `production.cdx.json` into `artifacts/release-transfer/`.
 It regenerates `SHA256SUMS` for exactly those four files, validates native candidate/pack identity and verifies copied hashes without repacking.
 The upload retains only this transfer directory for thirty days; native report paths and candidate schema remain unchanged.
+
 The tarball is executable package transport, metadata and pack inventory are inputs to the publisher/bootstrap/verifier, the SBOM is an existing release-asset obligation, and checksums bind transfer files.
 Coverage, audit/consumer reports, API sites, scratch trees and runtimes remain outside this archive; required diagnostics are in logs.
 
 Use `npm run pack:release -- --output artifacts/my-candidate` to choose an empty directory.
 The empty-directory requirement prevents mixing files from different attempts; it does not impose an immutable-release policy.
 Keep the printed archive with its evidence through publication and registry verification.
+
 The owner-approved performance disposition and completed selected-renderer qualification are recorded in [testing](testing.md).
 The explicit [licence compatibility assessment](licensing-review.md) covers the current graph and distribution boundary.
 These local results do not activate the destination's renderer schedule, public CI or publication controls.
@@ -72,12 +78,17 @@ Confirm every registered construct has an executed policy, source evidence and d
 Complete independent R2 verification and applicable security review against the actual candidate.
 The accepted plan and execution record retain the complete gates.
 
-Require [minimum and latest Node 22/24/26 qualification](node-support.md) on Windows and Linux, including consumer checks of the actual retained candidate before publication, CodeQL and dependency review, meaningful property/resource checks and review of generated HTML paths. Run `npm run test:mutation` for the configured library and CLI profiles, each requiring at least 90%, or retain equivalent results for unchanged source and tests. Preserve failures, survivors and native timeout/error counts; the numerical score does not establish semantic correctness or security approval.
+Require [minimum and latest Node 22/24/26 qualification](node-support.md) on Windows and Linux, including consumer checks of the actual retained candidate before publication, CodeQL and dependency review, meaningful property/resource checks and review of generated HTML paths.
+
+Run `npm run test:mutation` for the configured library and CLI profiles, each requiring at least 90%, or retain equivalent results for unchanged source and tests.
+
+Preserve failures, survivors and native timeout/error counts; the numerical score does not establish semantic correctness or security approval.
 Local package checks cannot substitute for remote CI or independent review.
 
 Review the native archive allowlist and actual installed files, declaration maps pointing to shipped source, exact full dependency licence terms and retained notices.
 Keep AGPL-3.0-only explicit and exclude tests, comparison environments, credentials and local artifacts from the distribution.
 The release production SBOM supplements the existing main and isolated tooling inventories; SBOM metadata is not legal clearance.
+
 Use the completed [licence compatibility assessment](licensing-review.md) for this unchanged graph and packaging boundary.
 The accepted plan requires explicit legal review, not mandatory independent legal counsel; escalate concrete unresolved rights or terms if the destination changes the distribution.
 Keep the original comparison and qualification evidence with the approved release.
@@ -87,12 +98,15 @@ Keep the original comparison and qualification evidence with the approved releas
 The repository workflow **Steam Community BBCode release** has a manual `publish` input, defaulting to false.
 Its default run qualifies and retains a candidate without publishing.
 Supply the exact expected `version` and intended `tag` for both qualification and publication.
+
 The release run calls the same-revision runtime/mutation and CodeQL workflows before creating the candidate.
 PR dependency review remains a reviewed-change gate; CodeQL analysis success does not itself mean zero findings.
 After destination workflow qualification, approve and commit the actual public package version and complete the release obligations.
+
 Configure npm's trusted publisher for that destination's reviewed workflow and environment; the current reusable names are `steam-community-bbcode-release.yml` and `npm-release`.
 Do not bind this package's publisher to the ONI repository.
 The binding must allow direct `npm publish`; a binding limited to staged publishing cannot authorize this workflow.
+
 If npm requires an initial package before that binding can be created, the owner must arrange that first publication separately.
 No bootstrap token or credential is stored by this implementation.
 
@@ -110,33 +124,41 @@ npm run publish:bootstrap-release -- --candidate artifacts/my-candidate --oni-re
 Each command requires a new report path and re-runs the complete preflight.
 It reuses `owlapi`'s exact npm dry-run comparisons and bootstrap state classification from commit `2ac41c94e6630ca47ce110a484ec9af3b0b1f335`.
 The converter-specific additions compare the candidate with the successful hosted run's downloaded artifact, run native `publint --strict` on that exact tarball, and install it into a fresh consumer with a fresh npm cache.
+
 The existing ONI `pipeline sync-readme --check` command must confirm that generated Workshop BBCode produces the current README without diagnostics or byte changes.
 The ONI checkout must also be clean so its recorded commit identifies the tested implementation; local probes against uncommitted work are not release acceptance.
+
 No replacement BBCode parser, package archive parser or ONI workflow is implemented here.
 The `publint@0.3.24` dependency is MIT-licensed development tooling and is excluded from runtime installations.
 This bounded adaptation uses preservation tests for the reused contracts and focused tests for the ONI result boundary; mutation remains part of hosted final candidate qualification.
+
 Authenticate the native GitHub CLI for artifact retrieval and use the owner's native npm login for publication.
 Environment npm tokens are rejected; no credential is retained in the report.
 An attempted publication is recorded as requiring registry verification even when native npm exits successfully.
 
 Publish its retained tarball with native npm, `--ignore-scripts`, the explicit public registry and `--tag next`; do not repack it during publication.
 This local bootstrap has no GitHub workflow provenance and must not be reported as an OIDC release.
+
 Verify its registry archive hashes, exact installed coordinate, API/CLI/declarations, registry signatures and production audit, retaining a separately labelled bootstrap report.
 The normal `verify:registry` command remains strict about expected CI provenance; it is not a bootstrap success oracle.
 
 Prepare a GitHub prerelease draft for the matching `v<version>` tag and exact qualified source commit.
 Include release notes, the identical npm tarball, checksums, production SBOM and public qualification evidence.
 Keep private recovery bundles and undisclosed security evidence out of release assets.
+
 Publish the GitHub prerelease after the authorized npm publication passes registry verification, with the exact npm coordinate and bootstrap provenance limitation in its notes.
 GitHub's automatically generated source archives are separate from the npm tarball; do not claim they are byte-identical.
 Use the native GitHub CLI to create the draft and upload assets; this procedure adds no privileged project-code execution to the npm publishing job.
+
 If immutable releases are enabled under a separately approved repository setting, attach and verify every asset while the release is still a draft, as recommended by [GitHub](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
 Release publication remains a separate owner approval; creating a draft does not establish acceptance or npm publication.
 
 Dispatch the reviewed `main` revision with `publish: true`, its exact package version and the intended distribution tag, such as `next` for a release candidate or `latest` for an approved stable release.
 The private development flag and a dirty candidate prevent publication.
+
 The publisher downloads the same run's artifact by ID, checks its native artifact digest, candidate metadata hash and `SHA256SUMS`, and publishes its exact archive with native npm OIDC/provenance.
 The protected `npm-release` environment permits only `main`, requires the owner reviewer and disables administrator bypass.
+
 The owner may approve a run they initiated; independent technical review remains a separate release obligation.
 Only that job receives OIDC permission, and it executes no checked-out project code or package lifecycle scripts.
 The workflow does not create an immutable GitHub release or impose a single distribution channel.
@@ -145,8 +167,10 @@ The workflow does not create an immutable GitHub release or impose a single dist
 
 A separate job without publication credentials fetches the exact public version and requested tag.
 It verifies that the registry archive has the retained SHA-256 and published SHA-512 integrity, then installs the exact coordinate with a fresh npm cache.
+
 The installed lockfile must bind the package to the same archive integrity before the existing API, CLI and TS 7 consumers run.
 Native `npm audit signatures --json --include-attestations` verifies registry signatures and returns verified provenance bundles, and native production audit runs again.
+
 The native Sigstore verifier additionally requires the GitHub Actions issuer and exact destination workflow certificate identity.
 Expected provenance must match the archive subject, repository, source revision, workflow, ref and run attempt before verification reports success.
 Other distribution tags may coexist.
@@ -160,8 +184,10 @@ npm run verify:registry -- --candidate artifacts/my-candidate --tag next --outpu
 Retain the registry-verification log/run reference with the candidate; the reporting step streams registry metadata, signatures, provenance, native consumer records and failures, with a bounded inventory summary.
 Registry verification has no separate Actions archive.
 CodeQL's complete unfiltered SARIF file remains retained with unchanged filtering/upload and repository-default retention.
+
 The preliminary seven-day archive from reusable checks is distinct from the thirty-day final publication candidate.
 If a required archive expires, start a newly qualified run rather than repacking under its old identity; registry recovery uses the original candidate while available.
 Check actual log access and retention through acceptance/recovery; masking, provider truncation, cancellation or expiry can make diagnostic evidence incomplete.
+
 If publishing succeeds but verification fails, diagnose or rerun the verification job against that same candidate; do not republish the version to recover a verification failure.
 Live trusted-publisher configuration and a successful public-registry run are required before claiming operational publication.

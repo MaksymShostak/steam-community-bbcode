@@ -16,6 +16,7 @@ A project is compared only where its capability evidence makes the case applicab
 The owner retired the unsupported `bbcode-to-markdown` 1.0.3 executable comparator on 10 September 2026.
 Its Request dependency has no patched release for GHSA-p8p7-x288-28g6; the active harness no longer installs or executes that graph.
 The preceding five-provider report remains byte-for-byte intact at `comparison/results/historical/windows-x64-2026-09-10.json`, with its source commit and hash recorded in the comparison README.
+
 All 200 retained observations, including output, diagnostics, consumer trees and classifications, match that report, and all 50 case definitions remain unchanged.
 Historical comparator findings remain evidence of those executions and do not enter current provider counts.
 See [software selection](software-selection.md) for the retirement decision.
@@ -23,6 +24,7 @@ See [software selection](software-selection.md) for the retirement decision.
 Exact output and semantically equivalent output are equally successful results.
 Diagnosed loss also requires the authored expected fallback tree: a warning does not excuse incorrect output.
 No weighted score or general superiority claim is derived from this selected corpus.
+
 Several failures can share one underlying cause, and a difference from this package's policy is not necessarily an upstream bug.
 Alternatives have capabilities outside this package's reverse subset.
 

@@ -11,6 +11,7 @@ Reassess at dependency refresh, before release, or when the maintained tool supp
 
 Install here with `npm ci --ignore-scripts`, then use the parent package's `npm run check:type-coverage`.
 The tool's project argument selects the parent authored source, scripts and runtime tests; it does not check a separate copied source tree.
+
 The native `--not-only-in-cwd` option includes that project from this isolated tool directory.
 `--is 100` also rejects an empty result, for which the tool's `--at-least` comparison alone would otherwise succeed on `NaN`.
 

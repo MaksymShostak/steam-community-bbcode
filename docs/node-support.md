@@ -34,6 +34,7 @@ Use `npm run set-up:development` on a supported development runtime, then `npm r
 On Windows and Linux, the package checks workflow runs the public fresh-clone setup, unchanged product checks and matching Node declaration qualification at each development minimum and the latest release within each supported major.
 Dedicated Markdown jobs check the entire authored corpus on both qualified platforms, even when only a link target or code changes.
 `BBCode / Qualification` requires both product and Markdown results; failure, cancellation, skip or absence cannot satisfy either gate.
+
 The consumer workflow runs the installed package's authored JavaScript and CLI cases at each consumer minimum and latest release.
 It checks packed declarations against the matching isolated Node declaration environment using the publisher's compiler and development runtime.
 Thus declaration compatibility does not assert that the compiler itself runs on every consumer runtime.
@@ -45,10 +46,13 @@ Workflow configuration alone is not hosted qualification evidence; inspect the c
 
 Keep exact dependency locks and the reference build environment.
 The `22.x`, `24.x` and `26.x` CI selectors intentionally resolve the latest release when a run starts, so compatibility checks detect new regressions.
+
 Consumer diagnostics remain at their native runner paths and are streamed into the qualification log: `consumer-report.json` with actual runtime, tooling runtime, npm, platform, architecture, declaration version and archive SHA-256, plus `consumer-package-lock.json`, declaration resolution evidence and the qualification log.
 The reporting step binds them to the source commit, run/attempt, lane and retained archive; its summary lists file sizes and hashes.
+
 Package qualification retains one shared consumer archive for seven days, including reusable Release prechecks.
 Proven development-documentation-only PR/main checks skip package jobs and create no consumer archive; explicit qualification and Release always construct and exercise the package.
+
 After expiry, start a newly qualified run when the preliminary archive is needed; do not rebuild under an old run identity.
 Replay with those exact versions and bytes; a floating selector alone is not a reproducible environment identity.
 

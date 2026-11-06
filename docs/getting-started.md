@@ -7,6 +7,8 @@ The reference development environment uses Node 24.21.0, recorded in `.node-vers
 The converter's broader development and consumer runtime ranges are unchanged.
 The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
+## Set up a source checkout
+
 From the root of this standalone checkout with Node 24.21.0, npm 12.2.0 and a stable Python interpreter meeting the minimum in `.python-version` installed:
 
 ```text
@@ -18,6 +20,8 @@ npm run cli -- to-gfm path/to/description.bbcode
 Setup installs the locked root, including Markdown Quality, both isolated compiler-API tooling graphs and all three Node declaration environments, and retains a Python `.venv`.
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 No Python formatter is installed or removed; the optional comparator keeps its own unchanged requirements.
+
+### Run converter-only checks
 
 The same setup supports every declared development runtime.
 For converter-only checks, use:

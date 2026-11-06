@@ -4,6 +4,8 @@ Diagnostics explain parsing problems, rejected input, literal preservation and t
 A successful function call does not imply lossless conversion.
 Inspect diagnostics and occurrence outcomes before adopting output.
 
+## Interpret fidelity
+
 | Fidelity      | Meaning                                                                                                 |
 | ------------- | ------------------------------------------------------------------------------------------------------- |
 | `exact`       | The selected construct has an exact target mapping in the qualified contract                            |
@@ -16,6 +18,8 @@ For example, underline becomes text with `STEAM_UNDERLINE_LOWERED_TO_TEXT`; a bl
 A guide image without a resolvable URL stays source with `STEAM_GUIDE_IMAGE_UNRESOLVED`.
 Unknown standalone bracket labels remain literal and receive `STEAM_UNKNOWN_CONSTRUCT`; they do not acquire a missing-closer error merely because they use square brackets.
 Recognized malformed tags are still diagnosed.
+
+## Locate the source of a diagnostic
 
 Each conversion diagnostic carries `code`, `severity`, `fidelity` and `message`.
 `code` belongs to the generated declaration's closed `DiagnosticCode` union; messages are human explanations, not identifiers to parse.

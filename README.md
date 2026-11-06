@@ -1,21 +1,28 @@
 # steam-community-bbcode
 
-Steam Community BBCode parsing, MDAST conversion and GitHub Flavored Markdown serialization for Node.js.
-The default Steam profile is `workshop-item`.
-GFM-to-Steam conversion supports an explicit subset; inspect diagnostics before adopting output.
+Convert Steam Community BBCode to GitHub Flavored Markdown or a Markdown syntax tree in Node.js.
+The default source profile is `workshop-item`.
+Conversion in the other direction covers a subset of Markdown.
 
-This release candidate is under qualification; registry publication and stable release acceptance remain pending.
+Inspect the diagnostics alongside the output.
+An underline, for example, can become plain text without losing its words.
+The diagnostic identifies the formatting that was lost.
 
 ## Install and use
 
-Targets Node.js 22.11.0+, 24.11.0+ and 26.0.0+ within those respective majors.
-Node 26 is supported during its Current phase; it has not yet entered LTS.
-The release workflow must qualify the minimum and latest releases before publication.
-For pre-publication testing, install the exact qualified tarball:
+The release candidate targets Node.js 22.11.0+, 24.11.0+ and 26.0.0+ within those majors.
+Registry publication and stable acceptance are separate release steps.
+
+To test a qualified tarball, replace the example path with its location on your computer.
 
 ```sh
 npm install /path/to/steam-community-bbcode-1.0.0-rc.1.tgz
 ```
+
+### Convert a Steam description
+
+Run this example in an ES module.
+The BBCode bold tags mark the span, while the asterisks inside it belong to the original text.
 
 ```js
 import {steamCommunityBbcodeToGfm} from 'steam-community-bbcode';
@@ -23,6 +30,14 @@ import {steamCommunityBbcodeToGfm} from 'steam-community-bbcode';
 const result = steamCommunityBbcodeToGfm('[b]Literal *text*[/b]');
 console.log(result.value);
 console.log(result.diagnostics);
+```
+
+The result contains the following Markdown and an empty diagnostics array.
+The outer asterisks mark bold text.
+The escaped asterisks around `text` display literally.
+
+```markdown
+**Literal \*text\***
 ```
 
 The package includes TypeScript declarations and declaration maps.
@@ -38,8 +53,10 @@ npx --no steam-community-bbcode coverage --format=json
 ```
 
 Omit the input path or use `-` for stdin.
-Stdout contains converted text or the JSON result; stderr carries diagnostics.
+Stdout contains converted text or the JSON result.
+Stderr carries diagnostics.
 Exit codes are 0 for acceptance, 1 for conversion/fidelity failure and 2 for argument, I/O or encoding failure.
+
 Fidelity failures retain output for inspection: check the exit status before using it.
 The `coverage` command reads the shipped conformance report; it does not measure runtime code coverage.
 

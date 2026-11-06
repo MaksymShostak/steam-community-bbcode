@@ -4,14 +4,22 @@ The installed executable is `steam-community-bbcode`.
 In the source checkout, use `npm run cli --` before the same arguments.
 It calls the public library APIs.
 
-```text
+## Convert a file
+
+```sh
 steam-community-bbcode to-gfm description.bbcode
+steam-community-bbcode to-steam README.md
+```
+
+For a machine-readable result, select JSON output.
+To make a lossy conversion fail the command, set the fidelity threshold.
+
+```sh
 steam-community-bbcode to-gfm --format=json --profile=workshop-item description.bbcode
 steam-community-bbcode to-gfm --fail-on=lossy description.bbcode
-steam-community-bbcode to-steam README.md
-steam-community-bbcode coverage --format=json
-steam-community-bbcode --help
 ```
+
+## Input and output
 
 `to-steam` implements the [partial reverse subset](gfm-to-steam-limitations.md).
 Omit a filename or supply `-` for stdin.
@@ -25,6 +33,8 @@ Stdout contains only the requested result.
 Stderr emits one JSON object per diagnostic, including argument and I/O errors.
 `--profile` is forward-only.
 
+### Exit status
+
 | Exit | Meaning                                                       |
 | ---- | ------------------------------------------------------------- |
 | 0    | Conversion accepted under the selected policy                 |
@@ -36,6 +46,13 @@ Other values are `approximate`, `lossy` and `unsupported`, each rejecting that f
 A fidelity failure retains output for inspection.
 Check status before using it; shell redirection can create a file even when conversion fails.
 The CLI has no output-file overwrite option or automatic publication step.
+
+## Inspect conformance coverage
+
+```sh
+steam-community-bbcode coverage --format=json
+steam-community-bbcode --help
+```
 
 `coverage` prints the shipped **conformance** report as JSON, also its default format.
 It does not execute tests or measure runtime coverage.

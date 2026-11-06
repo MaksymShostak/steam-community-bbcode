@@ -66,6 +66,7 @@ This acceptance qualifies the existing documented resource contract, not a claim
 
 For a Workshop-description caller, set `resourceLimits: {maxInputBytes: 8000}` when calling `steamCommunityBbcodeToGfm`, or pass `--max-input-bytes 8000` to the CLI.
 Valve documents an [8,000-byte Workshop description limit](https://partner.steamgames.com/doc/api/ISteamRemoteStorage#k_cchPublishedDocumentDescriptionMax); that limit is not universal across Steam text surfaces or this general-purpose package.
+
 The maintained tests cover acceptance at 8,000 bytes, rejection above it including multibyte text, and preservation of the general default.
 The limit bounds accepted input, not conversion time; services needing a hard deadline must isolate synchronous conversion in an externally supervised worker or process.
 Current sample timings and their measurement scope are recorded in [testing](testing.md#performance-disposition).
