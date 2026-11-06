@@ -36,6 +36,9 @@ A caller that offers it as a service must enforce its own authorization for file
 
 ## Resource limits and their scope
 
+For a Workshop description, see [Set a Workshop input limit](#set-a-workshop-input-limit).
+For other inputs, the defaults below apply unless the caller overrides them.
+
 | Dimension          | Forward default          | Reverse default            | Enforcement                                                        |
 | ------------------ | ------------------------ | -------------------------- | ------------------------------------------------------------------ |
 | UTF-8 input bytes  | 1,048,576                | 1,048,576                  | Before parsing; CLI additionally bounds acquisition                |
@@ -64,7 +67,11 @@ The owner accepted the current performance limitation on 10 September 2026: unmo
 Near the general 1-MiB input allowance, a retained hostile case exceeds the five-second regression budget; the upstream defect remains unresolved.
 This acceptance qualifies the existing documented resource contract, not a claim that the defect is fixed or large hostile inputs are cheap.
 
-For a Workshop-description caller, set `resourceLimits: {maxInputBytes: 8000}` when calling `steamCommunityBbcodeToGfm`, or pass `--max-input-bytes 8000` to the CLI.
+### Set a Workshop input limit
+
+- **JavaScript:** pass `resourceLimits: {maxInputBytes: 8000}` to `steamCommunityBbcodeToGfm`.
+- **CLI:** pass `--max-input-bytes 8000`.
+
 Valve documents an [8,000-byte Workshop description limit](https://partner.steamgames.com/doc/api/ISteamRemoteStorage#k_cchPublishedDocumentDescriptionMax); that limit is not universal across Steam text surfaces or this general-purpose package.
 
 The maintained tests cover acceptance at 8,000 bytes, rejection above it including multibyte text, and preservation of the general default.

@@ -14,10 +14,14 @@ Inspect diagnostics and occurrence outcomes before adopting output.
 | `lossy`       | Content is retained but a documented source meaning or presentation is lost                             |
 | `unsupported` | The source cannot be faithfully mapped under the current policy and is preserved or rejected explicitly |
 
-For example, underline becomes text with `STEAM_UNDERLINE_LOWERED_TO_TEXT`; a block spoiler becomes a details block with `STEAM_SPOILER_LOWERED_TO_DETAILS`.
-A guide image without a resolvable URL stays source with `STEAM_GUIDE_IMAGE_UNRESOLVED`.
-Unknown standalone bracket labels remain literal and receive `STEAM_UNKNOWN_CONSTRUCT`; they do not acquire a missing-closer error merely because they use square brackets.
-Recognized malformed tags are still diagnosed.
+### Read a reported change
+
+| Diagnostic                         | What to inspect in the output                                                                            |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `STEAM_UNDERLINE_LOWERED_TO_TEXT`  | The text survives. Its underline is lost.                                                                |
+| `STEAM_SPOILER_LOWERED_TO_DETAILS` | A block spoiler becomes a details block. Review the target presentation.                                 |
+| `STEAM_GUIDE_IMAGE_UNRESOLVED`     | The guide image stays as source because its URL could not be resolved.                                   |
+| `STEAM_UNKNOWN_CONSTRUCT`          | An unknown standalone bracket label stays literal. Recognized malformed tags have their own diagnostics. |
 
 ## Locate the source of a diagnostic
 

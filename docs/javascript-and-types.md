@@ -6,13 +6,15 @@ Runtime qualification covers Node 22, 24 and 26.
 Each runtime lane also selects its matching locked `@types/node` environment under `tooling/node-types/`.
 `npm run set-up:development` installs those three environments; Dependabot updates each within its own major.
 
-Run `npm run check` to produce the canonical package archive, then `npm run qualify:node-types` to check all three declaration targets against that same archive.
-Use `npm run qualify:node-types -- --major 22` to select one target.
-The compatibility checks run TS7 source checking, TS6 compiler-API checking, TypeDoc, 100% type coverage and installed declaration consumers without changing canonical dependency locks or rebuilding the archive.
+1. Run `npm run check` to produce the canonical package archive.
+2. Run `npm run qualify:node-types` to check all three declaration targets against that archive.
+   To check only Node 22, run `npm run qualify:node-types -- --major 22`.
+3. Inspect the log and exact declaration version in `artifacts/node-declarations/<major>/`.
+   The compatibility checks run TS7 source checking, TS6 compiler-API checking, TypeDoc, 100% type coverage and installed declaration consumers without changing canonical dependency locks or rebuilding the archive.
 
 Native compiler file lists and TypeDoc's actual programs must resolve every Node declaration from the selected environment.
-Logs and the exact declaration version are retained under `artifacts/node-declarations/<major>/`.
-These are declaration compatibility results; only a run on the corresponding Node executable establishes runtime evidence for that major.
+A matching declaration environment establishes type compatibility.
+Run on the corresponding Node executable to establish runtime compatibility.
 
 ## Source and generated declarations
 
@@ -24,9 +26,14 @@ TypeScript 7.0.2 checks authored JavaScript and generates the public declaration
 Edit the owning JavaScript contract, never the generated declaration.
 Declaration maps must resolve to the source included in the tarball.
 
-`npm run test:types` checks positive and negative consumer fixtures against freshly generated declarations.
-`npm run check:types` compares two clean declaration builds.
-`npm run test:package` packs with npm 12, installs the actual archive into an isolated temporary consumer, and checks ESM loading and declaration resolution.
+### Choose a consumer check
+
+| Question                                                           | Command                                                                                              |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| Do the public types accept valid examples and reject invalid ones? | `npm run test:types` checks positive and negative fixtures against freshly generated declarations.   |
+| Can the declaration build be reproduced?                           | `npm run check:types` compares two clean builds.                                                     |
+| Will an installed consumer load ESM and resolve declarations?      | `npm run test:package` packs with npm 12 and installs the archive in an isolated temporary consumer. |
+
 The installed JavaScript smoke executes parsing, MDAST interpretation and GFM serialization and the partial reverse API, including diagnosed fallbacks.
 
 Declaration fixtures cover the public APIs and nested/media extension contracts.
