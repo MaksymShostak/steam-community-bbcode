@@ -438,6 +438,14 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
     return String(step.get("run") ?? "");
   });
   assert.ok(runs.includes("npm run test:markdown"));
+  assert.doesNotMatch(runs.join("\n"), /\bpython(?:3)?\b|\.venv/u);
+  assert.ok(
+    !steps.items.some(
+      (step) =>
+        isMap(step) &&
+        String(step.get("uses")).startsWith("astral-sh/setup-uv@"),
+    ),
+  );
   const node = steps.items.find(
     (step) =>
       isMap(step) && String(step.get("uses")).startsWith("actions/setup-node@"),
@@ -545,11 +553,10 @@ for (const [document, job] of /** @type {const} */ ([
   });
 }
 
-test("every Python CI lane provisions from the sole repository target", () => {
+test("actual Python consumers provision from the sole repository target", () => {
   /** @type {Array<[typeof workflow | typeof release, string]>} */
   const lanes = [
     [workflow, "converter"],
-    [workflow, "markdown"],
     [release, "candidate"],
   ];
   for (const [document, job] of lanes) {

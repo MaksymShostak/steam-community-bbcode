@@ -33,7 +33,7 @@ Supporting source modules in that reference explain referenced types; the packag
 Use semantic line breaks for authored package guides: one sentence per source line, with editor soft wrapping for long sentences.
 Root setup installs Markdown Quality with the other development dependencies; `npm run format:markdown` explicitly writes formatting repairs.
 `npm run check:markdown` performs the full authored check without writing and is included in `npm run check` and dedicated Windows/Linux CI jobs.
-`npm run test:markdown` exercises the installed public CLI and SDK, selected paths, Steam literal preservation, result schema and refusal behavior.
+`npm run test:markdown` checks the root CLI commands, historical exclusions, Steam literal preservation and native failure propagation.
 The gate covers authored repository Markdown; historical plans and migration evidence preserve their recorded bytes, and generated references and conformance projections remain owned by their generators.
 Code blocks and tables retain their meaning; two-space hard breaks are rejected and safe formatting uses explicit backslash breaks.
 The formatter uses deterministic sentence detection; review language and unusual abbreviations as normal prose.

@@ -31,20 +31,20 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command                              | Contract                                                                           |
-| ------------------------------------ | ---------------------------------------------------------------------------------- |
-| `npm test`                           | Focused runtime examples and seeded properties                                     |
-| `npm run qualify:parser`             | Native grammar foundation and resource contracts                                   |
-| `npm run qualify:performance`        | Bounded subprocess regression for opaque text and adjacent formatting              |
-| `npm run qualify:github`             | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios          |
-| `npm run test:coverage`              | Both suites under c8/V8, including unloaded runtime source                         |
-| `npm run check:conformance`          | Generated forward/reverse policy report matches executed cases                     |
-| `npm run check:docs`                 | Construct examples and package-local documentation links                           |
-| `npm run check:markdown`             | Full native authored layout, lint and physical local-file links, without writing   |
-| `npm run test:markdown`              | Installed public CLI/SDK, policy, Steam literals, native exits and guarded repairs |
-| `npm run test:documentation-tooling` | Focused setup, workflow aggregation and broader documentation-link regressions     |
-| `npm run test:mutation`              | Sequential Stryker library and real-process CLI qualification                      |
-| `npm run test:package`               | Packed source, declarations, maps, executable and fresh consumers                  |
+| Command                              | Contract                                                                         |
+| ------------------------------------ | -------------------------------------------------------------------------------- |
+| `npm test`                           | Focused runtime examples and seeded properties                                   |
+| `npm run qualify:parser`             | Native grammar foundation and resource contracts                                 |
+| `npm run qualify:performance`        | Bounded subprocess regression for opaque text and adjacent formatting            |
+| `npm run qualify:github`             | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios        |
+| `npm run test:coverage`              | Both suites under c8/V8, including unloaded runtime source                       |
+| `npm run check:conformance`          | Generated forward/reverse policy report matches executed cases                   |
+| `npm run check:docs`                 | Construct examples and package-local documentation links                         |
+| `npm run check:markdown`             | Full native authored layout, lint and physical local-file links, without writing |
+| `npm run test:markdown`              | Root CLI commands, owned selection, Steam literals and native exit propagation   |
+| `npm run test:documentation-tooling` | Focused setup, workflow aggregation and broader documentation-link regressions   |
+| `npm run test:mutation`              | Sequential Stryker library and real-process CLI qualification                    |
+| `npm run test:package`               | Packed source, declarations, maps, executable and fresh consumers                |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.
@@ -53,7 +53,8 @@ Their contracts remain subject to primary type/declaration checks.
 The complete Markdown command streams diagnostics directly to the CI log with workflow-command parsing suspended.
 Its native exit status controls the required job: operation findings exit 1, operational failures exit 2 and success exits 0.
 There is no mandatory prose report file; callers can request versioned JSON on stdout with `npm run --silent check:markdown -- --json`.
-Installed integration probes validate that output through the package's public semantic validator.
+The consumer checks exercise repository-owned selection, Steam literal preservation, read-only checking and native exit propagation through the root npm commands.
+Markdown-only CI needs Node and npm; Python provisioning remains with the converter and release consumers that use it.
 The generated/reference document link checker remains part of the product documentation tests and is not narrowed to the formatter's authored selection.
 
 For this documentation-tooling migration, the owner excluded local full product suites.
