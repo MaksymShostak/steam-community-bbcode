@@ -63,7 +63,6 @@ test("native Python accepts versions above the minimum and rejects older interpr
         python: interpreter,
         npmCli: process.env["npm_execpath"],
         execute,
-        productOnly: true,
       });
     if (accepted) {
       assert.equal(setup().python, version.stdout.trim());
@@ -122,7 +121,6 @@ test("the native setup guard rejects prereleases at and above the canonical mini
           python: interpreter,
           npmCli: process.env["npm_execpath"],
           execute,
-          productOnly: true,
         }),
       /Use stable Python/,
     );

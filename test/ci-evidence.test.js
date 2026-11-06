@@ -123,13 +123,21 @@ test("report collection uses exact native outputs and exposes absent or redirect
   const outside = mkdtempSync(join(tmpdir(), "bbcode-outside-"));
   try {
     assert.throws(
-      () => collectEvidence({ root, mode: "markdown" }),
+      () => collectEvidence({ root, mode: "consumer" }),
       /unavailable/u,
     );
-    mkdirSync(join(root, "artifacts/prose"), { recursive: true });
-    writeFileSync(join(root, "artifacts/prose/check.json"), "{partial failure");
-    writeFileSync(join(root, "artifacts/prose/check.stderr"), "native failure");
-    const markdown = collectEvidence({ root, mode: "markdown" });
+    mkdirSync(join(root, "artifacts/consumer-qualification"), {
+      recursive: true,
+    });
+    writeFileSync(
+      join(root, "artifacts/consumer-qualification/check.json"),
+      "{partial failure",
+    );
+    writeFileSync(
+      join(root, "artifacts/consumer-qualification/check.stderr"),
+      "native failure",
+    );
+    const markdown = collectEvidence({ root, mode: "consumer" });
     assert.equal(markdown.length, 2);
     assert.ok(
       markdown.some((file) => file.bytes.toString() === "native failure"),
@@ -159,27 +167,6 @@ test("report collection uses exact native outputs and exposes absent or redirect
       renderer.map((file) => file.bytes.toString()),
       ["current"],
     );
-    const window = join(outside, "markdown-window");
-    mkdirSync(window);
-    writeFileSync(join(window, "window.json"), "window identity");
-    for (let index = 1; index <= 6; index++) {
-      const sample = join(window, `sample-${index}`, "markdown-evidence");
-      mkdirSync(sample, { recursive: true });
-      writeFileSync(
-        join(sample, "trusted-markdown-run.json"),
-        `receipt ${index}`,
-      );
-      writeFileSync(join(sample, "../stdout.txt"), `stdout ${index}`);
-      writeFileSync(join(sample, "../stderr.txt"), `stderr ${index}`);
-    }
-    assert.equal(
-      collectEvidence({
-        root,
-        mode: "trusted-markdown",
-        windowDirectory: window,
-      }).length,
-      19,
-    );
     mkdirSync(join(root, "artifacts/runtime-coverage/tmp"), {
       recursive: true,
     });
@@ -199,11 +186,11 @@ test("report collection uses exact native outputs and exposes absent or redirect
     );
     symlinkSync(
       outside,
-      join(root, "artifacts/prose/redirect"),
+      join(root, "artifacts/consumer-qualification/redirect"),
       process.platform === "win32" ? "junction" : "dir",
     );
     assert.throws(
-      () => collectEvidence({ root, mode: "markdown" }),
+      () => collectEvidence({ root, mode: "consumer" }),
       /Redirected/u,
     );
   } finally {
@@ -216,17 +203,22 @@ test("available diagnostics survive invalid siblings and missing records are exp
   const root = mkdtempSync(join(tmpdir(), "bbcode-partial-evidence-"));
   const outside = mkdtempSync(join(tmpdir(), "bbcode-partial-outside-"));
   try {
-    mkdirSync(join(root, "artifacts/prose"), { recursive: true });
+    mkdirSync(join(root, "artifacts/consumer-qualification"), {
+      recursive: true,
+    });
     writeFileSync(
-      join(root, "artifacts/prose/a.json"),
+      join(root, "artifacts/consumer-qualification/a.json"),
       "available before error",
     );
     symlinkSync(
       outside,
-      join(root, "artifacts/prose/redirect"),
+      join(root, "artifacts/consumer-qualification/redirect"),
       process.platform === "win32" ? "junction" : "dir",
     );
-    writeFileSync(join(root, "artifacts/prose/z.log"), "available after error");
+    writeFileSync(
+      join(root, "artifacts/consumer-qualification/z.log"),
+      "available after error",
+    );
     const result = spawnSync(
       process.execPath,
       [
@@ -234,7 +226,7 @@ test("available diagnostics survive invalid siblings and missing records are exp
           new URL("../scripts/report-ci-evidence.js", import.meta.url),
         ),
         "--mode",
-        "markdown",
+        "consumer",
       ],
       {
         cwd: root,
@@ -314,12 +306,10 @@ test("all diagnostic modes summarize unavailable outputs before any success reje
     "converter",
     "mutation",
     "renderer",
-    "markdown",
     "archive",
     "consumer",
     "release",
     "registry",
-    "trusted-markdown",
   ]) {
     let summary = "";
     reportEvidence(
@@ -358,7 +348,6 @@ test("only package transport and unfiltered SARIF are retained by Actions", () =
     "steam-community-bbcode": ["bbcode-consumer-archive"],
     "node-consumers": [],
     "steam-community-bbcode-renderer": [],
-    "markdown-quality": [],
     "steam-community-bbcode-release": ["steam-community-bbcode-candidate"],
     codeql: ["codeql-unfiltered-javascript-${{ github.run_attempt }}"],
   };

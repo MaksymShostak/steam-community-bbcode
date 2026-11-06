@@ -78,10 +78,10 @@ function fixture(t) {
         : "";
     return { status: 0, stdout, stderr: "" };
   };
-  return { root, npmCli, python, execute, calls, productOnly: true };
+  return { root, npmCli, python, execute, calls };
 }
 
-test("product setup installs exactly the locked graphs and retains Python without prose installation", (t) => {
+test("development setup installs each locked graph once and retains Python", (t) => {
   const f = fixture(t);
   setUpDevelopment(f);
   const installs = f.calls.filter((call) => call.args.includes("ci"));
@@ -113,29 +113,6 @@ test("product setup installs exactly the locked graphs and retains Python withou
         !call.args.includes("pip") && !call.args.includes("install:markdown"),
     ),
   );
-});
-
-test("Markdown installation is explicit and requires the qualified runtime before any installation", (t) => {
-  const f = fixture(t);
-  f.productOnly = false;
-  if (process.versions.node !== "24.21.0") {
-    assert.throws(
-      () => setUpDevelopment(f),
-      /Markdown setup requires Node 24\.21\.0/,
-    );
-    assert.equal(f.calls.length, 0);
-  } else {
-    const versions = setUpDevelopment(f);
-    assert.equal(versions.markdown, true);
-    assert.ok(
-      f.calls.some(
-        (call) =>
-          call.command === process.execPath &&
-          call.args.join("\0") ===
-            [f.npmCli, "run", "install:markdown"].join("\0"),
-      ),
-    );
-  }
 });
 
 test("a compatible installed Node need not equal the reference pin", (t) => {

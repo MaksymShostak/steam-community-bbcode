@@ -2,8 +2,8 @@
 
 This package is private and under qualification.
 Use a source checkout; there is no published release to install.
-Development supports Node 22.22.2+, 24.15.0+ and 26.0.0+ within those respective majors.
-The complete documentation-tooling environment uses exact Node 24.21.0, also recorded in `.node-version`.
+Development supports Node 22.22.2+, 24.15.0+ and 26.11.1+ within those respective majors.
+The reference development environment uses Node 24.21.0, recorded in `.node-version`.
 The converter's broader development and consumer runtime ranges are unchanged.
 The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
@@ -15,27 +15,29 @@ npm run check
 npm run cli -- to-gfm path/to/description.bbcode
 ```
 
-Setup installs the locked root, both isolated compiler-API tooling graphs, all three Node declaration environments and the separate Markdown graph, and retains a Python `.venv`.
+Setup installs the locked root, including Markdown Quality, both isolated compiler-API tooling graphs and all three Node declaration environments, and retains a Python `.venv`.
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 No Python formatter is installed or removed; the optional comparator keeps its own unchanged requirements.
 
-On another supported converter development runtime:
+The same setup supports every declared development runtime.
+For converter-only checks, use:
 
 ```sh
-npm run set-up:development -- --product-only
 npm run check:product
 ```
 
-Then select Node 24.21.0 for the independent documentation controls:
+Markdown commands use the root-installed public package:
 
 ```sh
-npm run install:markdown
 npm run format:markdown
 npm run test:markdown
 npm run check:markdown
 ```
 
-Unsupported Markdown runtimes fail explicitly; no installer runs automatically and no successful skip substitutes for checking.
+`format:markdown` explicitly writes formatting repairs.
+Preview without writing using `npm exec -- markdown-quality format --dry-run --root . -- README.md`.
+Inspect selection using `npm run --silent inspect:markdown`.
+Check mode writes nothing; selected checks and previews do not establish complete authored-scope acceptance.
 The library executes ordinary JavaScript; checking and declaration generation are development steps.
 See [JavaScript and types](javascript-and-types.md).
 

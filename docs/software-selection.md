@@ -390,6 +390,20 @@ None of these rejected qualification tools enter the adopted dependency graphs.
 
 Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0), [PyPI distribution](https://pypi.org/project/snapper-fmt/0.11.0/), [Prettier prose wrapping](https://prettier.io/docs/options#prose-wrap), [semantic line breaks](https://sembr.org/), [mdformat-slw](https://github.com/KyleKing/mdformat-slw), and [Flowmark](https://github.com/jlevy/flowmark).
 
+## Current Markdown development tooling
+
+Markdown Quality is declared as `@hadden-industries/markdown-quality >=3.0.0` in the root development dependencies.
+Native npm owns the root lock, including matching optional Windows and Linux packages; `npm ci --ignore-scripts` installs the same graph as the other root tools.
+The ordinary commands use the package's public bins and SDK under `authored-gfm@2` defaults.
+`format:markdown` explicitly requests writes; `check:markdown` and `inspect:markdown` are read-only.
+Use the public formatter's `--dry-run` mode directly for a preview, without combining it with the write script.
+Repository policy retains only actual ownership exclusions, and the sparse schema 2 execution profile preserves the existing 30-second ceiling.
+CI sends Markdown diagnostics directly to its logs with workflow-command parsing suspended and retains the native check exit status.
+The ordinary Markdown gate has no mandatory report-file contract; public JSON output remains available to callers that request it.
+Complete authored-scope checking remains required; selected checks, repair success and local installation do not establish hosted qualification or release acceptance.
+The isolated archive graph, its private-dependency override and the unused archive qualifier are retired.
+The following dated sections record historical choices and their original evidence; their retired paths and identities are not current installation instructions.
+
 ## Authored Markdown tooling release preimage (7 October 2026)
 
 The private `tooling/markdown` project pins the immutable Markdown Quality 1.0.3 core and both native platform archives recorded in `release.json`.

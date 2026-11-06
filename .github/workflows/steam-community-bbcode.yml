@@ -93,7 +93,7 @@ jobs:
           no-project: true
           enable-cache: false
       - name: Exercise standalone development setup
-        run: npm exec --yes --package=npm@12.2.0 -- npm run set-up:development -- --product-only
+        run: npm exec --yes --package=npm@12.2.0 -- npm run set-up:development
       - name: Generate locked dependency inventories
         run: |
           node --input-type=module -e "import {mkdirSync} from 'node:fs'; mkdirSync('artifacts/supply-chain', {recursive: true});"
@@ -128,7 +128,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: "24.21.0"
+          node-version-file: .node-version
           package-manager-cache: false
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
@@ -137,22 +137,21 @@ jobs:
           venv-path: ${{ runner.temp }}/python
           no-project: true
           enable-cache: false
-      - name: Install only the isolated Markdown graph and standard-library observer environment
+      - name: Select the pinned npm CLI
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Install the locked root graph and standard-library observer environment
         run: |
-          npm exec --yes --package=npm@12.2.0 -- npm run install:markdown
+          npm ci --ignore-scripts --no-audit --no-fund
           python -m venv .venv
-      - name: Test the native integration and staging boundaries
-        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown
-      - name: Test the public trusted qualification integration
-        run: npm exec --yes --package=npm@12.2.0 -- npm run test:markdown:qualification
+      - name: Test the public Markdown integration
+        run: npm run test:markdown
       - name: Check all authored Markdown, including target-only changes
-        run: npm exec --yes --package=npm@12.2.0 -- npm run check:markdown
-      - name: Report the fresh native Markdown result and stderr
-        if: ${{ !cancelled() }}
-        env:
-          EVIDENCE_OUTCOME: ${{ job.status }}
-          EVIDENCE_LANE: ${{ matrix.os }}
-        run: npm run generate:ci-evidence -- --mode markdown
+        shell: bash
+        run: |
+          markdown_stop_token="$(node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))")"
+          trap 'markdown_status=$?; printf "\n::%s::\n" "$markdown_stop_token"; exit "$markdown_status"' EXIT
+          printf '::stop-commands::%s\n' "$markdown_stop_token"
+          npm run --silent check:markdown 2>&1
   consumer-archive:
     name: Build consumer qualification archive
     needs: [selection, dependency-review]

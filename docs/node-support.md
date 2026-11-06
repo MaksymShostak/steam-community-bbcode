@@ -21,17 +21,17 @@ These targets require passing qualification before a release can claim the teste
 `package.json#engines.node` declares consumer compatibility.
 `package.json#devEngines.runtime` is enforced by npm before `install`, `ci` and `run`, including `npm run set-up:development` on a fresh clone.
 Use that npm entry point for setup.
-The exact `.node-version` identifies the Node 24.21.0 reference build and Markdown environment; it does not change converter runtime compatibility.
+The exact `.node-version` identifies the Node 24.21.0 reference build; it does not change converter runtime compatibility.
 The selected package manager is npm 12.2.0; development requires stable Python at or above the minimum in `.python-version`.
-That file selects the reproducible reference for setup, CI and Markdown tooling; setup also accepts newer stable interpreters and compatible existing environments.
-Markdown Quality 1.0.3 is isolated in `tooling/markdown` and is qualified here on exact Node 24.21.0, Windows x64 and Ubuntu 24.04 x64.
-Its dependency graph is never installed in the other converter lanes or shipped to consumers.
-Use `npm run set-up:development -- --product-only` and `npm run check:product` on another supported converter runtime; select Node 24.21.0 separately for `install:markdown`, `test:markdown` and `check:markdown`.
-The complete `npm run check` requires both product controls and the qualified Markdown environment.
+That file selects the reproducible Python reference for setup and CI; setup also accepts newer stable interpreters and compatible existing environments.
+Markdown Quality is an ordinary root development dependency declared at `>=3.0.0`, with core and matching optional native packages frozen by the root lock.
+Its Node floor of 22.13.0 is already within this repository's declared development ranges; setup has no separate Markdown-only runtime restriction.
+Development dependencies are excluded from the shipped converter dependency graph.
+Use `npm run set-up:development` on a supported development runtime, then `npm run check:product` for converter-only checks or `npm run check` for the complete local aggregate.
 
 ## Qualification and reproducibility
 
-On Windows and Linux, the package checks workflow runs the public product-only fresh-clone setup, unchanged product checks and matching Node declaration qualification at each development minimum and the latest release within each supported major.
+On Windows and Linux, the package checks workflow runs the public fresh-clone setup, unchanged product checks and matching Node declaration qualification at each development minimum and the latest release within each supported major.
 Dedicated Markdown jobs check the entire authored corpus on both qualified platforms, even when only a link target or code changes.
 `BBCode / Qualification` requires both product and Markdown results; failure, cancellation, skip or absence cannot satisfy either gate.
 The consumer workflow runs the installed package's authored JavaScript and CLI cases at each consumer minimum and latest release.

@@ -3,10 +3,10 @@
 `npm run format` applies Prettier to non-Markdown source using the owlapi EditorConfig convention.
 `npm run check:format` rejects formatting drift without writing and runs before qualification and local package creation.
 `npm run format:markdown` owns all repository Markdown layout, semantic line wrapping and literal code preservation.
-`npm run check:markdown` independently requires the native `authored-gfm@1` policy and physical local-file links.
-The schema 2 Markdown policy includes `**/*.md` and explicitly excludes only the operational paths formerly omitted through `.gitignore`.
-The policy is the sole selection authority; all 54 authored documents remain included.
-Plans, fixtures, tooling documentation, comparison documentation and generated references are checked too; `.prettierignore` cannot exempt them.
+`npm run check:markdown` independently requires the native `authored-gfm@2` policy and local target and fragment checks.
+The sparse schema 3 Markdown policy uses default `**/*.md` selection with explicit operational and historical-evidence ownership exclusions.
+The policy is the sole selection authority; historical plans and migration records preserve their original bytes.
+Authored fixture guides, tooling documentation, comparison documentation and generated references are checked too; `.prettierignore` cannot exempt them.
 The generic Prettier invocation excludes all Markdown because the native Markdown command owns it.
 Generated documentation must converge through its owning generator, and its freshness check remains required.
 Repository-authored Markdown does not support two-space hard breaks; trailing-whitespace removal remains enabled.
@@ -18,7 +18,7 @@ Primary TS 7 checking and the strict 100% metric cover its orchestration script 
 Run commands from this package's source checkout with the locked dependencies installed.
 `npm run check:product` retains specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers.
 `npm run check` adds the full authored Markdown check and native integration/observer probes on Node 24.21.0.
-The converter CI matrix uses explicit product-only setup and `check:product`; dedicated Windows/Linux Markdown jobs are mandatory prerequisites of `BBCode / Qualification`.
+The converter CI matrix uses normal root setup and `check:product`; dedicated Windows/Linux Markdown jobs are mandatory prerequisites of `BBCode / Qualification`.
 The standalone workflow regression under `test/bbcode-workflow.test.js` uses native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results, including Markdown.
 The qualification workflow runs for every pull request and main push, without changed-path filtering.
 Every Windows/Linux development lane retains the actual product fresh-clone bootstrap at its minimum or latest supported release.
@@ -31,29 +31,29 @@ The additional runtimes were unmodified official executables checked against the
 Each invocation used the selected runtime for its child processes as well.
 These runs do not establish Linux compatibility or successful GitHub CodeQL and dependency-review jobs.
 
-| Command                               | Contract                                                                                 |
-| ------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `npm test`                            | Focused runtime examples and seeded properties                                           |
-| `npm run qualify:parser`              | Native grammar foundation and resource contracts                                         |
-| `npm run qualify:performance`         | Bounded subprocess regression for opaque text and adjacent formatting                    |
-| `npm run qualify:github`              | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios                |
-| `npm run test:coverage`               | Both suites under c8/V8, including unloaded runtime source                               |
-| `npm run check:conformance`           | Generated forward/reverse policy report matches executed cases                           |
-| `npm run check:docs`                  | Construct examples and package-local documentation links                                 |
-| `npm run check:markdown`              | Full native authored layout, lint and physical local-file links, without writing         |
-| `npm run test:markdown`               | Public tuple, policy, profile, Steam literals, consumer reports/exits and KaTeX override |
-| `npm run test:markdown:qualification` | Public trusted staging, candidate isolation and bounded checking                         |
-| `npm run test:documentation-tooling`  | Focused setup, workflow aggregation and broader documentation-link regressions           |
-| `npm run test:mutation`               | Sequential Stryker library and real-process CLI qualification                            |
-| `npm run test:package`                | Packed source, declarations, maps, executable and fresh consumers                        |
+| Command                              | Contract                                                                           |
+| ------------------------------------ | ---------------------------------------------------------------------------------- |
+| `npm test`                           | Focused runtime examples and seeded properties                                     |
+| `npm run qualify:parser`             | Native grammar foundation and resource contracts                                   |
+| `npm run qualify:performance`        | Bounded subprocess regression for opaque text and adjacent formatting              |
+| `npm run qualify:github`             | Opt-in live GitHub HTML assertions for three synthetic renderer scenarios          |
+| `npm run test:coverage`              | Both suites under c8/V8, including unloaded runtime source                         |
+| `npm run check:conformance`          | Generated forward/reverse policy report matches executed cases                     |
+| `npm run check:docs`                 | Construct examples and package-local documentation links                           |
+| `npm run check:markdown`             | Full native authored layout, lint and physical local-file links, without writing   |
+| `npm run test:markdown`              | Installed public CLI/SDK, policy, Steam literals, native exits and guarded repairs |
+| `npm run test:documentation-tooling` | Focused setup, workflow aggregation and broader documentation-link regressions     |
+| `npm run test:mutation`              | Sequential Stryker library and real-process CLI qualification                      |
+| `npm run test:package`               | Packed source, declarations, maps, executable and fresh consumers                  |
 
 Runtime coverage requires at least 98% statements, lines and functions and 95% branches.
 Three JSDoc-only modules with `export {}` are excluded from runtime measurement because c8 assigns them fictitious unloaded functions.
 Their contracts remain subject to primary type/declaration checks.
 
-The existing evidence locator `artifacts/prose/check.json` now contains the installed capability's versioned native result, not the old Snapper array.
-Its shipped JSON Schema validates the report; operation findings exit 1, operational failures exit 2 and success exits 0.
-Each check clears stale output first and records stderr separately at `artifacts/prose/check.stderr.txt`; absent or malformed output cannot qualify.
+The complete Markdown command streams diagnostics directly to the CI log with workflow-command parsing suspended.
+Its native exit status controls the required job: operation findings exit 1, operational failures exit 2 and success exits 0.
+There is no mandatory prose report file; callers can request versioned JSON on stdout with `npm run --silent check:markdown -- --json`.
+Installed integration probes validate that output through the package's public semantic validator.
 The generated/reference document link checker remains part of the product documentation tests and is not narrowed to the formatter's authored selection.
 
 For this documentation-tooling migration, the owner excluded local full product suites.
@@ -151,10 +151,11 @@ PR merge parents must match the event base/head; main pushes must be non-forced 
 Unknown/mixed paths, deletions, renames, missing history or ambiguous identities select broad qualification; missing/failed selection cannot green the aggregate.
 Explicit dispatch, reusable qualification and Release remain broad.
 
-`npm run generate:ci-evidence -- --mode <lane>` streams native diagnostic files with runner commands suspended and emits a bounded summary of identities, file sizes, hashes and retrieval limits.
+For lanes that produce diagnostic files, `npm run generate:ci-evidence -- --mode <lane>` streams them with runner commands suspended and emits a bounded summary of identities, file sizes, hashes and retrieval limits.
+Markdown checks use direct CI logging and the native command status instead of this file collector.
 Reports keep their existing product paths; local files remain useful for local diagnosis.
-Required evidence is in the reporting step's log, including mutation survivors/timeouts/errors and all available trusted-Markdown window samples, receipts, stdout and stderr.
-No routine converter, Markdown, consumer, mutation, renderer, trusted-Markdown or registry-report archive is uploaded, including during Release.
+Required evidence is in the reporting step's log, including mutation survivors/timeouts/errors and available native diagnostics.
+No routine converter, Markdown, consumer, mutation, renderer or registry-report archive is uploaded, including during Release.
 Complete unfiltered CodeQL SARIF stays in its existing file artifact, with unchanged repository-default retention, filtering and native security upload.
 Only the seven-day shared consumer archive and the thirty-day slim release candidate otherwise remain.
 Logs can be masked, truncated, cancelled or expire; a local hash identifies original bytes and does not prove an unchanged GitHub display.

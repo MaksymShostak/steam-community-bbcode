@@ -26,7 +26,7 @@ const executeCommand = (command, args, root) =>
 /**
  * Install only the repository's locked development environments.
  * The executor boundary allows prerequisite/install failures to be tested without network effects.
- * @param {{root?: string, python?: string, npmCli?: string, execute?: CommandExecutor, productOnly?: boolean}} [options]
+ * @param {{root?: string, python?: string, npmCli?: string, execute?: CommandExecutor}} [options]
  */
 export function setUpDevelopment({
   root = repositoryRoot,
@@ -34,15 +34,10 @@ export function setUpDevelopment({
     (process.platform === "win32" ? "python" : "python3"),
   npmCli = process.env["npm_execpath"],
   execute = executeCommand,
-  productOnly = false,
 } = {}) {
   // npm validates devEngines before invoking this entry point, including on a
   // fresh clone with no node_modules. .node-version is a reference environment.
   const nodeVersion = process.versions.node;
-  assert.ok(
-    productOnly || nodeVersion === "24.21.0",
-    "Markdown setup requires Node 24.21.0; use --product-only on another supported converter runtime, then install Markdown tooling separately on its qualified runtime.",
-  );
   const pythonMinimum = readFileSync(
     join(root, ".python-version"),
     "utf8",
@@ -107,15 +102,12 @@ export function setUpDevelopment({
       "--ignore-scripts",
     ]);
   }
-  if (!productOnly)
-    checked(process.execPath, [npmCli, "run", "install:markdown"]);
   if (!existingEnvironment) checked(python, ["-I", "-m", "venv", ".venv"]);
   const pythonVersion = checked(interpreter, pythonArguments);
   return {
     node: nodeVersion,
     npm: npmVersion,
     python: pythonVersion,
-    markdown: !productOnly,
   };
 }
 
@@ -125,15 +117,10 @@ if (
 ) {
   try {
     const args = process.argv.slice(2);
-    assert.ok(
-      args.length === 0 || (args.length === 1 && args[0] === "--product-only"),
-      "Use npm run set-up:development [-- --product-only].",
-    );
-    const versions = setUpDevelopment({
-      productOnly: args[0] === "--product-only",
-    });
+    assert.equal(args.length, 0, "Use npm run set-up:development.");
+    const versions = setUpDevelopment();
     console.log(
-      `Standalone tooling ready: Node ${versions.node}, npm ${versions.npm}, Python ${versions.python}; Markdown ${versions.markdown ? "installed" : "not selected (--product-only)"}.`,
+      `Standalone tooling ready: Node ${versions.node}, npm ${versions.npm}, Python ${versions.python}.`,
     );
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));

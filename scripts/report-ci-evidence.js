@@ -31,7 +31,7 @@ class EvidenceCollectionError extends Error {
 }
 
 /** Read only the selected invocation's diagnostic roots; never follow links or dump binaries/scratch trees.
- * @param {{root?: string, mode: string, profile?: string | undefined, rendererDirectory?: string | undefined, windowDirectory?: string | undefined, registryDirectory?: string | undefined}} options
+ * @param {{root?: string, mode: string, profile?: string | undefined, rendererDirectory?: string | undefined, registryDirectory?: string | undefined}} options
  * @returns {{path: string, bytes: Buffer}[]}
  */
 export function collectEvidence({
@@ -39,7 +39,6 @@ export function collectEvidence({
   mode,
   profile,
   rendererDirectory,
-  windowDirectory,
   registryDirectory,
 }) {
   const diagnostics = /\.(?:json|log|txt|stderr|md|html|lcov)$/u;
@@ -57,9 +56,6 @@ export function collectEvidence({
         "artifacts/consumer-declaration-files.log",
         "artifacts/pack-actual.json",
       ];
-      break;
-    case "markdown":
-      roots = ["artifacts/prose"];
       break;
     case "archive":
       roots = [
@@ -92,14 +88,9 @@ export function collectEvidence({
       roots = [path];
       break;
     }
-    case "trusted-markdown":
-      if (!windowDirectory) throw new Error("Missing exact Markdown window.");
-      roots = [windowDirectory];
-      break;
     case "release":
       roots = [
         "artifacts/release-candidate",
-        "artifacts/prose",
         "artifacts/runtime-coverage",
         "artifacts/supply-chain",
       ];
@@ -145,19 +136,7 @@ export function collectEvidence({
     const within = relative(base, actual);
     const outside =
       isAbsolute(within) || within === ".." || within.startsWith(`..${sep}`);
-    // The trusted observer is outside the checkout, but must remain within the exact admitted window.
-    if (outside && mode !== "trusted-markdown")
-      throw new Error(`Diagnostic outside checkout: ${path}`);
-    if (mode === "trusted-markdown") {
-      const window = resolve(windowDirectory ?? "");
-      const insideWindow = relative(window, actual);
-      if (
-        isAbsolute(insideWindow) ||
-        insideWindow === ".." ||
-        insideWindow.startsWith(`..${sep}`)
-      )
-        throw new Error("Redirected Markdown window input.");
-    }
+    if (outside) throw new Error(`Diagnostic outside checkout: ${path}`);
     if (stat.isDirectory()) {
       for (const name of readdirSync(full).sort()) {
         // Installed trees, caches, generated API sites and declaration scratch are reproducible; they are not reports.
@@ -181,15 +160,8 @@ export function collectEvidence({
         throw new Error(`Non-regular diagnostic input: ${path}`);
       if (!diagnostics.test(full)) return;
       if (mode !== "renderer" && full.endsWith(".html")) return;
-      if (
-        mode === "trusted-markdown" &&
-        !/(?:^|[\\/])(?:window\.json|stdout\.txt|stderr\.txt|trusted-markdown-run\.json)$/u.test(
-          path,
-        )
-      )
-        return;
       files.push({
-        path: outside ? relative(resolve(windowDirectory ?? ""), full) : within,
+        path: within,
         bytes: readFileSync(full),
       });
     }
@@ -263,12 +235,6 @@ export function reportEvidence(
     /** @type {string[]} */
     let required = [];
     switch (mode) {
-      case "markdown":
-        required = [
-          "artifacts/prose/check.json",
-          "artifacts/prose/check.stderr.txt",
-        ];
-        break;
       case "archive":
         required = [
           "artifacts/consumer-report.json",
@@ -314,7 +280,6 @@ export function reportEvidence(
           "artifacts/release-candidate/consumer-report.json",
           "artifacts/release-candidate/production-audit.json",
           "artifacts/release-candidate/production.cdx.json",
-          "artifacts/prose/check.json",
         ];
         break;
       case "registry":
@@ -325,15 +290,6 @@ export function reportEvidence(
           "registry-verification/consumer-report.json",
           "registry-verification/consumer-package-lock.json",
         ];
-        break;
-      case "trusted-markdown":
-        required = ["window.json"];
-        for (let sample = 1; sample <= 6; sample++)
-          required.push(
-            `sample-${sample}/markdown-evidence/trusted-markdown-run.json`,
-            `sample-${sample}/stdout.txt`,
-            `sample-${sample}/stderr.txt`,
-          );
         break;
       case "renderer":
         if (
@@ -372,7 +328,6 @@ if (
       mode: { type: "string" },
       profile: { type: "string" },
       "renderer-directory": { type: "string" },
-      "window-directory": { type: "string" },
       "registry-directory": { type: "string" },
     },
   });
@@ -382,7 +337,6 @@ if (
         mode: values.mode ?? "",
         profile: values.profile,
         rendererDirectory: values["renderer-directory"],
-        windowDirectory: values["window-directory"],
         registryDirectory: values["registry-directory"],
       }),
       { mode: values.mode ?? "" },

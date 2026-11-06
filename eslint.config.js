@@ -10,6 +10,7 @@ export default defineConfig([
       "src/**/*.js",
       "scripts/**/*.js",
       "test/**/*.js",
+      "test/**/*.mjs",
       "tooling/api-docs/*.js",
       "eslint.config.js",
     ],

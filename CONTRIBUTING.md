@@ -16,8 +16,8 @@ See [JavaScript and types](docs/javascript-and-types.md) for the compiler roles 
 Public declaration changes are API changes.
 Do not patch dependencies, add compatibility shims, suppress checks or relax failing assertions.
 
-On Node 24.21.0, run `npm run set-up:development` with the pinned tools, then `npm run check`.
-On another supported converter development runtime, select `npm run set-up:development -- --product-only` and `npm run check:product`; install and check Markdown separately on Node 24.21.0.
+On a supported development runtime, run `npm run set-up:development` with the pinned tools, then `npm run check`.
+Node 24.21.0 remains the reference runtime; `npm run check:product` selects converter-only checks.
 A local pass does not authorize a commit, push, npm release, GitHub protection change or Steam publication.
 
 Use precise verb-first names for custom npm operations, with lowercase kebab-case words and colon-separated qualifiers, such as `compare:alternatives`.
@@ -31,9 +31,9 @@ Edit source JSDoc to change the API reference and run `npm run generate:api-docs
 Supporting source modules in that reference explain referenced types; the package exports map still defines its public surface.
 
 Use semantic line breaks for authored package guides: one sentence per source line, with editor soft wrapping for long sentences.
-Run `npm run install:markdown`, then `npm run format:markdown` on the qualified Node 24.21.0 runtime.
+Root setup installs Markdown Quality with the other development dependencies; `npm run format:markdown` explicitly writes formatting repairs.
 `npm run check:markdown` performs the full authored check without writing and is included in `npm run check` and dedicated Windows/Linux CI jobs.
-`npm run test:markdown` exercises the real native CLI, selected paths, literal preservation, result schema and candidate isolation.
-The gate covers all repository Markdown, including historical plans and migration records; generated references and conformance projections remain owned by their generators.
+`npm run test:markdown` exercises the installed public CLI and SDK, selected paths, Steam literal preservation, result schema and refusal behavior.
+The gate covers authored repository Markdown; historical plans and migration evidence preserve their recorded bytes, and generated references and conformance projections remain owned by their generators.
 Code blocks and tables retain their meaning; two-space hard breaks are rejected and safe formatting uses explicit backslash breaks.
 The formatter uses deterministic sentence detection; review language and unusual abbreviations as normal prose.

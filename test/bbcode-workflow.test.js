@@ -3,8 +3,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { parseDocument, isMap, isSeq, isScalar } from "yaml";
 
 const source = readFileSync(
@@ -381,7 +382,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   assert.equal(bootstrap.get("if"), undefined);
   assert.equal(
     bootstrap.get("run"),
-    "npm exec --yes --package=npm@12.2.0 -- npm run set-up:development -- --product-only",
+    "npm exec --yes --package=npm@12.2.0 -- npm run set-up:development",
   );
   const check = steps.items.find(
     (step) =>
@@ -436,26 +437,13 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
     assert.ok(isMap(step));
     return String(step.get("run") ?? "");
   });
-  for (const script of [
-    "install:markdown",
-    "test:markdown",
-    "test:markdown:qualification",
-    "check:markdown",
-  ])
-    assert.ok(
-      runs.some(
-        (run) =>
-          run.endsWith(`npm run ${script}`) ||
-          run.includes(`npm run ${script}\n`),
-      ),
-      script,
-    );
+  assert.ok(runs.includes("npm run test:markdown"));
   const node = steps.items.find(
     (step) =>
       isMap(step) && String(step.get("uses")).startsWith("actions/setup-node@"),
   );
   assert.ok(isMap(node));
-  assert.equal(node.getIn(["with", "node-version"]), "24.21.0");
+  assert.equal(node.getIn(["with", "node-version-file"]), ".node-version");
   const releaseSteps = release.getIn(["jobs", "candidate", "steps"], true);
   assert.ok(isSeq(releaseSteps));
   const releaseNode = releaseSteps.items.find(
@@ -463,19 +451,99 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
       isMap(step) && String(step.get("uses")).startsWith("actions/setup-node@"),
   );
   assert.ok(isMap(releaseNode));
-  assert.equal(String(releaseNode.getIn(["with", "node-version"])), "24.21.0");
-  assert.ok(
-    releaseSteps.items.some(
-      (step) =>
-        isMap(step) &&
-        String(step.get("run")).includes("npm run install:markdown"),
-    ),
+  assert.equal(
+    releaseNode.getIn(["with", "node-version-file"]),
+    ".node-version",
   );
   assert.doesNotMatch(
     source + String(release),
-    /tooling\/prose|qualify:prose|docs:format/u,
+    /install:markdown|test:markdown:qualification|tooling\/markdown|tooling\/prose|qualify:prose|docs:format/u,
   );
 });
+
+for (const [document, job] of /** @type {const} */ ([
+  [workflow, "markdown"],
+  [release, "candidate"],
+])) {
+  test(`full Markdown logs follow installation and precede consumers in ${job}`, () => {
+    const steps = document.getIn(["jobs", job, "steps"], true);
+    assert.ok(isSeq(steps));
+    const runs = steps.items.map((step) => {
+      assert.ok(isMap(step));
+      return String(step.get("run") ?? "");
+    });
+    const install = runs.findIndex((run) =>
+      run.includes("npm ci --ignore-scripts"),
+    );
+    const check = runs.findIndex((run) => run.includes("check:markdown"));
+    assert.ok(install >= 0 && check > install);
+    const checking = steps.items[check];
+    assert.ok(isMap(checking));
+    assert.equal(checking.get("shell"), "bash");
+    assert.equal(checking.get("if"), undefined);
+    assert.equal(checking.get("continue-on-error"), undefined);
+    assert.equal(
+      runs[check].trim().split("\n").at(-1),
+      "npm run --silent check:markdown 2>&1",
+    );
+    assert.doesNotMatch(runs.join("\n"), /artifacts\/prose|--mode markdown/u);
+    if (job === "markdown") {
+      const integration = runs.indexOf("npm run test:markdown");
+      assert.ok(integration > install && integration < check);
+    } else {
+      const product = runs.indexOf("npm run check:product");
+      const pack = runs.findIndex((run) =>
+        run.includes("npm run pack:release"),
+      );
+      assert.ok(product > install && product < check && pack > check);
+      const reporting = runs.findIndex((run) =>
+        run.includes("generate:ci-evidence"),
+      );
+      assert.ok(reporting > pack);
+    }
+  });
+
+  test(`actual Bash Markdown logging restores commands and preserves native status in ${job}`, (t) => {
+    const steps = document.getIn(["jobs", job, "steps"], true);
+    assert.ok(isSeq(steps));
+    const step = steps.items.find(
+      (entry) =>
+        isMap(entry) && String(entry.get("run")).includes("check:markdown"),
+    );
+    assert.ok(isMap(step));
+    const command = step.get("run");
+    assert.ok(typeof command === "string");
+    for (const status of [0, 1, 2]) {
+      const directory = mkdtempSync(join(tmpdir(), "bbcode Markdown logging "));
+      t.after(() => rmSync(directory, { recursive: true, force: true }));
+      const result = spawnSync(
+        bash,
+        [
+          "--noprofile",
+          "--norc",
+          "-eo",
+          "pipefail",
+          "-c",
+          `npm() { test "$*" = 'run --silent check:markdown' || return 91; printf 'native stdout\\n'; printf '::warning::literal native diagnostic\\n' >&2; return ${status}; }\n${command}`,
+        ],
+        { cwd: directory, encoding: "utf8", windowsHide: true },
+      );
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, status, result.stdout + result.stderr);
+      assert.equal(result.stderr, "");
+      const lines = result.stdout.trim().split("\n");
+      const token = /^::stop-commands::([a-f0-9]{64})$/u.exec(
+        lines[0] ?? "",
+      )?.[1];
+      assert.ok(token);
+      assert.deepEqual(lines.slice(1, 3), [
+        "native stdout",
+        "::warning::literal native diagnostic",
+      ]);
+      assert.equal(lines.at(-1), `::${token}::`);
+    }
+  });
+}
 
 test("every Python CI lane provisions from the sole repository target", () => {
   /** @type {Array<[typeof workflow | typeof release, string]>} */

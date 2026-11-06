@@ -52,7 +52,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24.21.0
+          node-version-file: .node-version
           package-manager-cache: false
       - name: Select the qualified npm CLI
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
@@ -61,7 +61,6 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           npm --prefix tooling/type-coverage ci --ignore-scripts --no-audit --no-fund
           npm --prefix tooling/api-docs ci --ignore-scripts --no-audit --no-fund
-          npm run install:markdown
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           version: "0.13.0"
@@ -73,7 +72,14 @@ jobs:
         run: |
           python -m venv .venv
       - name: Run the existing converter qualification
-        run: npm run check
+        run: npm run check:product
+      - name: Check all authored Markdown for the release candidate
+        shell: bash
+        run: |
+          markdown_stop_token="$(node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))")"
+          trap 'markdown_status=$?; printf "\n::%s::\n" "$markdown_stop_token"; exit "$markdown_status"' EXIT
+          printf '::stop-commands::%s\n' "$markdown_stop_token"
+          npm run --silent check:markdown 2>&1
       - name: Build and exercise the retained archive
         env:
           RELEASE_TAG: ${{ inputs.tag }}

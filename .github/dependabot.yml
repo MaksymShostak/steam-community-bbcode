@@ -46,13 +46,6 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: ["<26.0.0", ">=27.0.0"]
-  - package-ecosystem: npm
-    directories:
-      - /tooling/markdown
-    patterns: ["*"]
-    multi-ecosystem-group: repository-version-updates
-    cooldown:
-      default-days: 0
   - package-ecosystem: github-actions
     directory: /
     patterns: ["*"]

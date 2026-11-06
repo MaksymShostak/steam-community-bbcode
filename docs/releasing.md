@@ -18,8 +18,8 @@ Do not publish through ONI or merge the package branch into ONI main.
 Preserve source, tests, isolated locks, licence notices, original plans and their execution lineage.
 The private recovery archive retains ignored qualification evidence, raw failures, original candidates and the unsent upstream report; none belongs in active destination lifecycle state or npm archives.
 The copied Workshop-description fixture retains its local MIT/Klei notice, and the reused Python launcher retains its MIT notice.
-The standard-library Markdown observer and optional comparator retain this repository's Python launcher and `.venv`; no prose-only Python dependency is required.
-Authored Markdown uses the isolated `tooling/markdown` graph on Node 24.21.0.
+The optional comparator retains this repository's Python launcher and `.venv`; no prose-only Python dependency is required.
+Authored Markdown uses the root-installed Markdown Quality development dependency and the ordinary reference runtime.
 The installable development archive is not a complete recovery bundle.
 The historical ONI trusted-base PR linkage failure remains recorded; destination lifecycle setup must support the accepted baseline.
 
@@ -38,9 +38,11 @@ npm run check
 npm run pack:release
 ```
 
-The complete local aggregate requires Node 24.21.0 and `npm run install:markdown`.
-Other supported converter runtimes use `npm run check:product` and separate qualified Markdown checks; product-only success cannot replace the mandatory Markdown results.
-The release candidate job uses Node 24.21.0, installs the exact isolated graph and requires both-platform Markdown jobs through its existing qualification prerequisite.
+The complete local aggregate uses the root lock installed by `npm run set-up:development` on a supported development runtime.
+`npm run check:product` checks the converter alone; that success cannot replace the mandatory Markdown results.
+The release candidate job uses the reference runtime, installs the frozen root graph and requires both-platform Markdown jobs through its existing qualification prerequisite.
+It runs the complete public Markdown check before packing and sends diagnostics directly to the CI log, preserving the native exit status.
+These ordinary policy checks do not issue the retired archive qualification receipt.
 Consumer/declaration runtime floors and the credential-limited publication job remain unchanged.
 
 The second command prints a new directory under `artifacts/release-candidates/`.
