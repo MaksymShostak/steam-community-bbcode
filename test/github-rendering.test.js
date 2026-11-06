@@ -70,6 +70,11 @@ function runProbe(scenario, responses) {
       ],
       {
         cwd: sandbox,
+        env: {
+          ...process.env,
+          GITHUB_STEP_SUMMARY: join(sandbox, "github-summary.md"),
+          GITHUB_OUTPUT: join(sandbox, "github-output.txt"),
+        },
         encoding: "utf8",
         timeout: 10_000,
         maxBuffer: 1024 * 1024,

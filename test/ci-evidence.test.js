@@ -19,6 +19,46 @@ import {
   reportEvidence,
 } from "../scripts/report-ci-evidence.js";
 
+test("fixture CLI probes leave inherited Actions report files unchanged", () => {
+  const root = mkdtempSync(join(tmpdir(), "bbcode-runner-isolation-"));
+  try {
+    const summary = join(root, "runner-summary.md");
+    const output = join(root, "runner-output.txt");
+    writeFileSync(summary, "real runner summary\n");
+    writeFileSync(output, "real runner output\n");
+    const result = spawnSync(
+      process.execPath,
+      [
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "^(default renderer qualification verifies all three independent scenarios|available diagnostics survive invalid siblings and missing records are explicit for failed producers)$",
+        fileURLToPath(new URL("./ci-evidence.test.js", import.meta.url)),
+        fileURLToPath(new URL("./github-rendering.test.js", import.meta.url)),
+      ],
+      {
+        cwd: fileURLToPath(new URL("../", import.meta.url)),
+        env: {
+          ...process.env,
+          NODE_TEST_CONTEXT: undefined,
+          GITHUB_STEP_SUMMARY: summary,
+          GITHUB_OUTPUT: output,
+        },
+        encoding: "utf8",
+        timeout: 30_000,
+        windowsHide: true,
+      },
+    );
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    assert.match(result.stdout, /^ok \d+ - default renderer qualification/mu);
+    assert.match(result.stdout, /^ok \d+ - available diagnostics survive/mu);
+    assert.equal(readFileSync(summary, "utf8"), "real runner summary\n");
+    assert.equal(readFileSync(output, "utf8"), "real runner output\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("hostile diagnostic text stays data, full logs survive summary limits and commands resume after errors", () => {
   const hostile =
     "::error::forged\n::set-env name=TOKEN::stolen\n::fake-token::\n<script>evil</script>\n`$(echo injected)`\n";
@@ -231,7 +271,12 @@ test("available diagnostics survive invalid siblings and missing records are exp
       {
         cwd: root,
         encoding: "utf8",
-        env: { ...process.env, EVIDENCE_OUTCOME: "failure" },
+        env: {
+          ...process.env,
+          EVIDENCE_OUTCOME: "failure",
+          GITHUB_STEP_SUMMARY: join(root, "github-summary.md"),
+          GITHUB_OUTPUT: join(root, "github-output.txt"),
+        },
       },
     );
     assert.equal(result.status, 1);
