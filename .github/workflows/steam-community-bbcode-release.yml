@@ -71,8 +71,6 @@ jobs:
       - name: Retain Python for the standard-library observer and optional comparator
         run: |
           python -m venv .venv
-      - name: Run the existing converter qualification
-        run: npm run check:product
       - name: Check all authored Markdown for the release candidate
         shell: bash
         run: |
@@ -80,6 +78,8 @@ jobs:
           trap 'markdown_status=$?; printf "\n::%s::\n" "$markdown_stop_token"; exit "$markdown_status"' EXIT
           printf '::stop-commands::%s\n' "$markdown_stop_token"
           npm run --silent check:markdown 2>&1
+      - name: Run the existing converter qualification
+        run: npm run check:product
       - name: Build and exercise the retained archive
         env:
           RELEASE_TAG: ${{ inputs.tag }}

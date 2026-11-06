@@ -7,7 +7,7 @@
   "scripts": {
     "test": "node --test bbob.test.js",
     "typecheck": "tsc --project tsconfig.json",
-    "qualify": "npm test && npm run typecheck"
+    "qualify": "npm run typecheck && npm test"
   },
   "devDependencies": {
     "@bbob/parser": ">=4.4.1",

@@ -17,6 +17,9 @@ Primary TS 7 checking and the strict 100% metric cover its orchestration script 
 
 Run commands from this package's source checkout with the locked dependencies installed.
 `npm run check:product` retains specification projections, runtime coverage, executed conformance, TypeScript 7 checking, 100% typed-reference coverage, reproducible declarations, declaration contracts and actual npm-installed API/CLI consumers.
+It runs formatting, specification, lint, documentation and type checks before coverage, performance and installed-consumer qualification.
+The complete `check` command checks Markdown before product qualification; CI also makes the Markdown jobs prerequisites of converter and archive qualification.
+The release candidate checks Markdown before repeating product qualification and packing.
 `npm run check` adds the full authored Markdown check and native integration/observer probes on Node 24.21.0.
 The converter CI matrix uses normal root setup and `check:product`; dedicated Windows/Linux Markdown jobs are mandatory prerequisites of `BBCode / Qualification`.
 The standalone workflow regression under `test/bbcode-workflow.test.js` uses native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results, including Markdown.

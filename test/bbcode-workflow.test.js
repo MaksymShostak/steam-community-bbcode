@@ -114,6 +114,7 @@ test("short checks gate mutation without tolerating failed prerequisites", () =>
   assert.deepEqual(sequenceValues(["jobs", "converter", "needs"]), [
     "selection",
     "dependency-review",
+    "markdown",
   ]);
   assert.deepEqual(sequenceValues(["jobs", "mutation", "needs"]), [
     "selection",
@@ -497,13 +498,13 @@ for (const [document, job] of /** @type {const} */ ([
     assert.doesNotMatch(runs.join("\n"), /artifacts\/prose|--mode markdown/u);
     if (job === "markdown") {
       const integration = runs.indexOf("npm run test:markdown");
-      assert.ok(integration > install && integration < check);
+      assert.ok(integration > check);
     } else {
       const product = runs.indexOf("npm run check:product");
       const pack = runs.findIndex((run) =>
         run.includes("npm run pack:release"),
       );
-      assert.ok(product > install && product < check && pack > check);
+      assert.ok(product > check && pack > product);
       const reporting = runs.findIndex((run) =>
         run.includes("generate:ci-evidence"),
       );

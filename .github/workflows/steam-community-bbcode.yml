@@ -52,7 +52,7 @@ jobs:
         run: npm run qualify:ci-selection
   converter:
     name: BBCode / ${{ matrix.os }} / Node ${{ matrix.node }}
-    needs: [selection, dependency-review]
+    needs: [selection, dependency-review, markdown]
     if: needs.selection.outputs.package-required == 'true'
     timeout-minutes: 60
     strategy:
@@ -134,8 +134,6 @@ jobs:
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install the locked root graph
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Test the public Markdown integration
-        run: npm run test:markdown
       - name: Check all authored Markdown, including target-only changes
         shell: bash
         run: |
@@ -143,9 +141,11 @@ jobs:
           trap 'markdown_status=$?; printf "\n::%s::\n" "$markdown_stop_token"; exit "$markdown_status"' EXIT
           printf '::stop-commands::%s\n' "$markdown_stop_token"
           npm run --silent check:markdown 2>&1
+      - name: Test the public Markdown integration
+        run: npm run test:markdown
   consumer-archive:
     name: Build consumer qualification archive
-    needs: [selection, dependency-review]
+    needs: [selection, dependency-review, markdown]
     if: needs.selection.outputs.package-required == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
