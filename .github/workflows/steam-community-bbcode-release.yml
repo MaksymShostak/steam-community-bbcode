@@ -40,7 +40,7 @@ jobs:
   candidate:
     name: Qualify the release archive
     needs: [qualification, security]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     outputs:
       artifact_id: ${{ steps.archive.outputs.artifact-id }}
@@ -128,7 +128,7 @@ jobs:
     needs: [candidate, consumers]
     if: inputs.publish && github.repository == 'MaksymShostak/steam-community-bbcode' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
     environment: npm-release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     permissions:
       contents: read
@@ -198,7 +198,7 @@ jobs:
   verify_registry:
     name: Verify the public registry and installed consumer
     needs: [candidate, publish]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     permissions:
       contents: read

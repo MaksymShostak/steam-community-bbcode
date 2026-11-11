@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-26.04, windows-latest]
         node:
           - { version: "22.11.0", major: "22" }
           - { version: "24.11.0", major: "24" }

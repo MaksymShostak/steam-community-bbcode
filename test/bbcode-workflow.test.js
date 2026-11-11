@@ -7,6 +7,11 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseDocument, isMap, isSeq, isScalar } from "yaml";
+import {
+  projectUbuntuRunners,
+  synchronizeUbuntuRunners,
+  ubuntuRunner,
+} from "../scripts/syncUbuntuRunners.js";
 
 const source = readFileSync(
   new URL("../.github/workflows/steam-community-bbcode.yml", import.meta.url),
@@ -37,6 +42,30 @@ const referenceLanes = [
   { file: ".github/node-versions/24", major: "24" },
   { file: ".node-version", major: "26" },
 ];
+
+test("the runner policy projects every managed Steam workflow", () => {
+  synchronizeUbuntuRunners();
+  const old = ubuntuRunner === "ubuntu-24.04" ? "ubuntu-26.04" : "ubuntu-24.04";
+  const file = "steam-community-bbcode.yml";
+  const previous = projectUbuntuRunners(file, source, old);
+  assert.notEqual(previous, source);
+  assert.equal(projectUbuntuRunners(file, previous), source);
+  const commented = source + "\n# Earlier runner: ubuntu-24.04\n";
+  assert.equal(projectUbuntuRunners(file, commented), commented);
+  const extra = "\n  extra: {runs-on: [ubuntu-24.04], steps: []}\n";
+  assert.throws(
+    () => projectUbuntuRunners(file, source + extra),
+    /unmanaged Ubuntu selector/u,
+  );
+  const moved = source.replace(
+    `runs-on: ${ubuntuRunner}`,
+    "runs-on: windows-2025",
+  );
+  assert.throws(
+    () => projectUbuntuRunners(file, moved + extra),
+    /selection has no supported Ubuntu selector/u,
+  );
+});
 
 test("consumer minimums and exact references gate publication of the same candidate", () => {
   const matrix = consumers.getIn(
@@ -321,7 +350,7 @@ for (const scenario of cases) {
 test("qualification preserves the supported runtime matrix and unprivileged actions", () => {
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "os"]),
-    ["ubuntu-latest", "windows-latest"],
+    [ubuntuRunner, "windows-latest"],
   );
   const lanes = workflow.getIn(
     ["jobs", "converter", "strategy", "matrix", "node"],
@@ -437,7 +466,7 @@ test("dependency review is PR-only while the job remains an unconditional prereq
 test("dedicated full Markdown controls gate qualification and the compatible release candidate", () => {
   assert.deepEqual(
     sequenceValues(["jobs", "markdown", "strategy", "matrix", "os"]),
-    ["ubuntu-24.04", "windows-2025"],
+    [ubuntuRunner, "windows-2025"],
   );
   const steps = workflow.getIn(["jobs", "markdown", "steps"], true);
   assert.ok(isSeq(steps));
@@ -494,12 +523,14 @@ for (const [document, job] of /** @type {const} */ ([
     const check = runs.findIndex((run) => run.includes("check:markdown"));
     assert.ok(install >= 0 && check > install);
     const checking = steps.items[check];
+    const checkingRun = runs[check];
     assert.ok(isMap(checking));
+    assert.ok(checkingRun);
     assert.equal(checking.get("shell"), "bash");
     assert.equal(checking.get("if"), undefined);
     assert.equal(checking.get("continue-on-error"), undefined);
     assert.equal(
-      runs[check].trim().split("\n").at(-1),
+      checkingRun.trim().split("\n").at(-1),
       "npm run --silent check:markdown 2>&1",
     );
     assert.doesNotMatch(runs.join("\n"), /artifacts\/prose|--mode markdown/u);
@@ -532,6 +563,7 @@ for (const [document, job] of /** @type {const} */ ([
     for (const status of [0, 1, 2]) {
       const directory = mkdtempSync(join(tmpdir(), "bbcode Markdown logging "));
       t.after(() => rmSync(directory, { recursive: true, force: true }));
+      /** @type {import("node:child_process").SpawnSyncReturns<string>} */
       const result = spawnSync(
         bash,
         [

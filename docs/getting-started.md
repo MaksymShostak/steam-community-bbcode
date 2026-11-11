@@ -22,6 +22,9 @@ Setup installs the locked root, including Markdown Quality, both isolated compil
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 No Python formatter is installed or removed; the optional comparator keeps its own unchanged requirements.
 
+The Ubuntu release for GitHub Actions is set in `.github/runner-policy.json`.
+After changing it, run `node scripts/syncUbuntuRunners.js --write` and commit the regenerated workflows with the policy.
+
 ### Run converter-only checks
 
 The same setup supports every declared development runtime.

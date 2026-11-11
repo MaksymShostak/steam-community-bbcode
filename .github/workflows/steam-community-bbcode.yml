@@ -31,7 +31,7 @@ concurrency:
 jobs:
   selection:
     name: Select qualification from exact Git inputs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     outputs:
       package-required: ${{ steps.selection.outputs.package-required }}
@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-26.04, windows-latest]
         node:
           - { version: "22.22.2", major: "22" }
           - { version: "24.15.0", major: "24" }
@@ -115,7 +115,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2025]
+        os: [ubuntu-26.04, windows-2025]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -142,7 +142,7 @@ jobs:
     name: Build consumer qualification archive
     needs: [selection, dependency-review, markdown]
     if: needs.selection.outputs.package-required == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -182,7 +182,7 @@ jobs:
       fail-fast: false
       matrix:
         profile: [library, cli]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -220,7 +220,7 @@ jobs:
         markdown,
       ]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions: {}
     steps:
       - name: Require iteration checks and the requested mutation result
@@ -259,7 +259,7 @@ jobs:
           esac
   dependency-review:
     name: BBCode / Dependency review
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     permissions:
       contents: read
