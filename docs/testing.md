@@ -20,14 +20,14 @@ Run commands from this package's source checkout with the locked dependencies in
 It runs formatting, specification, lint, documentation and type checks before coverage, performance and installed-consumer qualification.
 The complete `check` command checks Markdown before product qualification; CI also makes the Markdown jobs prerequisites of converter and archive qualification.
 The release candidate checks Markdown before repeating product qualification and packing.
-`npm run check` adds the full authored Markdown check and native integration/observer probes on Node 24.21.0.
+`npm run check` adds the full authored Markdown check and native integration/observer probes on the reference Node version in [`.node-version`](../.node-version).
 The converter CI matrix uses normal root setup and `check:product`; dedicated Windows/Linux Markdown jobs are mandatory prerequisites of `BBCode / Qualification`.
 The standalone workflow regression under `test/bbcode-workflow.test.js` uses native YAML parsing and execution of the real Bash aggregate for successful, failed, cancelled, skipped and absent prerequisite results, including Markdown.
 
 The qualification workflow runs for every pull request and main push, without changed-path filtering.
 Every Windows/Linux development lane retains the actual product fresh-clone bootstrap at its minimum or latest supported release.
 
-Separate consumer lanes exercise one retained package at the lower consumer minimums and latest releases; see [Node support and qualification](node-support.md).
+Separate consumer lanes exercise one retained package at the lower consumer minimums and exact compatibility references; see [Node support and qualification](node-support.md).
 These local workflow checks do not establish hosted execution or branch-protection enforcement; those require destination run and settings evidence.
 Native ESLint recommended rules also run without inline configuration or warning allowances.
 

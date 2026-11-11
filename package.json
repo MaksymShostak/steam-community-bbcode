@@ -15,7 +15,7 @@
       "onFail": "error"
     }
   },
-  "packageManager": "npm@12.2.0",
+  "packageManager": "npm@12.2.2",
   "main": "./src/index.js",
   "bin": {
     "steam-community-bbcode": "src/cli.js"

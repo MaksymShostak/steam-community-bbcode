@@ -32,20 +32,32 @@ const release = parseDocument(
 assert.deepEqual(consumers.errors, []);
 assert.deepEqual(release.errors, []);
 
-test("consumer minimums and latest releases gate publication of the same candidate", () => {
+const referenceLanes = [
+  { file: ".github/node-versions/22", major: "22" },
+  { file: ".github/node-versions/24", major: "24" },
+  { file: ".node-version", major: "26" },
+];
+
+test("consumer minimums and exact references gate publication of the same candidate", () => {
   const matrix = consumers.getIn(
     ["jobs", "consumer", "strategy", "matrix", "node"],
     true,
   );
   assert.ok(isSeq(matrix));
   assert.deepEqual(matrix.toJSON(), [
-    "22.11.0",
-    "24.11.0",
-    "26.0.0",
-    "22.x",
-    "24.x",
-    "26.x",
+    { version: "22.11.0", major: "22" },
+    { version: "24.11.0", major: "24" },
+    { version: "26.0.0", major: "26" },
+    ...referenceLanes,
   ]);
+  for (const { file, major } of referenceLanes) {
+    const version = readFileSync(
+      new URL(`../${file}`, import.meta.url),
+      "utf8",
+    ).trim();
+    assert.match(version, /^\d+\.\d+\.\d+$/u);
+    assert.equal(version.split(".")[0], major);
+  }
   assert.deepEqual(sequenceValues(["jobs", "consumers", "needs"]), [
     "selection",
     "consumer-archive",
@@ -307,27 +319,21 @@ for (const scenario of cases) {
 }
 
 test("qualification preserves the supported runtime matrix and unprivileged actions", () => {
-  const declarationLanes = workflow.getIn(
-    ["jobs", "converter", "strategy", "matrix", "include"],
-    true,
-  );
-  assert.ok(isSeq(declarationLanes));
-  assert.deepEqual(declarationLanes.toJSON(), [
-    { node: "22.22.2", nodeTypes: "22" },
-    { node: "24.15.0", nodeTypes: "24" },
-    { node: "26.11.1", nodeTypes: "26" },
-    { node: "22.x", nodeTypes: "22" },
-    { node: "24.x", nodeTypes: "24" },
-    { node: "26.x", nodeTypes: "26" },
-  ]);
   assert.deepEqual(
     sequenceValues(["jobs", "converter", "strategy", "matrix", "os"]),
     ["ubuntu-latest", "windows-latest"],
   );
-  assert.deepEqual(
-    sequenceValues(["jobs", "converter", "strategy", "matrix", "node"]),
-    ["22.22.2", "24.15.0", "26.11.1", "22.x", "24.x", "26.x"],
+  const lanes = workflow.getIn(
+    ["jobs", "converter", "strategy", "matrix", "node"],
+    true,
   );
+  assert.ok(isSeq(lanes));
+  assert.deepEqual(lanes.toJSON(), [
+    { version: "22.22.2", major: "22" },
+    { version: "24.15.0", major: "24" },
+    { version: "26.11.1", major: "26" },
+    ...referenceLanes,
+  ]);
   assert.equal(workflow.getIn(["permissions", "contents"]), "read");
   assert.doesNotMatch(
     source,
@@ -349,7 +355,8 @@ test("qualification preserves the supported runtime matrix and unprivileged acti
       const action = step.get("uses");
       if (action === undefined) continue;
       assert.ok(typeof action === "string");
-      assert.match(action, /@[a-f0-9]{40}$/u);
+      if (action !== "./.github/actions/setup-npm")
+        assert.match(action, /@[a-f0-9]{40}$/u);
       if (action.startsWith("actions/checkout@"))
         assert.equal(step.getIn(["with", "persist-credentials"]), false);
     }
@@ -381,9 +388,12 @@ test("standalone qualification runs root checks and native bootstrap for every d
   );
   assert.ok(isMap(bootstrap));
   assert.equal(bootstrap.get("if"), undefined);
-  assert.equal(
-    bootstrap.get("run"),
-    "npm exec --yes --package=npm@12.2.0 -- npm run set-up:development",
+  assert.equal(bootstrap.get("run"), "npm run set-up:development");
+  const npmSetupIndex = steps.items.findIndex(
+    (step) => isMap(step) && step.get("uses") === "./.github/actions/setup-npm",
+  );
+  assert.ok(
+    npmSetupIndex >= 0 && npmSetupIndex < steps.items.indexOf(bootstrap),
   );
   const check = steps.items.find(
     (step) =>
@@ -392,10 +402,7 @@ test("standalone qualification runs root checks and native bootstrap for every d
   );
   assert.ok(isMap(check));
   assert.equal(check.get("if"), undefined);
-  assert.equal(
-    check.get("run"),
-    "npm exec --yes --package=npm@12.2.0 -- npm run check:product",
-  );
+  assert.equal(check.get("run"), "npm run check:product");
 });
 
 test("dependency review is PR-only while the job remains an unconditional prerequisite", () => {

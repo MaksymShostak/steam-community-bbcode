@@ -115,22 +115,23 @@ test("development setup installs each locked graph once and retains Python", (t)
   );
 });
 
-test("a compatible installed Node need not equal the reference pin", (t) => {
+test("development setup records the installed Node and npm versions", (t) => {
   const f = fixture(t);
   writeFileSync(join(f.root, ".node-version"), "24.20.0\n");
   const versions = setUpDevelopment(f);
   assert.equal(versions.node, process.versions.node);
+  assert.equal(versions.npm, "12.2.0");
   assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 6);
 });
 
-test("mismatched npm and below-minimum Python stop before installations", (t) => {
+test("failed npm and below-minimum Python probes stop before installations", (t) => {
   for (const prerequisite of ["npm", "Python"]) {
     const f = fixture(t);
     const execute = f.execute;
     f.execute = (command, args, root) => {
       const result = execute(command, args, root);
       if (prerequisite === "npm" && args.includes("--version"))
-        return { ...result, stdout: "0.0.0\n" };
+        return { ...result, status: 1, stderr: "npm probe failed" };
       if (prerequisite === "Python" && args.includes("-c"))
         return {
           ...result,

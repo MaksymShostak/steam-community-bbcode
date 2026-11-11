@@ -42,20 +42,7 @@ export function setUpDevelopment({
     join(root, ".python-version"),
     "utf8",
   ).trim();
-  assert.ok(
-    npmCli,
-    "Run npm run set-up:development with the pinned npm version.",
-  );
-  /** @type {unknown} */
-  const manifest = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
-  assert.ok(
-    manifest &&
-      typeof manifest === "object" &&
-      "packageManager" in manifest &&
-      typeof manifest.packageManager === "string",
-  );
-  const npmVersion = /^npm@(\d+\.\d+\.\d+)$/.exec(manifest.packageManager)?.[1];
-  assert.ok(npmVersion, "packageManager must pin an exact npm version.");
+  assert.ok(npmCli, "Run npm run set-up:development to select npm.");
 
   /** @param {string} command @param {string[]} args */
   function checked(command, args) {
@@ -69,11 +56,7 @@ export function setUpDevelopment({
       );
     return result.stdout.trim();
   }
-  assert.equal(
-    checked(process.execPath, [npmCli, "--version"]),
-    npmVersion,
-    `Use npm ${npmVersion}.`,
-  );
+  const npmVersion = checked(process.execPath, [npmCli, "--version"]);
   // Python owns comparison of its runtime tuple against the reference minimum.
   const pythonArguments = [...pythonVersionArguments, pythonMinimum];
   checked(python, pythonArguments);

@@ -43,6 +43,8 @@ npm run pack:release
 The complete local aggregate uses the root lock installed by `npm run set-up:development` on a supported development runtime.
 `npm run check:product` checks the converter alone; that success cannot replace the mandatory Markdown results.
 The release candidate job uses the reference runtime, installs the frozen root graph and requires both-platform Markdown jobs through its existing qualification prerequisite.
+The exact Node reference comes from [`.node-version`](../.node-version), and the exact npm selection comes from [the root manifest](../package.json).
+The checkout-free publisher consumes the actual qualified Node/npm outputs from that candidate job and verifies them before publishing, so it does not maintain another version pin.
 It runs the complete public Markdown check before packing and sends diagnostics directly to the CI log, preserving the native exit status.
 These ordinary policy checks do not issue the retired archive qualification receipt.
 Consumer/declaration runtime floors and the credential-limited publication job remain unchanged.

@@ -2,14 +2,15 @@
 
 This package is private and under qualification.
 Use a source checkout; there is no published release to install.
-Development supports Node 22.22.2+, 24.15.0+ and 26.11.1+ within those respective majors.
-The reference development environment uses Node 24.21.0, recorded in `.node-version`.
+Choose a stable Node release admitted by `devEngines.runtime` in [the root manifest](../package.json), with a compatible npm.
+The reference development environment uses the Node version in [`.node-version`](../.node-version).
+CI selects the manifest's exact npm `packageManager`; local setup does not enforce a separate npm floor.
 The converter's broader development and consumer runtime ranges are unchanged.
 The package has separate, lower consumer minimums; see [Node support and qualification](node-support.md).
 
 ## Set up a source checkout
 
-From the root of this standalone checkout with Node 24.21.0, npm 12.2.0 and a stable Python interpreter meeting the minimum in `.python-version` installed:
+From the repository root, use a supported Node version with its bundled npm and a stable Python interpreter that meets the minimum in `.python-version`.
 
 ```text
 npm run set-up:development

@@ -10,12 +10,18 @@ permissions:
   contents: read
 jobs:
   consumer:
-    name: Consumer / ${{ matrix.os }} / Node ${{ matrix.node }}
+    name: Consumer / ${{ matrix.os }} / Node ${{ matrix.node.version || format('{0} reference', matrix.node.major) }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [22.11.0, 24.11.0, 26.0.0, 22.x, 24.x, 26.x]
+        node:
+          - { version: "22.11.0", major: "22" }
+          - { version: "24.11.0", major: "24" }
+          - { version: "26.0.0", major: "26" }
+          - { file: .github/node-versions/22, major: "22" }
+          - { file: .github/node-versions/24, major: "24" }
+          - { file: .node-version, major: "26" }
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     defaults:
@@ -28,8 +34,8 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: ${{ matrix.node }}
-          check-latest: true
+          node-version: ${{ matrix.node.version }}
+          node-version-file: ${{ matrix.node.file }}
           package-manager-cache: false
       - name: Retain the consumer executable path
         id: runtime
@@ -38,12 +44,13 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+      - uses: ./.github/actions/setup-npm
       - name: Install locked qualification tools on the development runtime
         env:
           NODE_TYPES_MAJOR: ${{ steps.runtime.outputs.major }}
         run: |
-          npm exec --yes --package=npm@12.2.0 -- npm ci --ignore-scripts
-          npm exec --yes --package=npm@12.2.0 -- npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
+          npm ci --ignore-scripts
+          npm --prefix "tooling/node-types/$NODE_TYPES_MAJOR" ci --ignore-scripts
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: ${{ inputs.artifact }}
@@ -57,10 +64,10 @@ jobs:
           archives=(artifacts/consumer-candidate/steam-community-bbcode-*.tgz)
           test "${#archives[@]}" -eq 1
           test -f "${archives[0]}"
-          npm exec --yes --package=npm@12.2.0 -- npm run test:package -- --archive "${archives[0]}" --runtime "$CONSUMER_NODE" --node-types "$NODE_TYPES_MAJOR" --output artifacts/consumer-qualification 2>&1 | tee consumer-qualification.log
+          npm run test:package -- --archive "${archives[0]}" --runtime "$CONSUMER_NODE" --node-types "$NODE_TYPES_MAJOR" --output artifacts/consumer-qualification 2>&1 | tee consumer-qualification.log
       - name: Report exact environment, archive identity and consumer results
         if: ${{ !cancelled() }}
         env:
           EVIDENCE_OUTCOME: ${{ job.status }}
-          EVIDENCE_LANE: ${{ matrix.os }} / Node ${{ matrix.node }}
+          EVIDENCE_LANE: ${{ matrix.os }} / Node ${{ matrix.node.version || format('{0} reference', matrix.node.major) }}
         run: npm run generate:ci-evidence -- --mode consumer

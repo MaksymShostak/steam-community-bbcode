@@ -16,8 +16,11 @@ See [JavaScript and types](docs/javascript-and-types.md) for the compiler roles 
 Public declaration changes are API changes.
 Do not patch dependencies, add compatibility shims, suppress checks or relax failing assertions.
 
-On a supported development runtime, run `npm run set-up:development` with the pinned tools, then `npm run check`.
-Node 24.21.0 remains the reference runtime; `npm run check:product` selects converter-only checks.
+On a supported development runtime, run `npm run set-up:development` and then `npm run check`.
+The [`.node-version`](.node-version) file selects the reference runtime.
+Routine reference jobs, release construction and qualification use that exact Node selection and the npm `packageManager` in [the root manifest](package.json).
+Local development can use a compatible bundled npm without a separate npm floor; the native `devEngines.runtime` declaration still enforces Node eligibility.
+`npm run check:product` selects converter-only checks.
 A local pass does not authorize a commit, push, npm release, GitHub protection change or Steam publication.
 
 Use precise verb-first names for custom npm operations, with lowercase kebab-case words and colon-separated qualifiers, such as `compare:alternatives`.

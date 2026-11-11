@@ -1,9 +1,13 @@
 # Software selection and qualification
 
+For current local requirements and exact CI selections, use [Node support and qualification](node-support.md).
+The dated selection and qualification records below retain the versions and observations from their original changes.
+
 ## Development dependency policy (8 October 2026)
 
 Registry development dependencies use `>=` ranges whose minimums are the latest stable releases at refresh time.
-Committed npm lockfiles retain the exact installed versions; setup and CI use locked installs with npm 12.2.0.
+Committed npm lockfiles retain the exact installed versions.
+CI uses the npm version in [the root manifest](../package.json) for locked installs.
 Runtime dependency declarations remain exact.
 
 The two compiler-API tooling environments retain the approved TypeScript 6 exception as `>=6.0.3 <7`: TypeDoc does not support TypeScript 7, and the primary TypeScript 7 package does not expose the compiler API consumed by type-coverage.
@@ -69,7 +73,7 @@ Seeded generated checks exercise arbitrary bounded Markdown and literal delimite
 | Component                                | Current selected/candidate version | Role and evidence                                                                                                                              |
 | ---------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | Node                                     | 24.20.0                            | Repository development LTS; package target remains Node 22/24/26.                                                                              |
-| npm                                      | 12.2.0                             | Repository-selected native package manager, invoked with npm exec.                                                                             |
+| npm                                      | [Root manifest](../package.json)   | Native package manager selected by CI.                                                                                                         |
 | TypeScript                               | 7.0.2                              | Primary strict JavaScript checker and declaration emitter; installed type consumer passed.                                                     |
 | @types/node                              | 22.20.1                            | Latest Node 22 declarations for the oldest supported runtime, as required by the plan.                                                         |
 | @types/mdast / @types/unist              | 4.0.4 / 3.0.3                      | Public declaration dependencies, installed without dev dependency hoisting.                                                                    |
