@@ -202,6 +202,9 @@ jobs:
       - uses: ./.github/actions/setup-npm
       - name: Install locked converter development dependencies
         run: npm ci --ignore-scripts
+      - name: Set up pinned jq for Bash tests
+        if: ${{ matrix.profile == 'library' }}
+        run: node scripts/repository-jq.js
       - name: Qualify mutation sensitivity
         env:
           MUTATION_PROFILE: ${{ matrix.profile }}

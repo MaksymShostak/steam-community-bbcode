@@ -593,6 +593,35 @@ for (const [document, job] of /** @type {const} */ ([
   });
 }
 
+test("CI lanes that bypass development setup acquire pinned jq before Bash tests", () => {
+  /** @type {Array<[typeof workflow | typeof release, string, string]>} */
+  const lanes = [
+    [workflow, "mutation", "Qualify mutation sensitivity"],
+    [release, "candidate", "Run the existing converter qualification"],
+  ];
+  for (const [document, job, consumer] of lanes) {
+    const steps = document.getIn(["jobs", job, "steps"], true);
+    assert.ok(isSeq(steps));
+    const jq = steps.items.findIndex(
+      (step) =>
+        isMap(step) && step.get("run") === "node scripts/repository-jq.js",
+    );
+    const install = steps.items.findIndex(
+      (step) => isMap(step) && String(step.get("run")).includes("npm ci"),
+    );
+    const tests = steps.items.findIndex(
+      (step) => isMap(step) && step.get("name") === consumer,
+    );
+    assert.ok(install >= 0 && jq > install && tests > jq);
+    const step = steps.items[jq];
+    assert.ok(isMap(step));
+    assert.equal(
+      step.get("if"),
+      job === "mutation" ? "${{ matrix.profile == 'library' }}" : undefined,
+    );
+  }
+});
+
 test("actual Python consumers provision from the sole repository target", () => {
   /** @type {Array<[typeof workflow | typeof release, string]>} */
   const lanes = [

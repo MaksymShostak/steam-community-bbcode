@@ -12,6 +12,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setUpDevelopment } from "../scripts/set-up-development.js";
+import { jqVersion } from "../scripts/repository-jq.js";
 
 const pythonTarget = readFileSync(
   new URL("../.python-version", import.meta.url),
@@ -121,7 +122,21 @@ test("development setup records the installed Node and npm versions", (t) => {
   const versions = setUpDevelopment(f);
   assert.equal(versions.node, process.versions.node);
   assert.equal(versions.npm, "12.2.0");
+  assert.equal(versions.jq, jqVersion);
   assert.equal(f.calls.filter((call) => call.args.includes("ci")).length, 6);
+});
+
+test("jq setup failure stops before dependency installation and preserves its diagnostic", (t) => {
+  const f = fixture(t);
+  const execute = f.execute;
+  f.execute = (command, args, root) => {
+    const result = execute(command, args, root);
+    return args.some((arg) => arg.endsWith("repository-jq.js"))
+      ? { ...result, status: 9, stderr: "jq checksum mismatch" }
+      : result;
+  };
+  assert.throws(() => setUpDevelopment(f), /9.*jq checksum mismatch/s);
+  assert.ok(f.calls.every((call) => !call.args.includes("ci")));
 });
 
 test("failed npm and below-minimum Python probes stop before installations", (t) => {

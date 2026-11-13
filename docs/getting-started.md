@@ -19,6 +19,13 @@ npm run cli -- to-gfm path/to/description.bbcode
 ```
 
 Setup installs the locked root, including Markdown Quality, both isolated compiler-API tooling graphs and all three Node declaration environments, and retains a Python `.venv`.
+It also acquires the official jq binary selected by [the repository pin and checksums](../scripts/repository-jq.js).
+The binary and its upstream notice remain under the ignored `.agent-tools/jq` directory; repeat setup verifies and reuses the installed bytes without another download.
+Windows, Linux and macOS x64/ARM64 hosts are supported.
+Workflow contract tests require Bash (Git for Windows on Windows) and bind `jq` directly to the verified executable through Bash's native command table.
+The inherited `PATH` is preserved, so other tools keep their existing lookup locations.
+An unexpected existing binary, linked tool directory, failed download or checksum mismatch stops setup with a diagnostic.
+The jq-only setup entry point is `node scripts/repository-jq.js`; it does not reinstall npm or Python environments.
 Dependency installation scripts are disabled, and no ONI or optional comparison tooling is installed.
 No Python formatter is installed or removed; the optional comparator keeps its own unchanged requirements.
 

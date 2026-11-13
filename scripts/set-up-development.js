@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { jqVersion } from "./repository-jq.js";
 
 /** @typedef {{status: number | null, stdout: string, stderr: string, error?: Error, signal?: string | null}} CommandResult */
 /** @typedef {(command: string, args: string[], root: string) => CommandResult} CommandExecutor */
@@ -69,6 +70,10 @@ export function setUpDevelopment({
   if (existingEnvironment) {
     checked(interpreter, pythonArguments);
   }
+  checked(process.execPath, [
+    fileURLToPath(new URL("repository-jq.js", import.meta.url)),
+    root,
+  ]);
   checked(process.execPath, [npmCli, "ci", "--ignore-scripts"]);
   for (const directory of [
     "tooling/type-coverage",
@@ -91,6 +96,7 @@ export function setUpDevelopment({
     node: nodeVersion,
     npm: npmVersion,
     python: pythonVersion,
+    jq: jqVersion,
   };
 }
 
@@ -103,7 +109,7 @@ if (
     assert.equal(args.length, 0, "Use npm run set-up:development.");
     const versions = setUpDevelopment();
     console.log(
-      `Standalone tooling ready: Node ${versions.node}, npm ${versions.npm}, Python ${versions.python}.`,
+      `Standalone tooling ready: Node ${versions.node}, npm ${versions.npm}, Python ${versions.python}, jq ${versions.jq}.`,
     );
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));

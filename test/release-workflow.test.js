@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
 import { parseDocument, isMap, isSeq } from "yaml";
+import { repositoryJqEnvironment } from "../scripts/repository-jq.js";
 
 /** @param {string} name */
 function readWorkflow(name) {
@@ -37,6 +38,7 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
   }
   assert.equal(typeof command, "string");
   assert.ok(typeof command === "string");
+  const environment = repositoryJqEnvironment();
   const directory = mkdtempSync(join(tmpdir(), "bbcode-release-gate-"));
   const sha = "a".repeat(40);
   const repository = "MaksymShostak/steam-community-bbcode";
@@ -100,13 +102,20 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
       /** @type {import('node:child_process').SpawnSyncReturns<string>} */
       const result = spawnSync(
         bash,
-        ["--noprofile", "--norc", "-eo", "pipefail", "-c", command],
+        [
+          "--noprofile",
+          "--norc",
+          "-eo",
+          "pipefail",
+          "-c",
+          'hash -p "$REPOSITORY_JQ_EXECUTABLE" jq\n' + command,
+        ],
         {
           cwd: directory,
           encoding: "utf8",
           windowsHide: true,
           env: {
-            ...process.env,
+            ...environment,
             ...validEnvironment,
             CANDIDATE_SHA256: createHash("sha256").update(json).digest("hex"),
             ...overrides,

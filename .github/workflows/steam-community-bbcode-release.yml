@@ -85,6 +85,8 @@ jobs:
       - name: Retain Python for the standard-library observer and optional comparator
         run: |
           python -m venv .venv
+      - name: Set up pinned jq for Bash tests
+        run: node scripts/repository-jq.js
       - name: Check all authored Markdown for the release candidate
         shell: bash
         run: |

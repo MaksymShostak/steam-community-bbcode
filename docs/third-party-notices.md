@@ -11,6 +11,12 @@ The converter's own code is licensed under [AGPL-3.0-only](../LICENSE).
 This document preserves the separate terms for third-party text included in its generated documentation.
 Dependencies installed through npm retain their own licence and notice files.
 
+## Local jq development tool
+
+Environment setup downloads the official jq binary for the host using the version, size and SHA-256 in `scripts/repository-jq.js`.
+The upstream [COPYING notice](https://github.com/jqlang/jq/blob/jq-1.8.2/COPYING), including its incorporated-component notices, is retained in `scripts/repository-jq.COPYING` and copied beside the local executable.
+The tool is used only for development tests and is excluded from the npm package.
+
 ## Generated unist descriptions
 
 The generated [SourceSpan reference](https://github.com/MaksymShostak/steam-community-bbcode/blob/6d0d731399c5afb6418c11682b2ad63bdb02d600/docs/reference/index-1.md#sourcespan) includes descriptions from `@types/unist` 3.0.3.

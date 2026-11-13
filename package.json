@@ -57,7 +57,7 @@
     "format:markdown": "markdown-quality format --write --root . --diagnostic-display-level warning",
     "check:markdown": "markdown-quality check --root . --diagnostic-display-level warning",
     "test:markdown": "node --test test/markdown-integration.probes.mjs",
-    "test:documentation-tooling": "node --test test/set-up-development.test.js test/repository-python.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/documentation.test.js test/development-command-names.test.js scripts/set-up-development.probes.mjs",
+    "test:documentation-tooling": "node --test test/set-up-development.test.js test/repository-python.test.js test/repository-jq.test.js test/bbcode-workflow.test.js test/release-workflow.test.js test/documentation.test.js test/development-command-names.test.js scripts/set-up-development.probes.mjs",
     "lint": "eslint src scripts test tooling/api-docs/*.js eslint.config.js --max-warnings 0",
     "qualify:github": "node scripts/qualify-github-rendering.js --live",
     "qualify:performance": "node --test test/performance/*.test.js",
