@@ -11,6 +11,12 @@ The converter's own code is licensed under [AGPL-3.0-only](../LICENSE).
 This document preserves the separate terms for third-party text included in its generated documentation.
 Dependencies installed through npm retain their own licence and notice files.
 
+## Temporary TypeDoc development patch
+
+The source-only `tooling/api-docs/patches/typedoc+0.28.20.patch` adapts TypeDoc's traversal to minimatch 11's native API, following TypeStrong/typedoc PR #3151.
+TypeDoc's Apache-2.0 licence is retained at `tooling/api-docs/patches/typedoc.LICENSE`.
+The patch, patch-package and TypeDoc are development tooling excluded from the npm runtime archive.
+
 ## Local jq development tool
 
 Environment setup downloads the official jq binary for the host using the version, size and SHA-256 in `scripts/repository-jq.js`.

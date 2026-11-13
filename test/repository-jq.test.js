@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { execFile, execFileSync } from "node:child_process";
-import { promisify } from "node:util";
+import { inspect, promisify } from "node:util";
 import {
   existsSync,
   chmodSync,
@@ -137,11 +137,7 @@ test("concurrent native setup processes both accept the verified installation", 
     ),
   );
   for (const result of results) {
-    assert.equal(
-      result.status,
-      "fulfilled",
-      result.status === "rejected" ? String(result.reason) : "",
-    );
+    assert.equal(result.status, "fulfilled", inspect(result));
   }
   assert.deepEqual(readFileSync(f.executable), binary());
 });

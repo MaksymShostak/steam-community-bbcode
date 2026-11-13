@@ -45,8 +45,8 @@ It measures the parent project's authored JavaScript at 100%, with no exclusions
 TypeScript 7 remains authoritative for primary checking and declaration emission.
 The extra typing metric does not establish Steam syntax or semantic coverage.
 
-`npm run generate:api-docs` uses unmodified TypeDoc 0.28.20 and TypeScript 6.0.3 only in `tooling/api-docs`, under the separate approved docs qualification.
-Native `typedoc-plugin-markdown` 4.13.1 renders the reference.
+`npm run generate:api-docs` uses TypeDoc 0.28.20 with the [approved temporary minimatch patch](../tooling/api-docs/patches/README.md) and TypeScript 6.0.3 only in `tooling/api-docs`, under the separate approved docs qualification.
+Native `typedoc-plugin-markdown` 4.14.1 renders the reference.
 A maintained imported generic fixture checks native type identities and rendered comments; the check compares generated Markdown bytes with the committed reference.
 
 The docs orchestration script has its own strict config because TypeDoc's native API declarations require the standard DOM WebAssembly types.

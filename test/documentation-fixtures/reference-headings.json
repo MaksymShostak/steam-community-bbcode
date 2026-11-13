@@ -274,6 +274,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -291,10 +295,6 @@
     {
       "depth": 5,
       "text": "type"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -318,6 +318,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -329,12 +333,12 @@
       "text": "type"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamColor"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -353,10 +357,6 @@
       "text": "type"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamDialectProfileId"
     },
@@ -367,6 +367,10 @@
     {
       "depth": 3,
       "text": "SteamEmbeddedMedia"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -389,12 +393,12 @@
       "text": "type"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamMdastRoot"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -405,12 +409,12 @@
       "text": "children"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamNoParse"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -425,12 +429,12 @@
       "text": "value"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamPreviewImage"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -465,12 +469,12 @@
       "text": "type"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamPullQuote"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -483,10 +487,6 @@
     {
       "depth": 5,
       "text": "type"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -494,6 +494,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -503,10 +507,6 @@
     {
       "depth": 5,
       "text": "type"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -514,6 +514,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -523,10 +527,6 @@
     {
       "depth": 5,
       "text": "type"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -642,15 +642,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -658,15 +658,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -674,15 +674,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -698,15 +698,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -714,6 +714,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -721,12 +725,12 @@
       "text": "children"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamLink"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -749,12 +753,12 @@
       "text": "steamUrlWidget?"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamLinkReference"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -763,10 +767,6 @@
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -774,15 +774,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -790,15 +790,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -806,15 +806,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -830,6 +830,10 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
@@ -837,12 +841,12 @@
       "text": "children"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamTable"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -865,12 +869,12 @@
       "text": "steamTableLayout?"
     },
     {
-      "depth": 4,
-      "text": "Type Parameters"
-    },
-    {
       "depth": 3,
       "text": "SteamTableCell"
+    },
+    {
+      "depth": 4,
+      "text": "Type Parameters"
     },
     {
       "depth": 4,
@@ -879,10 +883,6 @@
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 3,
@@ -890,15 +890,15 @@
     },
     {
       "depth": 4,
+      "text": "Type Parameters"
+    },
+    {
+      "depth": 4,
       "text": "Type Declaration"
     },
     {
       "depth": 5,
       "text": "children"
-    },
-    {
-      "depth": 4,
-      "text": "Type Parameters"
     },
     {
       "depth": 2,

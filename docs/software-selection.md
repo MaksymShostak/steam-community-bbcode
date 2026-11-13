@@ -396,7 +396,7 @@ Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0
 
 ## Current Markdown development tooling
 
-Markdown Quality is declared as `@hadden-industries/markdown-quality >=3.0.0` in the root development dependencies.
+Markdown Quality is declared as `@hadden-industries/markdown-quality >=3.0.1` in the root development dependencies.
 Native npm owns the root lock, including matching optional Windows and Linux packages; `npm ci --ignore-scripts` installs the same graph as the other root tools.
 The ordinary commands use the package's public CLI under `authored-gfm@2` defaults.
 `format:markdown` explicitly requests writes; `check:markdown` and `inspect:markdown` are read-only.

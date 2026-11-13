@@ -29,7 +29,7 @@ The shared setup action installs and verifies that selection before project npm 
 Local development can use the npm bundled with a supported Node.js version; no separate local npm floor or exact-npm setup restriction is enforced.
 Development requires stable Python at or above the minimum in `.python-version`.
 That file selects the reproducible Python reference for setup and CI; setup also accepts newer stable interpreters and compatible existing environments.
-Markdown Quality is an ordinary root development dependency declared at `>=3.0.0`, with core and matching optional native packages frozen by the root lock.
+Markdown Quality is an ordinary root development dependency declared at `>=3.0.1`, with core and matching optional native packages frozen by the root lock.
 Its Node floor of 22.13.0 is already within this repository's declared development ranges; setup has no separate Markdown-only runtime restriction.
 Development dependencies are excluded from the shipped converter dependency graph.
 Use `npm run set-up:development` on a supported development runtime, then `npm run check:product` for converter-only checks or `npm run check` for the complete local aggregate.

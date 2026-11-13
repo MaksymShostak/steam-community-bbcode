@@ -89,9 +89,12 @@ These remain historical observations, with no claim that the generic package imp
 ## Reproduction
 
 Run from the repository root on Windows x64, with the checkout's stable `.venv` selected by `.python-version`, the repository Node/npm toolchain, and `.NET` 10 runtime installed.
-The active `requirements-windows.txt` lock is platform-specific; `requirements-windows-py314.txt` and the committed benchmark reports remain historical evidence.
+The active `requirements-windows.txt` lock is platform-specific.
+`requirements-windows-py314.txt` is a security-maintained CPython 3.14 replay lock; it no longer denotes the exact dependencies used for the historical benchmark.
+The original locks remain recoverable at [source commit 6392129](https://github.com/MaksymShostak/steam-community-bbcode/tree/6392129f63218b5b315f9a72fa4d3a964fc3efc5/comparison/python), and the committed benchmark reports retain their original bytes and observed versions.
 
-The active lock updates the Pydantic/core pair for native wheels on the selected interpreter; other comparator package versions are retained.
+The active lock uses the Pydantic/core pair with native wheels for the selected interpreter.
+Both replay locks use Pillow 13.0.0, certifi 2026.10.18 and SoupSieve 4.0, with hashes for the applicable wheels; the comparator packages remain unchanged.
 The converter's ordinary documented dependency setup must already be complete.
 
 ```powershell

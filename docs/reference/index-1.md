@@ -203,6 +203,8 @@ Type references: [`ConversionCoverage`](diagnostics/conversion-result.md#convers
 
 #### Type Parameters
 
+<a id="t"></a>
+
 ##### T
 
 `T`
@@ -274,6 +276,8 @@ Type references: [`ConversionResult`](#conversionresult), [`ConversionCoverage`]
 
 #### Type Parameters
 
+<a id="t-1"></a>
+
 ##### T
 
 `T`
@@ -295,6 +299,8 @@ type SteamAttributedBlockquote = Node & {
 
 Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### author
@@ -314,7 +320,7 @@ Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowconten
 ##### steamCommentId?
 
 ```ts
-optional steamCommentId?: string;
+steamCommentId?: string;
 ```
 
 ##### type
@@ -322,8 +328,6 @@ optional steamCommentId?: string;
 ```ts
 type: "steamAttributedBlockquote";
 ```
-
-#### Type Parameters
 
 ---
 
@@ -378,6 +382,8 @@ type SteamBlockSpoiler = Node & {
 
 Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### children
@@ -393,8 +399,6 @@ Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowconten
 ```ts
 type: "steamBlockSpoiler";
 ```
-
-#### Type Parameters
 
 ---
 
@@ -412,6 +416,8 @@ type SteamColor = Node & {
 
 Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### children
@@ -425,7 +431,7 @@ Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasi
 ##### color?
 
 ```ts
-optional color?: string;
+color?: string;
 ```
 
 ##### type
@@ -433,8 +439,6 @@ optional color?: string;
 ```ts
 type: "steamColor";
 ```
-
-#### Type Parameters
 
 ---
 
@@ -476,6 +480,8 @@ type SteamEmbeddedMedia = Node & {
 
 Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`ConstructId`](#constructid).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### children
@@ -506,8 +512,6 @@ source: string;
 type: "steamEmbeddedMedia";
 ```
 
-#### Type Parameters
-
 ---
 
 <a id="steammdastroot"></a>
@@ -528,6 +532,8 @@ type SteamMdastRoot = Omit<Root, "children"> & {
 
 Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent), [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`SteamListItem`](mdast/steam-mdast-nodes.md#steamlistitem), [`SteamTableRow`](mdast/steam-mdast-nodes.md#steamtablerow), [`SteamTableCell`](mdast/steam-mdast-nodes.md#steamtablecell).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### children
@@ -544,8 +550,6 @@ children: (
 
 Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent), [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent), [`SteamListItem`](mdast/steam-mdast-nodes.md#steamlistitem), [`SteamTableRow`](mdast/steam-mdast-nodes.md#steamtablerow), [`SteamTableCell`](mdast/steam-mdast-nodes.md#steamtablecell).
 
-#### Type Parameters
-
 ---
 
 <a id="steamnoparse"></a>
@@ -558,6 +562,8 @@ type SteamNoParse = Literal & {
   value: string;
 };
 ```
+
+#### Type Parameters
 
 #### Type Declaration
 
@@ -572,8 +578,6 @@ type: "steamNoParse";
 ```ts
 value: string;
 ```
-
-#### Type Parameters
 
 ---
 
@@ -604,12 +608,14 @@ type SteamPreviewImage = Node & {
 
 Type references: [`ConstructId`](#constructid).
 
+#### Type Parameters
+
 #### Type Declaration
 
 ##### alignment?
 
 ```ts
-optional alignment?: "left" | "right" | "inline";
+alignment?: "left" | "right" | "inline";
 ```
 
 ##### alt
@@ -651,7 +657,7 @@ rawSource: string;
 ##### size?
 
 ```ts
-optional size?: "thumb" | "full" | "original";
+size?: "thumb" | "full" | "original";
 ```
 
 ##### type
@@ -659,8 +665,6 @@ optional size?: "thumb" | "full" | "original";
 ```ts
 type: "steamPreviewImage";
 ```
-
-#### Type Parameters
 
 ---
 
@@ -676,6 +680,8 @@ type SteamPullQuote = Node & {
 ```
 
 Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowcontent).
+
+#### Type Parameters
 
 #### Type Declaration
 
@@ -693,8 +699,6 @@ Type references: [`SteamFlowContent`](mdast/steam-mdast-nodes.md#steamflowconten
 type: "steamPullQuote";
 ```
 
-#### Type Parameters
-
 ---
 
 <a id="steamspoiler"></a>
@@ -709,6 +713,8 @@ type SteamSpoiler = Node & {
 ```
 
 Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
+#### Type Parameters
 
 #### Type Declaration
 
@@ -726,8 +732,6 @@ Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasi
 type: "steamSpoiler";
 ```
 
-#### Type Parameters
-
 ---
 
 <a id="steamunderline"></a>
@@ -742,6 +746,8 @@ type SteamUnderline = Node & {
 ```
 
 Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasingcontent).
+
+#### Type Parameters
 
 #### Type Declaration
 
@@ -758,8 +764,6 @@ Type references: [`SteamPhrasingContent`](mdast/steam-mdast-nodes.md#steamphrasi
 ```ts
 type: "steamUnderline";
 ```
-
-#### Type Parameters
 
 ---
 

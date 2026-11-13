@@ -8,13 +8,19 @@
     "node": ">=22"
   },
   "scripts": {
-    "typedoc": "typedoc",
-    "generate": "node generate.js",
-    "check": "node generate.js --check"
+    "apply:patches": "patch-package --error-on-fail",
+    "typedoc": "npm run apply:patches && typedoc",
+    "generate": "npm run apply:patches && node generate.js",
+    "test:patch": "npm run apply:patches && node --test typedoc-patch.probes.mjs",
+    "check": "npm run test:patch && node generate.js --check"
   },
   "devDependencies": {
-    "typedoc": ">=0.28.20",
-    "typedoc-plugin-markdown": ">=4.13.1",
+    "patch-package": "8.0.1",
+    "typedoc": "0.28.20",
+    "typedoc-plugin-markdown": ">=4.14.1",
     "typescript": ">=6.0.3 <7"
+  },
+  "overrides": {
+    "minimatch@>=7.0.0 <11.0.1": "11.0.8"
   }
 }

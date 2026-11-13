@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 import { isMap, isScalar, isSeq, parseDocument, visit } from "yaml";
 
 const root = new URL("../", import.meta.url);
+/** @type {{ubuntuRelease: string}} */
 const { ubuntuRelease } = JSON.parse(
   readFileSync(new URL(".github/runner-policy.json", root), "utf8"),
 );

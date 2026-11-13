@@ -62,6 +62,8 @@
     "qualify:github": "node scripts/qualify-github-rendering.js --live",
     "qualify:performance": "node --test test/performance/*.test.js",
     "test": "node --test test/*.test.js",
+    "test:dependency-consumers": "node --test test/gfm-serialization.test.js test/gfm-formatting.test.js test/gfm-adjacent-styles.test.js test/gfm-autolink-policy.test.js test/gfm-lowering-contract.test.js test/construct-conformance.test.js test/steamify-description-regression.test.js test/steamify-probes-regression.test.js test/cli.test.js test/specification.test.js test/documentation.test.js test/node-declaration-resolution.test.js test/set-up-development.test.js test/repository-jq.test.js",
+    "test:bbob": "npm --prefix comparison/bbob test",
     "test:coverage": "c8 node --test test/*.test.js test/parser-qualification/*.test.js",
     "test:mutation:library": "stryker run stryker.config.json",
     "test:mutation:cli": "stryker run stryker.cli.config.json",
@@ -97,17 +99,17 @@
     "mdast-util-from-markdown": "2.1.0",
     "mdast-util-gfm": "3.1.0",
     "mdast-util-gfm-strikethrough": "2.0.1",
-    "mdast-util-to-markdown": "2.2.0",
+    "mdast-util-to-markdown": "2.2.3",
     "micromark-extension-gfm": "3.0.0"
   },
   "devDependencies": {
     "@eslint/js": ">=10.0.1",
-    "@hadden-industries/markdown-quality": ">=3.0.0",
+    "@hadden-industries/markdown-quality": ">=3.0.1",
     "@sigstore/rekor-types": ">=5.0.0",
     "@stryker-mutator/core": ">=10.0.0",
     "@stryker-mutator/tap-runner": ">=10.0.0",
     "@types/make-fetch-happen": ">=10.0.4",
-    "@types/node": ">=26.6.4",
+    "@types/node": ">=26.6.6",
     "ajv": ">=8.20.0",
     "ajv-formats": ">=3.0.1",
     "c8": ">=12.0.0",
@@ -122,8 +124,10 @@
     "yaml": ">=2.9.1"
   },
   "overrides": {
+    "glob@>=9.0.0 <14.0.2": "14.0.6",
+    "minimatch@>=7.0.0 <11.0.1": "11.0.8",
     "typed-rest-client@2.3.1": {
-      "qs": "6.16.0"
+      "qs": "6.17.1"
     }
   },
   "repository": {

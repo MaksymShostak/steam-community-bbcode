@@ -28,7 +28,7 @@ type SteamTableLayout = {
 ##### equalcells?
 
 ```ts
-optional equalcells?: boolean;
+equalcells?: boolean;
 ```
 
 <a id="noborder"></a>
@@ -36,7 +36,7 @@ optional equalcells?: boolean;
 ##### noborder?
 
 ```ts
-optional noborder?: boolean;
+noborder?: boolean;
 ```
 
 ## Functions

@@ -51,10 +51,12 @@ export function setUpDevelopment({
     if (result.error) throw result.error;
     if (result.signal)
       throw new Error(`Development setup interrupted by ${result.signal}.`);
-    if (result.status !== 0)
-      throw new Error(
-        `Development command exited ${result.status}: ${result.stderr || result.stdout}`,
-      );
+    if (result.status !== 0) {
+      // npm writes its banners to stderr; patch-package explains refusals on
+      // stdout. Preserve both streams so the banner cannot hide the cause.
+      const output = [result.stderr, result.stdout].filter(Boolean).join("\n");
+      throw new Error(`Development command exited ${result.status}: ${output}`);
+    }
     return result.stdout.trim();
   }
   const npmVersion = checked(process.execPath, [npmCli, "--version"]);
@@ -90,6 +92,15 @@ export function setUpDevelopment({
       "--ignore-scripts",
     ]);
   }
+  // Locked installs intentionally skip lifecycle scripts. Apply the temporary
+  // TypeDoc compatibility patch explicitly before using the documentation tool.
+  checked(process.execPath, [
+    npmCli,
+    "--prefix",
+    "tooling/api-docs",
+    "run",
+    "apply:patches",
+  ]);
   if (!existingEnvironment) checked(python, ["-I", "-m", "venv", ".venv"]);
   const pythonVersion = checked(interpreter, pythonArguments);
   return {

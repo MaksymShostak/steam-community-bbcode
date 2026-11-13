@@ -102,6 +102,19 @@ test("development setup installs each locked graph once and retains Python", (t)
       (call) => call.command === process.execPath && call.root === f.root,
     ),
   );
+  const patch = f.calls.findIndex((call) =>
+    call.args.includes("apply:patches"),
+  );
+  const lastInstall = installs.at(-1);
+  assert.ok(lastInstall);
+  assert.ok(patch > f.calls.indexOf(lastInstall));
+  assert.deepEqual(f.calls[patch]?.args, [
+    f.npmCli,
+    "--prefix",
+    "tooling/api-docs",
+    "run",
+    "apply:patches",
+  ]);
   assert.ok(
     f.calls.some(
       (call) =>
@@ -114,6 +127,27 @@ test("development setup installs each locked graph once and retains Python", (t)
         !call.args.includes("pip") && !call.args.includes("install:markdown"),
     ),
   );
+});
+
+test("a failed documentation patch stops setup before creating Python", (t) => {
+  const f = fixture(t);
+  const execute = f.execute;
+  f.execute = (command, args, root) => {
+    const result = execute(command, args, root);
+    return args.includes("apply:patches")
+      ? {
+          ...result,
+          status: 1,
+          stderr: "npm notice run apply:patches\n",
+          stdout: "TypeDoc patch no longer applies\n",
+        }
+      : result;
+  };
+  assert.throws(
+    () => setUpDevelopment(f),
+    /npm notice run apply:patches.*TypeDoc patch no longer applies/s,
+  );
+  assert.ok(f.calls.every((call) => !call.args.includes("venv")));
 });
 
 test("development setup records the installed Node and npm versions", (t) => {
