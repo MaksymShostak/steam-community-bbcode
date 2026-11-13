@@ -480,7 +480,7 @@ test("dedicated full Markdown controls gate qualification and the compatible rel
     !steps.items.some(
       (step) =>
         isMap(step) &&
-        String(step.get("uses")).startsWith("astral-sh/setup-uv@"),
+        String(step.get("uses")).startsWith("actions/setup-python@"),
     ),
   );
   const node = steps.items.find(
@@ -605,23 +605,27 @@ test("actual Python consumers provision from the sole repository target", () => 
     const provision = steps.items.find(
       (step) =>
         isMap(step) &&
-        String(step.get("uses")).startsWith("astral-sh/setup-uv@"),
+        String(step.get("uses")).startsWith("actions/setup-python@"),
     );
     assert.ok(isMap(provision));
     assert.equal(
       provision.get("uses"),
-      "astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884",
+      "actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
     );
     const inputs = provision.getIn(["with"], true);
     assert.ok(isMap(inputs));
     assert.deepEqual(inputs.toJSON(), {
-      version: "0.13.0",
-      "activate-environment": true,
-      "venv-path": "${{ runner.temp }}/python",
-      "no-project": true,
-      "enable-cache": false,
+      "python-version-file": ".python-version",
     });
-    // With no override, uv discovers the root .python-version after checkout.
+    const environment = steps.items[steps.items.indexOf(provision) + 1];
+    assert.ok(isMap(environment));
+    assert.equal(environment.get("shell"), "bash");
+    const activation = String(environment.get("run"));
+    assert.match(activation, /python -m venv "\$RUNNER_TEMP\/python"/u);
+    assert.match(activation, /VIRTUAL_ENV=\$RUNNER_TEMP\/python.*GITHUB_ENV/u);
+    assert.match(activation, /\$RUNNER_TEMP\/python\/Scripts.*GITHUB_PATH/u);
+    assert.match(activation, /\$RUNNER_TEMP\/python\/bin.*GITHUB_PATH/u);
+    // The native action reads the sole root declaration after checkout.
     const checkout = steps.items.findIndex(
       (step) =>
         isMap(step) && String(step.get("uses")).startsWith("actions/checkout@"),
