@@ -23,7 +23,7 @@ jobs:
   markdown:
     permissions:
       contents: read
-    uses: Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@47febbe1b6f3282814e77db7ea13eac72b4928ed
+    uses: Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@cc3d8f70eb8a1f8218cc2393dc23d44f82b55d2b
     with:
       trusted-repository: MaksymShostak/steam-community-bbcode
       trusted-sha: ${{ inputs.trusted_sha }}
