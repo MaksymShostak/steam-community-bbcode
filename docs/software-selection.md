@@ -396,8 +396,12 @@ Sources: [Snapper 0.11.0](https://github.com/TurtleTech-ehf/snapper/tree/v0.11.0
 
 ## Current Markdown development tooling
 
-Markdown Quality is declared as `@hadden-industries/markdown-quality >=3.0.1` in the root development dependencies.
-Native npm owns the root lock, including matching optional Windows and Linux packages; `npm ci --ignore-scripts` installs the same graph as the other root tools.
+Markdown Quality is declared as `@hadden-industries/markdown-quality >=3.0.4` in the root development dependencies.
+The npm lock records matching optional Windows and Linux packages alongside ESLint, ESLint Markdown, and their transitive dependencies.
+`npm ci --ignore-scripts` installs the locked graph alongside the other root development tools.
+The root override selects patched KaTeX `0.19.1` for `micromark-extension-math@3.1.0`.
+[KaTeX security advisory](https://github.com/advisories/GHSA-238p-pmpm-9mq7)
+
 The ordinary commands use the package's public CLI under `authored-gfm@2` defaults.
 `format:markdown` explicitly requests writes; `check:markdown` and `inspect:markdown` are read-only.
 Use the public formatter's `--dry-run` mode directly for a preview, without combining it with the write script.

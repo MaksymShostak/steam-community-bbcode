@@ -104,7 +104,7 @@
   },
   "devDependencies": {
     "@eslint/js": ">=10.0.1",
-    "@hadden-industries/markdown-quality": ">=3.0.1",
+    "@hadden-industries/markdown-quality": ">=3.0.4",
     "@sigstore/rekor-types": ">=5.0.0",
     "@stryker-mutator/core": ">=10.0.0",
     "@stryker-mutator/tap-runner": ">=10.0.0",
@@ -124,8 +124,11 @@
     "yaml": ">=2.9.1"
   },
   "overrides": {
+    "micromark-extension-math@3.1.0": {
+      "katex": "0.19.1"
+    },
     "glob@>=9.0.0 <14.0.2": "14.0.6",
-    "minimatch@>=7.0.0 <11.0.1": "11.0.8",
+    "minimatch@>=7.0.0 <11.0.1": "11.0.9",
     "typed-rest-client@2.3.1": {
       "qs": "6.17.1"
     }
