@@ -45,6 +45,7 @@ jobs:
     outputs:
       artifact_id: ${{ steps.archive.outputs.artifact-id }}
       candidate_sha256: ${{ steps.identity.outputs.sha256 }}
+      candidate_attempt: ${{ steps.identity.outputs.attempt }}
       node: ${{ steps.runtime.outputs.node }}
       npm: ${{ steps.runtime.outputs.npm }}
     steps:
@@ -115,6 +116,7 @@ jobs:
         working-directory: artifacts/release-transfer
         run: |
           echo "sha256=$(sha256sum candidate.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
       - name: Retain the candidate from this run
         id: archive
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -138,8 +140,11 @@ jobs:
     environment: npm-release
     runs-on: ubuntu-26.04
     timeout-minutes: 10
+    outputs:
+      publication_attempt: ${{ steps.publication.outputs.attempt }}
     permissions:
       contents: read
+      actions: read
       id-token: write
     steps:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
@@ -168,6 +173,7 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
           CANDIDATE_SHA256: ${{ needs.candidate.outputs.candidate_sha256 }}
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ATTEMPT: ${{ needs.candidate.outputs.candidate_attempt }}
         shell: bash
         run: |
           set -euo pipefail
@@ -177,10 +183,12 @@ jobs:
           test "$GITHUB_WORKFLOW_REF" = "$GITHUB_REPOSITORY/.github/workflows/steam-community-bbcode-release.yml@$GITHUB_REF"
           test "$GITHUB_WORKFLOW_SHA" = "$GITHUB_SHA"
           [[ "$CANDIDATE_ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$CANDIDATE_ATTEMPT" =~ ^[1-9][0-9]?$ && "$GITHUB_RUN_ATTEMPT" =~ ^[1-9][0-9]?$ ]]
+          (( CANDIDATE_ATTEMPT <= GITHUB_RUN_ATTEMPT && GITHUB_RUN_ATTEMPT <= 50 ))
           printf '%s  candidate.json\n' "$CANDIDATE_SHA256" | sha256sum --check --strict
           jq -e --arg sha "$GITHUB_SHA" --arg repo "$GITHUB_REPOSITORY" --arg repoId "$GITHUB_REPOSITORY_ID" \
             --arg ref "$GITHUB_REF" --arg workflow "$GITHUB_WORKFLOW_REF" --arg run "$GITHUB_RUN_ID" \
-            --arg attempt "$GITHUB_RUN_ATTEMPT" --arg version "$RELEASE_VERSION" --arg tag "$RELEASE_TAG" '
+            --arg attempt "$CANDIDATE_ATTEMPT" --arg version "$RELEASE_VERSION" --arg tag "$RELEASE_TAG" '
             .schemaVersion == 2 and .package.name == "steam-community-bbcode" and
             .package.license == "AGPL-3.0-only" and .package.private == false and .package.version == $version and
             .source.dirty == false and .source.commit == $sha and
@@ -190,7 +198,42 @@ jobs:
             .release.runId == $run and .release.runAttempt == $attempt and .release.tag == $tag and
             .release.qualification == {"runtimeAndMutation":"success","security":"success"}
           ' candidate.json > /dev/null
+      - name: Establish that no earlier attempt could have published this version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          for (( n=1; n<GITHUB_RUN_ATTEMPT; n++ )); do
+            gh api "$base/attempts/$n" | jq -e --argjson run "$GITHUB_RUN_ID" --argjson attempt "$n" \
+              --arg repo "$GITHUB_REPOSITORY" --arg sha "$GITHUB_SHA" '
+                .id == $run and .run_attempt == $attempt and .status == "completed" and
+                .repository.full_name == $repo and .head_repository.full_name == $repo and
+                .head_sha == $sha and .head_branch == "main" and .event == "workflow_dispatch" and
+                .path == ".github/workflows/steam-community-bbcode-release.yml"' > /dev/null
+            gh api "$base/attempts/$n/jobs?per_page=100" | jq -e --argjson run "$GITHUB_RUN_ID" \
+              --argjson attempt "$n" --arg sha "$GITHUB_SHA" '
+                (.jobs | type == "array") and .total_count > 0 and .total_count == (.jobs | length) and
+                .total_count == ([.jobs[].id] | unique | length) and
+                all(.jobs[]; (.id | type == "number") and .id > 0 and .run_id == $run and .run_attempt == $attempt and .head_sha == $sha and .status == "completed") and
+                ([.jobs[] | select(.name == "Publish the qualified archive")] as $publishers |
+                  if ($publishers | length) == 0 then
+                    any(.jobs[]; (.name == "Qualify the release archive" or (.name | startswith("Qualify candidate consumer minimums and latest releases / "))) and
+                      (.conclusion == "failure" or .conclusion == "skipped" or .conclusion == "cancelled"))
+                  else ($publishers | length) == 1 and ($publishers[0] |
+                    if .conclusion == "skipped" then all(.steps[]?; .status == "completed" and .conclusion == "skipped")
+                    else [.steps[] | select(.name == "Verify and publish the retained bytes through npm OIDC")] |
+                      length == 1 and .[0].status == "completed" and .[0].conclusion == "skipped" end)
+                  end)' > /dev/null
+          done
+          version=$(jq -nr --arg version "$RELEASE_VERSION" '$version|@uri')
+          status=$(curl --silent --show-error --max-time 30 --header 'Cache-Control: no-cache' --output /dev/null \
+            --write-out '%{http_code}' "https://registry.npmjs.org/steam-community-bbcode/$version")
+          test "$status" = 404
       - name: Verify and publish the retained bytes through npm OIDC
+        id: publication
         working-directory: candidate
         env:
           RELEASE_TAG: ${{ inputs.tag }}
@@ -202,6 +245,7 @@ jobs:
           test "${#archives[@]}" -eq 1
           test -f "${archives[0]}"
           npm publish "${archives[0]}" --ignore-scripts --provenance --access public --tag "$RELEASE_TAG" --registry=https://registry.npmjs.org/
+          echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
 
   verify_registry:
     name: Verify the public registry and installed consumer
@@ -235,7 +279,8 @@ jobs:
       - name: Verify public bytes, signatures, provenance and consumers
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-        run: npm run verify:registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --output "$GITHUB_WORKSPACE/registry-verification"
+          PUBLICATION_ATTEMPT: ${{ needs.publish.outputs.publication_attempt }}
+        run: npm run verify:registry -- --candidate "$GITHUB_WORKSPACE/candidate" --tag "$RELEASE_TAG" --publication-attempt "$PUBLICATION_ATTEMPT" --output "$GITHUB_WORKSPACE/registry-verification"
       - name: Report registry verification evidence
         if: ${{ !cancelled() }}
         env:

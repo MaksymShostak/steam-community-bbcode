@@ -22,6 +22,7 @@ import {
   assertRegistryBootstrapState,
   normalizeNpmPublishDryRun,
   npmPublishDryRunInvocation,
+  verifyBootstrapBuildOrigin,
 } from "./publication-preflight.js";
 import {
   qualifyOniConsumer,
@@ -95,21 +96,42 @@ try {
     "Require a clean release checkout.",
   );
   assert.match(identity.runId, /^[0-9]+$/u);
-  /** @type {{head_sha: string, conclusion: string, path: string, run_attempt: number}} */
-  const run = JSON.parse(
-    runReleaseCommand(
-      "gh",
-      ["api", `repos/${repository}/actions/runs/${identity.runId}`],
-      root,
-    ),
-  );
+  /** @returns {{id:number, head_sha: string, status:string, conclusion: string, path: string, run_attempt: number, event:string, head_branch:string, repository:{id:number,full_name:string},head_repository:{id:number,full_name:string}}} */
+  const readRun = () =>
+    JSON.parse(
+      runReleaseCommand(
+        "gh",
+        ["api", `repos/${repository}/actions/runs/${identity.runId}`],
+        root,
+      ),
+    );
+  const run = readRun();
+  assert.equal(String(run.id), identity.runId);
+  assert.equal(run.status, "completed");
+  assert.equal(run.event, "workflow_dispatch");
+  assert.equal(run.head_branch, "main");
+  for (const repo of [run.repository, run.head_repository]) {
+    assert.equal(repo.full_name, repository);
+    assert.equal(String(repo.id), identity.repositoryId);
+  }
   assert.equal(run.head_sha, candidate.source.commit);
   assert.equal(run.conclusion, "success");
   assert.equal(
     run.path,
     ".github/workflows/steam-community-bbcode-release.yml",
   );
-  assert.equal(String(run.run_attempt), identity.runAttempt);
+  verifyBootstrapBuildOrigin(identity, run.run_attempt, (attempt) =>
+    JSON.parse(
+      runReleaseCommand(
+        "gh",
+        [
+          "api",
+          `repos/${repository}/actions/runs/${identity.runId}/attempts/${attempt}/jobs?per_page=100`,
+        ],
+        root,
+      ),
+    ),
+  );
   const hosted = join(scratch, "hosted");
   mkdirSync(hosted);
   runReleaseCommand(
@@ -180,6 +202,15 @@ try {
     integrity: candidate.tarball.integrity,
   });
   assert.equal(oni.sourceDirty, false);
+  const finalRun = readRun();
+  assert.equal(
+    finalRun.run_attempt,
+    run.run_attempt,
+    "Hosted qualification changed during bootstrap preflight",
+  );
+  assert.equal(finalRun.head_sha, run.head_sha);
+  assert.equal(finalRun.status, "completed");
+  assert.equal(finalRun.conclusion, "success");
   // Re-read public state immediately before publishing. Any HTTP failure blocks;
   // only an explicit 404 permits bootstrap. Never retry a publication.
   const coordinateUrl = new URL(

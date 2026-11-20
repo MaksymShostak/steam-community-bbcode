@@ -223,28 +223,48 @@ function verifiedProvenanceBundle(candidate, audit) {
 }
 
 /** Check expected claims; this alone does not authenticate their signer.
- * @param {ReleaseCandidate} candidate @param {unknown} audit
+ * @param {ReleaseCandidate} candidate @param {unknown} audit @param {string} [publicationAttempt]
  */
-export function assertExpectedProvenanceClaims(candidate, audit) {
-  assertProvenanceClaims(candidate, verifiedProvenanceBundle(candidate, audit));
+export function assertExpectedProvenanceClaims(
+  candidate,
+  audit,
+  publicationAttempt,
+) {
+  assertProvenanceClaims(
+    candidate,
+    verifiedProvenanceBundle(candidate, audit),
+    publicationAttempt,
+  );
 }
 
 /** Authenticate the exact signer with native Sigstore, then match the expected claims.
- * @param {ReleaseCandidate} candidate @param {unknown} audit
+ * @param {ReleaseCandidate} candidate @param {unknown} audit @param {string} [publicationAttempt]
  */
-export async function verifyExpectedProvenance(candidate, audit) {
+export async function verifyExpectedProvenance(
+  candidate,
+  audit,
+  publicationAttempt,
+) {
   const bundle = verifiedProvenanceBundle(candidate, audit);
   await verify(bundle, releaseSignerPolicy);
-  assertProvenanceClaims(candidate, bundle);
+  assertProvenanceClaims(candidate, bundle, publicationAttempt);
 }
 
-/** @param {ReleaseCandidate} candidate @param {import('sigstore').Bundle} bundle */
-function assertProvenanceClaims(candidate, bundle) {
+/** @param {ReleaseCandidate} candidate @param {import('sigstore').Bundle} bundle @param {string} [publicationAttempt] */
+function assertProvenanceClaims(candidate, bundle, publicationAttempt) {
   assert.ok(
     candidate.release,
     "Expected a hosted candidate for provenance verification.",
   );
   const identity = candidate.release;
+  const expectedAttempt = publicationAttempt ?? identity.runAttempt;
+  assert.match(identity.runAttempt, /^[1-9]\d*$/u);
+  assert.match(expectedAttempt, /^[1-9]\d*$/u);
+  assert.ok(
+    Number.isSafeInteger(Number(expectedAttempt)) &&
+      Number(expectedAttempt) >= Number(identity.runAttempt),
+    "Publisher predates its candidate",
+  );
   const repositoryUrl =
     "https://github.com/MaksymShostak/steam-community-bbcode";
   assert.equal(identity.repository, "MaksymShostak/steam-community-bbcode");
@@ -307,6 +327,6 @@ function assertProvenanceClaims(candidate, bundle) {
   assertRecord(metadata);
   assert.equal(
     metadata["invocationId"],
-    `${repositoryUrl}/actions/runs/${identity.runId}/attempts/${identity.runAttempt}`,
+    `${repositoryUrl}/actions/runs/${identity.runId}/attempts/${expectedAttempt}`,
   );
 }

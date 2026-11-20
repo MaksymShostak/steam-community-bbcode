@@ -131,6 +131,22 @@ test("expected identity accepts native npm verified provenance for the exact sou
   assertExpectedProvenanceClaims(candidate, nativeAudit(statement));
 });
 
+test("retained build and publisher have separately bound attempts in the same run", () => {
+  const published = structuredClone(statement);
+  published.predicate.runDetails.metadata.invocationId =
+    "https://github.com/MaksymShostak/steam-community-bbcode/actions/runs/5678/attempts/2";
+  assertExpectedProvenanceClaims(candidate, nativeAudit(published), "2");
+  assert.throws(() =>
+    assertExpectedProvenanceClaims(candidate, nativeAudit(published), "3"),
+  );
+  assert.throws(() =>
+    assertExpectedProvenanceClaims(candidate, nativeAudit(statement), "2"),
+  );
+  assert.throws(() =>
+    assertExpectedProvenanceClaims(candidate, nativeAudit(published)),
+  );
+});
+
 test("expected identity rejects a validly signed but different source, workflow, run or archive", () => {
   /** @type {((value: typeof statement) => void)[]} */
   const mutations = [

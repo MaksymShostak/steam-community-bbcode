@@ -20,6 +20,18 @@ function readWorkflow(name) {
   return { text, document };
 }
 
+function workflowBash() {
+  return process.platform === "win32"
+    ? resolve(
+        execFileSync("git", ["--exec-path"], {
+          encoding: "utf8",
+          windowsHide: true,
+        }).trim(),
+        "../../../bin/bash.exe",
+      )
+    : "bash";
+}
+
 test("actual publication gate accepts exact identity and rejects mismatched inputs", () => {
   const { document } = readWorkflow("steam-community-bbcode-release");
   const jobs = document.get("jobs", true);
@@ -78,20 +90,12 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
     GITHUB_SHA: sha,
     GITHUB_RUN_ID: "5678",
     GITHUB_RUN_ATTEMPT: "1",
+    CANDIDATE_ATTEMPT: "1",
     RELEASE_VERSION: "1.0.0-rc.1",
     RELEASE_TAG: "next",
     CANDIDATE_ARTIFACT_ID: "4321",
   };
-  const bash =
-    process.platform === "win32"
-      ? resolve(
-          execFileSync("git", ["--exec-path"], {
-            encoding: "utf8",
-            windowsHide: true,
-          }).trim(),
-          "../../../bin/bash.exe",
-        )
-      : "bash";
+  const bash = workflowBash();
   try {
     /** @param {Record<string, unknown>} value @param {Record<string, string>} overrides @param {boolean} accepted */
     function exercise(value, overrides, accepted) {
@@ -130,6 +134,13 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
       );
     }
     exercise(candidate, {}, true);
+    exercise(candidate, { GITHUB_RUN_ATTEMPT: "2" }, true);
+    exercise(
+      candidate,
+      { GITHUB_RUN_ATTEMPT: "2", CANDIDATE_ATTEMPT: "2" },
+      false,
+    );
+    exercise(candidate, { CANDIDATE_ATTEMPT: "18446744073709551617" }, false);
     for (const [key, value] of Object.entries({
       GITHUB_REPOSITORY: "wrong/repository",
       GITHUB_REPOSITORY_ID: "9876",
@@ -139,7 +150,7 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
       GITHUB_WORKFLOW_SHA: "b".repeat(40),
       GITHUB_SHA: "c".repeat(40),
       GITHUB_RUN_ID: "8765",
-      GITHUB_RUN_ATTEMPT: "2",
+      CANDIDATE_ATTEMPT: "2",
       RELEASE_VERSION: "1.0.0-rc.2",
       RELEASE_TAG: "latest",
       CANDIDATE_ARTIFACT_ID: "",
@@ -191,6 +202,117 @@ test("actual publication gate accepts exact identity and rejects mismatched inpu
   } finally {
     rmSync(directory, { recursive: true });
   }
+});
+
+test("publisher checks closed native write history and the unused coordinate before the OIDC write", () => {
+  const { document } = readWorkflow("steam-community-bbcode-release");
+  const steps = document.getIn(["jobs", "publish", "steps"], true);
+  assert.ok(isSeq(steps));
+  const guardIndex = steps.items.findIndex(
+    (s) =>
+      isMap(s) &&
+      s.get("name") ===
+        "Establish that no earlier attempt could have published this version",
+  );
+  const guard = steps.items[guardIndex];
+  const write = steps.items[guardIndex + 1];
+  assert.ok(isMap(guard) && isMap(write));
+  assert.equal(
+    write.get("name"),
+    "Verify and publish the retained bytes through npm OIDC",
+  );
+  assert.equal(guard.get("continue-on-error"), undefined);
+  assert.equal(guard.get("if"), undefined);
+  const body = guard.get("run");
+  assert.ok(typeof body === "string");
+  const repository = "MaksymShostak/steam-community-bbcode",
+    sha = "a".repeat(40);
+  // Supply only read-only native responses. Any different command or URL fails.
+  const mock = `hash -p "$REPOSITORY_JQ_EXECUTABLE" jq
+gh() {
+  case "$1 $2" in
+    "api repos/$GITHUB_REPOSITORY/actions/runs/5678/attempts/1") printf '%s\\n' "$PRIOR_RUN" ;;
+    "api repos/$GITHUB_REPOSITORY/actions/runs/5678/attempts/1/jobs?per_page=100") printf '%s\\n' "$PRIOR_JOBS" ;;
+    *) return 9 ;;
+  esac
+}
+curl() { [[ "\${!#}" == "https://registry.npmjs.org/steam-community-bbcode/1.0.0-rc.1" ]] && printf '%s' "$COORDINATE_STATUS"; }
+`;
+  const environment = repositoryJqEnvironment();
+  const run = {
+    id: 5678,
+    run_attempt: 1,
+    status: "completed",
+    repository: { full_name: repository },
+    head_repository: { full_name: repository },
+    head_sha: sha,
+    head_branch: "main",
+    event: "workflow_dispatch",
+    path: ".github/workflows/steam-community-bbcode-release.yml",
+  };
+  const step = {
+    name: "Verify and publish the retained bytes through npm OIDC",
+    status: "completed",
+    conclusion: "skipped",
+  };
+  const job = {
+    id: 123,
+    name: "Publish the qualified archive",
+    run_id: 5678,
+    run_attempt: 1,
+    head_sha: sha,
+    status: "completed",
+    conclusion: "failure",
+    steps: [step],
+  };
+  /** @param {typeof job[]} jobs @param {number} count @param {string} status @param {typeof run} prior */
+  function probe(jobs, count = jobs.length, status = "404", prior = run) {
+    const result = spawnSync(
+      workflowBash(),
+      ["--noprofile", "--norc", "-c", mock + body],
+      {
+        encoding: "utf8",
+        windowsHide: true,
+        env: {
+          ...environment,
+          GITHUB_REPOSITORY: repository,
+          GITHUB_SHA: sha,
+          GITHUB_RUN_ID: "5678",
+          GITHUB_RUN_ATTEMPT: "2",
+          RELEASE_VERSION: "1.0.0-rc.1",
+          PRIOR_RUN: JSON.stringify(prior),
+          PRIOR_JOBS: JSON.stringify({ total_count: count, jobs }),
+          COORDINATE_STATUS: status,
+        },
+      },
+    );
+    assert.equal(result.error, undefined);
+    return result.status === 0;
+  }
+  assert.ok(probe([job]));
+  assert.ok(
+    probe([
+      {
+        ...job,
+        name: "Qualify the release archive",
+        conclusion: "failure",
+        steps: [],
+      },
+    ]),
+  );
+  assert.ok(probe([{ ...job, conclusion: "skipped", steps: [] }]));
+  for (const conclusion of ["success", "failure", "cancelled", "timed_out"])
+    assert.equal(probe([{ ...job, steps: [{ ...step, conclusion }] }]), false);
+  assert.equal(probe([{ ...job, steps: [] }]), false);
+  assert.equal(probe([{ ...job, steps: [step, step] }]), false);
+  assert.equal(probe([job, { ...job, id: 124 }]), false);
+  assert.equal(probe([job], 2), false);
+  assert.equal(
+    probe([job], 1, "404", { ...run, head_sha: "b".repeat(40) }),
+    false,
+  );
+  for (const status of ["200", "403", "500"])
+    assert.equal(probe([job], 1, status), false);
 });
 
 test("release qualification reuses all same-revision runtime, mutation and security workflows", () => {
@@ -245,6 +367,19 @@ test("release uses root consumers and explicit immutable checkout without privil
   }
   const publish = document.getIn(["jobs", "publish"], true);
   assert.ok(isMap(publish));
+  assert.equal(
+    document.getIn(["jobs", "candidate", "outputs", "candidate_attempt"]),
+    "${{ steps.identity.outputs.attempt }}",
+  );
+  assert.equal(
+    publish.getIn(["outputs", "publication_attempt"]),
+    "${{ steps.publication.outputs.attempt }}",
+  );
+  assert.ok(
+    text.includes(
+      "PUBLICATION_ATTEMPT: ${{ needs.publish.outputs.publication_attempt }}",
+    ),
+  );
   assert.equal(publish.getIn(["permissions", "id-token"]), "write");
   assert.doesNotMatch(
     publish.toString(),

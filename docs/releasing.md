@@ -116,6 +116,8 @@ No bootstrap token or credential is stored by this implementation.
 
 The owner selected a local, owner-authenticated 2FA bootstrap for the first available `1.0.0-rc.N` version under `next`, followed by OIDC for subsequent releases.
 Prepare and qualify the exact public candidate before requesting publication approval.
+The bootstrap checks that the hosted publisher was skipped throughout the qualification run.
+If qualification was rerun, the successful build must still match the original runner and execution timestamps.
 Use the owner-approved bootstrap entry point from a clean checkout of the candidate's source commit:
 
 ```sh
@@ -159,6 +161,9 @@ Dispatch the reviewed `main` revision with `publish: true`, its exact package ve
 The private development flag and a dirty candidate prevent publication.
 
 The publisher downloads the same run's artifact by ID, checks its native artifact digest, candidate metadata hash and `SHA256SUMS`, and publishes its exact archive with native npm OIDC/provenance.
+The candidate job also supplies its producing attempt.
+A publisher first reached on a later attempt checks every earlier attempt for a skipped publication and confirms that npm still returns 404 for the exact version.
+An attempted or unresolved write requires read-only verification or owner reconciliation.
 The protected `npm-release` environment permits only `main`, requires the owner reviewer and disables administrator bypass.
 
 The owner may approve a run they initiated; independent technical review remains a separate release obligation.
@@ -192,4 +197,7 @@ If a required archive expires, start a newly qualified run rather than repacking
 Check actual log access and retention through acceptance/recovery; masking, provider truncation, cancellation or expiry can make diagnostic evidence incomplete.
 
 If publishing succeeds but verification fails, diagnose or rerun the verification job against that same candidate; do not republish the version to recover a verification failure.
+Hosted verification checks the signed invocation against the successful publisher's attempt.
+When verifying manually after a later first publication, pass `--publication-attempt` with that publisher's observed attempt.
+The default is the candidate's build attempt for historical same-attempt releases.
 Live trusted-publisher configuration and a successful public-registry run are required before claiming operational publication.

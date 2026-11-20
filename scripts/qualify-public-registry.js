@@ -26,6 +26,7 @@ const { values } = parseArgs({
   options: {
     candidate: { type: "string" },
     tag: { type: "string" },
+    "publication-attempt": { type: "string" },
     output: { type: "string" },
   },
 });
@@ -125,6 +126,7 @@ console.log(result.stdout);
 await verifyExpectedProvenance(
   candidate,
   JSON.parse(readFileSync(join(output, "signature-audit.json"), "utf8")),
+  values["publication-attempt"],
 );
 const report = {
   result: "PASS",
@@ -134,6 +136,8 @@ const report = {
   installedConsumer: "PASS",
   signatureAudit: "PASS",
   expectedProvenance: "PASS",
+  publicationAttempt:
+    values["publication-attempt"] ?? candidate.release?.runAttempt,
 };
 writeFileSync(
   join(output, "registry-verification.json"),
